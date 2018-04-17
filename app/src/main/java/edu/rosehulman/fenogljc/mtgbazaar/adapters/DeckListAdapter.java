@@ -1,4 +1,4 @@
-package edu.rosehulman.fenogljc.mtgbazaar;
+package edu.rosehulman.fenogljc.mtgbazaar.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,35 +6,38 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment;
-import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment.OnBinderSelectedListener;
+import edu.rosehulman.fenogljc.mtgbazaar.Deck;
+import edu.rosehulman.fenogljc.mtgbazaar.R;
+import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckListFragment.OnListFragmentInteractionListener;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link Binder} and makes a call to the
- * specified {@link OnBinderSelectedListener}.
+ * {@link RecyclerView.Adapter} that can display a {@link Deck} and makes a call to the
+ * specified {@link OnListFragmentInteractionListener}.
+ * TODO: Replace the implementation with code for your data type.
  */
-public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.ViewHolder> {
+public class DeckListAdapter extends RecyclerView.Adapter<DeckListAdapter.ViewHolder> {
 
-    private final List<Binder> mBinders;
-    private final BinderListFragment.OnBinderSelectedListener mListener;
+    private final List<Deck> mValues;
+    private final OnListFragmentInteractionListener mListener;
 
-    public BinderListAdapter(List<Binder> items, BinderListFragment.OnBinderSelectedListener listener) {
-        mBinders = items;
+    public DeckListAdapter(List<Deck> decks, OnListFragmentInteractionListener listener) {
+        mValues = decks;
         mListener = listener;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_binder, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.fragment_deck_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mBinders.get(position);
-        holder.mIdView.setText(mBinders.get(position).getName());
+        holder.mItem = mValues.get(position);
+        holder.mIdView.setText(mValues.get(position).getName());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,7 +45,6 @@ public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.Vi
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
                 }
             }
         });
@@ -50,14 +52,14 @@ public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return mBinders.size();
+        return mValues.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public Binder mItem;
+        public Deck mItem;
 
         public ViewHolder(View view) {
             super(view);

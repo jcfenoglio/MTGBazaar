@@ -2,8 +2,7 @@ package edu.rosehulman.fenogljc.mtgbazaar;
 
 import java.util.ArrayList;
 
-public class Binder implements CardCollection {
-
+public class Deck implements CardCollection {
     private String name;
     private ArrayList<Card> cards;
 
