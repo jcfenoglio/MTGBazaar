@@ -1,4 +1,4 @@
-package edu.rosehulman.fenogljc.mtgbazaar;
+package edu.rosehulman.fenogljc.mtgbazaar.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,35 +6,40 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment;
-import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment.OnBinderSelectedListener;
+import edu.rosehulman.fenogljc.mtgbazaar.R;
+import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderFragment;
+import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderFragment.OnCardSelectedListener;
+import edu.rosehulman.fenogljc.mtgbazaar.fragments.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link Binder} and makes a call to the
- * specified {@link OnBinderSelectedListener}.
+ * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * specified {@link BinderFragment.OnCardSelectedListener}.
+ * TODO: Replace the implementation with code for your data type.
  */
-public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.ViewHolder> {
+public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder> {
 
-    private final List<Binder> mBinders;
-    private final BinderListFragment.OnBinderSelectedListener mListener;
+    private final List<DummyItem> mValues;
+    private final BinderFragment.OnCardSelectedListener mListener;
 
-    public BinderListAdapter(List<Binder> items, BinderListFragment.OnBinderSelectedListener listener) {
-        mBinders = items;
+    public BinderAdapter(List<DummyItem> items, OnCardSelectedListener listener) {
+        mValues = items;
         mListener = listener;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_binder, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.fragment_binder_card, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mBinders.get(position);
-        holder.mIdView.setText(mBinders.get(position).getName());
+        holder.mItem = mValues.get(position);
+        holder.mIdView.setText(mValues.get(position).id);
+        holder.mContentView.setText(mValues.get(position).content);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,14 +55,14 @@ public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return mBinders.size();
+        return mValues.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public Binder mItem;
+        public DummyItem mItem;
 
         public ViewHolder(View view) {
             super(view);
