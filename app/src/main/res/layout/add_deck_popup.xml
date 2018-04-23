@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/add_deck_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/deck_add_hint"
+        android:inputType="text"/>
+
+    <!-- https://developer.android.com/guide/topics/ui/controls/spinner.html
+         On how to use and populate the spinner -->
+
+    <Spinner
+        android:id="@+id/deck_format"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/add_deck_name">
+    </Spinner>
+
+    <LinearLayout
+        android:layout_below="@id/deck_format"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/cancel_deck_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:text="@string/cancel_button_text"/>
+
+        <Button
+            android:id="@+id/accept_deck_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:text="@string/ok_button_text"/>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -9,7 +9,7 @@
         android:id="@+id/binder_card_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Card Name"
+        android:hint="@string/card_search_hint"
         android:inputType="text"
         android:singleLine="false" />
 
