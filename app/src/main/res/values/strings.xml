@@ -6,7 +6,11 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="binder_add_hint">Binder Name</string>
+    <string name="card_search_hint">Card Name</string>
+    <string name="ok_button_text">OK</string>
+    <string name="cancel_button_text">Cancel</string>
+    <string name="deck_add_hint">Deck Name</string>
+    <string name="quantity_text">Quantity:</string>
+    <string name="foil_text">Foil</string>
 </resources>

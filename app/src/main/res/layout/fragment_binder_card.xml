@@ -34,19 +34,19 @@
         android:textAppearance="?attr/textAppearanceListItem" />
 
     <TextView
-        android:id="@+id/price"
+        android:id="@+id/binder_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
         android:text="$0.00"
-        android:layout_toRightOf="@id/binder_card_name"
+        android:layout_toRightOf="@id/binder_card_amount"
         android:layout_alignParentRight="true"
         android:gravity="right"
         android:textSize="22dp"
         android:textAppearance="?attr/textAppearanceListItem" />
 
     <TextView
-        android:id="@+id/set_name"
+        android:id="@+id/binder_set_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/text_margin"
