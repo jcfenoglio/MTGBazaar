@@ -37,6 +37,9 @@
     <string name="action_sign_out">Sign Out</string>
     <string name="pricing">Pricing:</string>
     <string name="regular">Regular</string>
+    <string name="left_add_text">Add left</string>
+    <string name="right_add_text">Add right</string>
+    <string name="accept_trade">Accept trade</string>
 
 
 </resources>
