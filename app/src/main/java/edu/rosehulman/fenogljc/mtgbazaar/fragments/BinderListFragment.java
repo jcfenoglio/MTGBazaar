@@ -27,7 +27,7 @@ public class BinderListFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private OnBinderSelectedListener mListener;
+    private Context mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -73,7 +73,7 @@ public class BinderListFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnBinderSelectedListener) {
-            mListener = (OnBinderSelectedListener) context;
+            mListener = context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnBinderSelectedListener");
@@ -97,7 +97,6 @@ public class BinderListFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnBinderSelectedListener {
-        // TODO: Update argument type and name
         void onBinderSelected(Binder binder);
     }
 }

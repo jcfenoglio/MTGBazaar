@@ -1,14 +1,19 @@
 package edu.rosehulman.fenogljc.mtgbazaar.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.rosehulman.fenogljc.mtgbazaar.Binder;
+import edu.rosehulman.fenogljc.mtgbazaar.Constants;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment.OnBinderSelectedListener;
@@ -20,11 +25,11 @@ import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment.OnBinderSe
 public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.ViewHolder> {
 
     private final List<Binder> mBinders;
-    private final OnBinderSelectedListener mListener;
+    private final Context mContext;
 
-    public BinderListAdapter(List<Binder> items, OnBinderSelectedListener listener) {
-        mBinders = items;
-        mListener = listener;
+    public BinderListAdapter(ArrayList<Binder> binders, Context context) {
+        mContext = context;
+        mBinders = binders;
     }
 
     @Override
@@ -41,10 +46,10 @@ public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.Vi
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != mListener) {
+                if (null != mContext) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onBinderSelected(holder.mItem);
+                    ((OnBinderSelectedListener) mContext).onBinderSelected(holder.mItem);
                 }
             }
         });
