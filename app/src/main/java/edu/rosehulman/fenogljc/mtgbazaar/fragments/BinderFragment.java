@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import edu.rosehulman.fenogljc.mtgbazaar.Binder;
 import edu.rosehulman.fenogljc.mtgbazaar.Card;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 
@@ -19,9 +20,10 @@ import edu.rosehulman.fenogljc.mtgbazaar.R;
 public class BinderFragment extends Fragment {
 
     // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
+    private static final String ARG_BINDER = "binder";
     // TODO: Customize parameters
-    private int mColumnCount = 1;
+    private Binder mBinder;
+
     private OnCardSelectedListener mListener;
 
     /**
@@ -33,10 +35,10 @@ public class BinderFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static BinderFragment newInstance(int columnCount) {
+    public static BinderFragment newInstance(Binder binder) {
         BinderFragment fragment = new BinderFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
+        args.putParcelable(ARG_BINDER, binder);
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,7 +48,7 @@ public class BinderFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            mBinder = getArguments().getParcelable(ARG_BINDER);
         }
     }
 

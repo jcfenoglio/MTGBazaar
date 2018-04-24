@@ -10,23 +10,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
+import edu.rosehulman.fenogljc.mtgbazaar.Deck;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 import edu.rosehulman.fenogljc.mtgbazaar.adapters.DeckListAdapter;
-import edu.rosehulman.fenogljc.mtgbazaar.fragments.dummy.DummyContent;
-import edu.rosehulman.fenogljc.mtgbazaar.fragments.dummy.DummyContent.DummyItem;
 
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnDeckSelectedListener}
  * interface.
  */
 public class DeckListFragment extends Fragment {
 
-    // TODO: Customize parameters
     private int mColumnCount = 1;
 
-    private OnListFragmentInteractionListener mListener;
+    private OnDeckSelectedListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -55,7 +55,7 @@ public class DeckListFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new DeckListAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new DeckListAdapter(new ArrayList<Deck>(), mListener));
         }
         return view;
     }
@@ -64,8 +64,8 @@ public class DeckListFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+        if (context instanceof OnDeckSelectedListener) {
+            mListener = (OnDeckSelectedListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
@@ -88,8 +88,8 @@ public class DeckListFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnListFragmentInteractionListener {
+    public interface OnDeckSelectedListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onDeckSelected(Deck item);
     }
 }

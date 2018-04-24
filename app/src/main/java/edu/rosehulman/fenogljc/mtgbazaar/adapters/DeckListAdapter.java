@@ -8,21 +8,22 @@ import android.widget.TextView;
 
 import edu.rosehulman.fenogljc.mtgbazaar.Deck;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
-import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckListFragment.OnListFragmentInteractionListener;
+import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckListFragment;
+import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckListFragment.OnDeckSelectedListener;
 
 import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Deck} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
+ * specified {@link OnDeckSelectedListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class DeckListAdapter extends RecyclerView.Adapter<DeckListAdapter.ViewHolder> {
 
     private final List<Deck> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final OnDeckSelectedListener mListener;
 
-    public DeckListAdapter(List<Deck> decks, OnListFragmentInteractionListener listener) {
+    public DeckListAdapter(List<Deck> decks, OnDeckSelectedListener listener) {
         mValues = decks;
         mListener = listener;
     }

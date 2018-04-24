@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "693995868025",
+    "firebase_url": "https://mtg-bazaar.firebaseio.com",
+    "project_id": "mtg-bazaar",
+    "storage_bucket": "mtg-bazaar.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:693995868025:android:06d724d256801955",
+        "android_client_info": {
+          "package_name": "edu.rosehulman.fenogljc.mtgbazaar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "693995868025-jmpmneij88a9k07cv64cl2hpgu646lh1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.rosehulman.fenogljc.mtgbazaar",
+            "certificate_hash": "9dcb9fc2773f6eb21f85f8c1e6e51c8638cf477d"
+          }
+        },
+        {
+          "client_id": "693995868025-858a8tl42ggg2t35mvaottt8978l9ip3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJsMmG6J0e2v9TiX5uton4bCAfL_of7HQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "693995868025-858a8tl42ggg2t35mvaottt8978l9ip3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

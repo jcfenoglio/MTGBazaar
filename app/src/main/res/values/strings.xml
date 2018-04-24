@@ -13,4 +13,28 @@
     <string name="deck_add_hint">Deck Name</string>
     <string name="quantity_text">Quantity:</string>
     <string name="foil_text">Foil</string>
+    <string name="nav_item_binders">Binders</string>
+    <string name="nav_item_decks">Decks</string>
+    <string name="nav_item_trade">Trade</string>
+    <string name="nav_item_search">Card Search</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="sign_in_cancelled">Login cancelled</string>
+    <string name="no_internet_connection">Login failed: no internet connection</string>
+    <string name="unknown_error">Login failed: unknown error</string>
+    <string name="action_sign_out">Sign Out</string>
+
+
 </resources>

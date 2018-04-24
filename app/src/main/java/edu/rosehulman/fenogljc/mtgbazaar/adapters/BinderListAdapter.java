@@ -6,12 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.List;
+
 import edu.rosehulman.fenogljc.mtgbazaar.Binder;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment.OnBinderSelectedListener;
-
-import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Binder} and makes a call to the
@@ -20,9 +20,9 @@ import java.util.List;
 public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.ViewHolder> {
 
     private final List<Binder> mBinders;
-    private final BinderListFragment.OnBinderSelectedListener mListener;
+    private final OnBinderSelectedListener mListener;
 
-    public BinderListAdapter(List<Binder> items, BinderListFragment.OnBinderSelectedListener listener) {
+    public BinderListAdapter(List<Binder> items, OnBinderSelectedListener listener) {
         mBinders = items;
         mListener = listener;
     }
@@ -44,7 +44,7 @@ public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.Vi
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onBinderSelected(holder.mItem);
                 }
             }
         });

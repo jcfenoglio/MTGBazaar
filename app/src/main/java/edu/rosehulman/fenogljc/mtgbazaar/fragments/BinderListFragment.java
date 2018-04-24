@@ -34,6 +34,7 @@ public class BinderListFragment extends Fragment {
      * fragment (e.g. upon screen orientation changes).
      */
     public BinderListFragment() {
+
     }
 
     // TODO: Customize parameter initialization
@@ -58,8 +59,8 @@ public class BinderListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        RecyclerView view = (RecyclerView) inflater.inflate(R.layout.fragment_binder_list, container, false);
 
+        RecyclerView view = (RecyclerView) inflater.inflate(R.layout.fragment_binder_list, container, false);
         view.setHasFixedSize(true);
         view.setLayoutManager(new LinearLayoutManager(getContext()));
         BinderListAdapter adapter = new BinderListAdapter(new ArrayList<Binder>(), mListener);
@@ -97,6 +98,6 @@ public class BinderListFragment extends Fragment {
      */
     public interface OnBinderSelectedListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Binder binder);
+        void onBinderSelected(Binder binder);
     }
 }

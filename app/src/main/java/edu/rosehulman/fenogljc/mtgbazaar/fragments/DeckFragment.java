@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import edu.rosehulman.fenogljc.mtgbazaar.Card;
+import edu.rosehulman.fenogljc.mtgbazaar.Deck;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 
 import java.util.List;
@@ -24,9 +25,10 @@ import java.util.List;
 public class DeckFragment extends Fragment {
 
     // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
+    private static final String ARG_DECK = "deck";
     // TODO: Customize parameters
-    private int mColumnCount = 1;
+    private Deck mDeck;
+
     private OnListFragmentInteractionListener mListener;
 
     /**
@@ -38,10 +40,10 @@ public class DeckFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static DeckFragment newInstance(int columnCount) {
+    public static DeckFragment newInstance(Deck deck) {
         DeckFragment fragment = new DeckFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
+        args.putParcelable(ARG_DECK, deck);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,7 +53,7 @@ public class DeckFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            mDeck = getArguments().getParcelable(ARG_DECK);
         }
     }
 
@@ -93,7 +95,6 @@ public class DeckFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(Card item);
     }
 }

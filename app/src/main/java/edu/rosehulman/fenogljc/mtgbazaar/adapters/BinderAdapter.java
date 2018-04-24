@@ -6,24 +6,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import edu.rosehulman.fenogljc.mtgbazaar.Card;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderFragment.OnCardSelectedListener;
-import edu.rosehulman.fenogljc.mtgbazaar.fragments.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link Card} and makes a call to the
  * specified {@link BinderFragment.OnCardSelectedListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<Card> mValues;
     private final BinderFragment.OnCardSelectedListener mListener;
 
-    public BinderAdapter(List<DummyItem> items, OnCardSelectedListener listener) {
+    public BinderAdapter(List<Card> items, OnCardSelectedListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -38,8 +38,7 @@ public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mIdView.setText(mValues.get(position).getName());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +61,7 @@ public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public DummyItem mItem;
+        public Card mItem;
 
         public ViewHolder(View view) {
             super(view);

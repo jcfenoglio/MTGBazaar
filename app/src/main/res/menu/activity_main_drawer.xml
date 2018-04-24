@@ -5,34 +5,20 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_binders"
             android:icon="@drawable/book_open_page_variant"
-            android:title="Collections" />
+            android:title="@string/nav_item_binders" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_decks"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Decks" />
+            android:title="@string/nav_item_decks" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_trade"
             android:icon="@drawable/clipboard_arrow_left"
-            android:title="Trade" />
+            android:title="@string/nav_item_trade" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_search"
             android:icon="@android:drawable/ic_search_category_default"
-            android:title="Card Search" />
+            android:title="@string/nav_item_search" />
     </group>
-
-    <!--<item android:title="Communicate">-->
-        <!--<menu>-->
-            <!--<item-->
-                <!--android:id="@+id/nav_share"-->
-                <!--android:icon="@drawable/ic_menu_share"-->
-                <!--android:title="Share" />-->
-            <!--<item-->
-                <!--android:id="@+id/nav_send"-->
-                <!--android:icon="@drawable/ic_menu_send"-->
-                <!--android:title="Send" />-->
-        <!--</menu>-->
-    <!--</item>-->
-
 </menu>

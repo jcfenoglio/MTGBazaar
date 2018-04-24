@@ -1,5 +1,7 @@
 package edu.rosehulman.fenogljc.mtgbazaar;
 
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
 public interface CardCollection {
