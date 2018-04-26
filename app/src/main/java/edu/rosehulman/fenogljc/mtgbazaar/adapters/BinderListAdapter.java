@@ -47,17 +47,21 @@ public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.Vi
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                for (Binder b : mBinders) {
+                    if (b.getName() == dataSnapshot.getKey()) {
+                        mBinders.remove(b);
+                        break;
+                    }
+                }
+                notifyDataSetChanged();
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
@@ -82,6 +86,10 @@ public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.Vi
     @Override
     public int getItemCount() {
         return mBinders.size();
+    }
+
+    public void addItemButtonClicked() {
+        // make the dialog
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

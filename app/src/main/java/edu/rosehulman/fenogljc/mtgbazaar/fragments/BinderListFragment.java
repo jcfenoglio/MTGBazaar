@@ -3,6 +3,7 @@ package edu.rosehulman.fenogljc.mtgbazaar.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -58,8 +59,18 @@ public class BinderListFragment extends Fragment {
 
         DatabaseReference mUserBindersData = ((MainActivity) getContext()).getmUserData().child(Constants.DB_BINDERS_REF);
 
-        BinderListAdapter adapter = new BinderListAdapter(getContext(), mListener, mUserBindersData);
+        final BinderListAdapter adapter = new BinderListAdapter(getContext(), mListener, mUserBindersData);
         view.setAdapter(adapter);
+
+
+        FloatingActionButton fab = view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adapter.addItemButtonClicked();
+            }
+        });
+
         return view;
     }
 

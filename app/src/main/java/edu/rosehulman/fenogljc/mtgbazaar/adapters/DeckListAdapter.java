@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import edu.rosehulman.fenogljc.mtgbazaar.Deck;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
-import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckListFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckListFragment.OnDeckSelectedListener;
 
 import java.util.List;
