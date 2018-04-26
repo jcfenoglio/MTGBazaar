@@ -1,0 +1,24 @@
+{
+  "users" : {
+    "DgHlpuUWMsOQvKvJFqXDfnr3c483" : {
+    	"username": "狐π",
+    	"binders": {
+    		"test binder": {
+    			"name": "test binder",
+    			"cards": {
+    				"Taiga": {
+    					"name": "Taiga",
+    					"qty": 4
+    				},
+    				"Kird Ape": {
+    					"name": "Kird Ape",
+    					"qty": 4
+    				}
+    			}
+    		}
+    	},
+    	"decks": {},
+    	"trades": {},
+    	"cards": {}
+  }
+}

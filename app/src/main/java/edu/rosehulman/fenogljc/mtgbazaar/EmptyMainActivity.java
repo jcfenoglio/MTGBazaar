@@ -36,6 +36,9 @@ public class EmptyMainActivity extends AppCompatActivity {
         }
     }
 
+
+
+    
     private void attemptLogin() {
         startActivityForResult(
                 AuthUI.getInstance()

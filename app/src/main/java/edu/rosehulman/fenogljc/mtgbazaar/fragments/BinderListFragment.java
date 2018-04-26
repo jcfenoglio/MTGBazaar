@@ -1,5 +1,6 @@
 package edu.rosehulman.fenogljc.mtgbazaar.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,9 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
+import com.google.firebase.database.DatabaseReference;
 
 import edu.rosehulman.fenogljc.mtgbazaar.Binder;
+import edu.rosehulman.fenogljc.mtgbazaar.Constants;
+import edu.rosehulman.fenogljc.mtgbazaar.MainActivity;
 import edu.rosehulman.fenogljc.mtgbazaar.adapters.BinderListAdapter;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 
@@ -23,11 +26,7 @@ import edu.rosehulman.fenogljc.mtgbazaar.R;
  */
 public class BinderListFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
-    private Context mListener;
+    private OnBinderSelectedListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -37,22 +36,14 @@ public class BinderListFragment extends Fragment {
 
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static BinderListFragment newInstance(int columnCount) {
-        BinderListFragment fragment = new BinderListFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnBinderSelectedListener) {
+            mListener = (OnBinderSelectedListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnBinderSelectedListener");
         }
     }
 
@@ -60,24 +51,16 @@ public class BinderListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        ((Activity) getContext()).setTitle(R.string.nav_item_binders);
+
         RecyclerView view = (RecyclerView) inflater.inflate(R.layout.fragment_binder_list, container, false);
-        view.setHasFixedSize(true);
         view.setLayoutManager(new LinearLayoutManager(getContext()));
-        BinderListAdapter adapter = new BinderListAdapter(new ArrayList<Binder>(), mListener);
+
+        DatabaseReference mUserBindersData = ((MainActivity) getContext()).getmUserData().child(Constants.DB_BINDERS_REF);
+
+        BinderListAdapter adapter = new BinderListAdapter(getContext(), mListener, mUserBindersData);
         view.setAdapter(adapter);
         return view;
-    }
-
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnBinderSelectedListener) {
-            mListener = context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnBinderSelectedListener");
-        }
     }
 
     @Override

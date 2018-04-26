@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
-public class Deck implements CardCollection, Parcelable {
+public class Deck implements Parcelable {
     private String name;
     private ArrayList<Card> cards;
 
@@ -29,22 +29,18 @@ public class Deck implements CardCollection, Parcelable {
         }
     };
 
-    @Override
     public String getName() {
         return this.name;
     }
 
-    @Override
     public void setName(String name) {
         this.name = name;
     }
 
-    @Override
     public ArrayList<Card> getCards() {
         return this.cards;
     }
 
-    @Override
     public void addCards(ArrayList<Card> cards) {
         this.cards.addAll(cards);
     }

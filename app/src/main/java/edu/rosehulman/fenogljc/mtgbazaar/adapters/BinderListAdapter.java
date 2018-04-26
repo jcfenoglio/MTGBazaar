@@ -7,15 +7,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.rosehulman.fenogljc.mtgbazaar.Binder;
-import edu.rosehulman.fenogljc.mtgbazaar.Constants;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
-import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment.OnBinderSelectedListener;
 
 /**
@@ -24,35 +28,55 @@ import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment.OnBinderSe
  */
 public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.ViewHolder> {
 
-    private final List<Binder> mBinders;
     private final Context mContext;
+    private final OnBinderSelectedListener mListener;
+    private final List<Binder> mBinders;
+    private DatabaseReference mRefBinders;
 
-    public BinderListAdapter(ArrayList<Binder> binders, Context context) {
+    public BinderListAdapter(Context context, OnBinderSelectedListener listener, DatabaseReference ref) {
         mContext = context;
-        mBinders = binders;
+        mListener = listener;
+        mBinders = new ArrayList<>();
+        mRefBinders = ref;
+        mRefBinders.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                mBinders.add(new Binder(dataSnapshot.getKey()));
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_binder, parent, false);
-        return new ViewHolder(view);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_binder_list_item, parent, false);
+        return new ViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mBinders.get(position);
-        holder.mIdView.setText(mBinders.get(position).getName());
-
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mContext) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    ((OnBinderSelectedListener) mContext).onBinderSelected(holder.mItem);
-                }
-            }
-        });
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.mBinder = mBinders.get(position);
+        holder.mContentView.setText(mBinders.get(position).getName());
     }
 
     @Override
@@ -60,22 +84,26 @@ public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.Vi
         return mBinders.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public Binder mItem;
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public TextView mContentView;
+        public Binder mBinder;
 
         public ViewHolder(View view) {
             super(view);
-            mView = view;
-            mIdView = (TextView) view.findViewById(R.id.binder_item_number);
-            mContentView = (TextView) view.findViewById(R.id.binder_content);
+            view.setOnClickListener(this);
+            mContentView = (TextView) view.findViewById(R.id.binder_item_name);
         }
 
         @Override
         public String toString() {
             return super.toString() + " '" + mContentView.getText() + "'";
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (null != mListener) {
+                mListener.onBinderSelected(this.mBinder);
+            }
         }
     }
 }

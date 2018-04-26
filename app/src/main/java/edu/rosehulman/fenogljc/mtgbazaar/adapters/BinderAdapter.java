@@ -31,14 +31,14 @@ public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_binder_card, parent, false);
+                .inflate(R.layout.fragment_binder_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getName());
+        holder.mContentView.setText(mValues.get(position).getName());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,15 +59,13 @@ public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
         public final TextView mContentView;
         public Card mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.binder_item_number);
-            mContentView = (TextView) view.findViewById(R.id.binder_content);
+            mContentView = (TextView) view.findViewById(R.id.binder_item_name);
         }
 
         @Override

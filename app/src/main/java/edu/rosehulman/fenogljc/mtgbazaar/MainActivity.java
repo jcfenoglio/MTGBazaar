@@ -34,7 +34,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment;
@@ -56,17 +58,12 @@ public class MainActivity extends AppCompatActivity
 
         mFirebase = FirebaseDatabase.getInstance().getReference();
         mUser = FirebaseAuth.getInstance().getCurrentUser();
-
-
         mFirebase.child(Constants.DB_USERS_REF).child(mUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(!dataSnapshot.exists()) {
                     Log.d(Constants.TAG, "user does not exist");
-                    mFirebase.child(Constants.DB_USERS_REF).child(mUser.getUid()).setValue(mUser.getDisplayName());
-                } else {
-                    Log.d(Constants.TAG, "user exists");
-                    mUserData = mFirebase.child(Constants.DB_USERS_REF).child(mUser.getUid());
+                    mFirebase.child(Constants.DB_USERS_REF).child(mUser.getUid()).setValue(new User(mUser.getDisplayName()));
                 }
             }
 
@@ -75,6 +72,7 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+        mUserData = mFirebase.child(Constants.DB_USERS_REF).child(mUser.getUid());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -143,7 +141,10 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
+    public DatabaseReference getmUserData() {
+        return mUserData;
+    }
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -179,10 +180,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBinderSelected(Binder binder) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_container, BinderFragment.newInstance(binder));
-        ft.addToBackStack("binder_list_fragment");
-        ft.commit();
+        Log.d(Constants.TAG, "Binder selected: " + binder.getName());
+//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//        ft.replace(R.id.fragment_container, BinderFragment.newInstance(binder));
+//        ft.addToBackStack("binder_list_fragment");
+//        ft.commit();
     }
 
     @Override
