@@ -11,7 +11,7 @@ public class User {
     public Map<String, Binder> binders;
     public Map<String, Deck> decks;
 //    public Map<String, Trade> trades;
-    public Map<String, Card> cards;
+    public Map<String, UserCard> cards;
 
     @SuppressWarnings("unused")
     public User () {}

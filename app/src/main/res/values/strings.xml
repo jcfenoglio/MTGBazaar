@@ -47,6 +47,7 @@
     <string name="binder_delete_warning">Once you delete a binder, you won\'t be able to recover it</string>
     <string name="delete_dialog_title">Delete Binder</string>
     <string name="add_card_button">Add</string>
+    <string name="edit_card_dialog_title">Edit Card Details</string>
 
 
 </resources>

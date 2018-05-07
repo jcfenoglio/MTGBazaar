@@ -3,7 +3,6 @@ package edu.rosehulman.fenogljc.mtgbazaar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -15,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Adapter;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,11 +31,12 @@ import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckListFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.models.Binder;
+import edu.rosehulman.fenogljc.mtgbazaar.models.UserCard;
 import edu.rosehulman.fenogljc.mtgbazaar.models.Deck;
 import edu.rosehulman.fenogljc.mtgbazaar.models.User;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, BinderListFragment.OnBinderSelectedListener, DeckListFragment.OnDeckSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, BinderListFragment.OnBinderSelectedListener, DeckListFragment.OnDeckSelectedListener, BinderFragment.OnCardSelectedListener {
 
     private DatabaseReference mFirebase;
     private DatabaseReference mUserData;
@@ -177,5 +176,10 @@ public class MainActivity extends AppCompatActivity
         ft.replace(R.id.fragment_container, DeckFragment.newInstance(item));
         ft.addToBackStack("deck_list_fragment");
         ft.commit();
+    }
+
+    @Override
+    public void onCardSelected(UserCard userCard) {
+
     }
 }

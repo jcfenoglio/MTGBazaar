@@ -13,22 +13,21 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
-import edu.rosehulman.fenogljc.mtgbazaar.models.Deck;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
-import edu.rosehulman.fenogljc.mtgbazaar.models.Card;
+import edu.rosehulman.fenogljc.mtgbazaar.models.UserCard;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckFragment.OnListFragmentInteractionListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link Card} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link UserCard} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
 
-    private final List<Card> mValues;
+    private final List<UserCard> mValues;
     private final OnListFragmentInteractionListener mListener;
     private final Context mContext;
     private DatabaseReference mDeckRef;
@@ -74,13 +73,13 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public Card mItem;
+        public UserCard mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = view.findViewById(R.id.deck_item_number);
-            mContentView = view.findViewById(R.id.deck_content);
+            mIdView = view.findViewById(R.id.deck_card_amount);
+            mContentView = view.findViewById(R.id.deck_X);
         }
 
         @Override
@@ -92,19 +91,19 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
     private class CardChildEventListener implements ChildEventListener {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-            Card card = dataSnapshot.getValue(Card.class);
-            card.setKey(dataSnapshot.getKey());
-            mValues.add(0, card);
+            UserCard userCard = dataSnapshot.getValue(UserCard.class);
+            userCard.setKey(dataSnapshot.getKey());
+            mValues.add(0, userCard);
             notifyDataSetChanged();
         }
 
         @Override
         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
             String key = dataSnapshot.getKey();
-            Card updatedCard = dataSnapshot.getValue(Card.class);
-            for (Card c : mValues) {
+            UserCard updatedUserCard = dataSnapshot.getValue(UserCard.class);
+            for (UserCard c : mValues) {
                 if (c.getKey().equals(key)) {
-                    c.setValues(updatedCard);
+                    c.setValues(updatedUserCard);
                     break;
                 }
             }
@@ -114,7 +113,7 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
             String key = dataSnapshot.getKey();
-            for (Card c : mValues) {
+            for (UserCard c : mValues) {
                 if (c.getKey().equals(key)) {
                     mValues.remove(c);
                     break;

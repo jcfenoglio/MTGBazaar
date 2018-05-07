@@ -73,6 +73,7 @@ public class BinderListFragment extends Fragment implements BinderListAdapter.Ca
                 showAddEditBinderDialog(null);
             }
         });
+        fab.show();
 
         return view;
     }

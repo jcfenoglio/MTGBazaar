@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.firebase.database.Exclude;
-import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.HashMap;
 
@@ -12,7 +11,7 @@ public class Binder implements Parcelable {
 
     private String name;
     private String key;
-    private HashMap<String, Card> cards;
+    private HashMap<String, UserCard> cards;
 
     @SuppressWarnings("unused")
     public Binder() {}
@@ -56,11 +55,11 @@ public class Binder implements Parcelable {
         this.key = key;
     }
 
-    public HashMap<String, Card> getCards() {
+    public HashMap<String, UserCard> getCards() {
         return this.cards;
     }
 
-    public void addCards(HashMap<String, Card> cards) { this.cards.putAll(cards); }
+    public void addCards(HashMap<String, UserCard> cards) { this.cards.putAll(cards); }
 
     @Override
     public int describeContents() {

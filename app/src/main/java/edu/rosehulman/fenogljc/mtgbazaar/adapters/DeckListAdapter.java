@@ -79,7 +79,7 @@ public class DeckListAdapter extends RecyclerView.Adapter<DeckListAdapter.ViewHo
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.deck_item_number);
+            mIdView = (TextView) view.findViewById(R.id.deck_item_name);
             mContentView = (TextView) view.findViewById(R.id.binder_item_name);
         }
 

@@ -1,7 +1,9 @@
 package edu.rosehulman.fenogljc.mtgbazaar.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +17,7 @@ import edu.rosehulman.fenogljc.mtgbazaar.Constants;
 import edu.rosehulman.fenogljc.mtgbazaar.MainActivity;
 import edu.rosehulman.fenogljc.mtgbazaar.adapters.BinderAdapter;
 import edu.rosehulman.fenogljc.mtgbazaar.models.Binder;
-import edu.rosehulman.fenogljc.mtgbazaar.models.Card;
+import edu.rosehulman.fenogljc.mtgbazaar.models.UserCard;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 
 /**
@@ -86,6 +88,9 @@ public class BinderFragment extends Fragment implements BinderAdapter.Callback{
         mAdapter = new BinderAdapter(mListener, this, mUserData);
         recyclerView.setAdapter(mAdapter);
 
+        FloatingActionButton fab = context.findViewById(R.id.fab);
+        fab.hide();
+
         return view;
     }
 
@@ -96,12 +101,17 @@ public class BinderFragment extends Fragment implements BinderAdapter.Callback{
     }
 
     @Override
-    public void onEdit(Card card) {
-        // TODO: make this work
+    public void onEdit(UserCard userCard) {
+        showEditCardDialog(userCard);
+    }
 
+    private void showEditCardDialog(final UserCard userCard) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setTitle(R.string.edit_card_dialog_title);
     }
 
     public interface OnCardSelectedListener {
-        void onCardSelected(Card card);
+        void onCardSelected(UserCard userCard);
     }
 }
