@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import edu.rosehulman.fenogljc.mtgbazaar.Deck;
+import edu.rosehulman.fenogljc.mtgbazaar.models.Deck;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 import edu.rosehulman.fenogljc.mtgbazaar.adapters.DeckListAdapter;
 

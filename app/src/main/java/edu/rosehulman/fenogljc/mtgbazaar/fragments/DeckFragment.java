@@ -7,8 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import edu.rosehulman.fenogljc.mtgbazaar.Card;
-import edu.rosehulman.fenogljc.mtgbazaar.Deck;
+import edu.rosehulman.fenogljc.mtgbazaar.models.Card;
+import edu.rosehulman.fenogljc.mtgbazaar.models.Deck;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 
 /**

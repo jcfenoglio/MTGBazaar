@@ -1,4 +1,4 @@
-package edu.rosehulman.fenogljc.mtgbazaar;
+package edu.rosehulman.fenogljc.mtgbazaar.models;
 
 import com.google.firebase.database.Exclude;
 

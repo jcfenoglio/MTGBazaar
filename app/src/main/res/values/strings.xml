@@ -31,6 +31,21 @@
     <string tradeName="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <string name="sign_in_cancelled">Login cancelled</string>
+    <string name="no_internet_connection">Login failed: no internet connection</string>
+    <string name="unknown_error">Login failed: unknown error</string>
+    <string name="action_sign_out">Sign Out</string>
+    <string name="pricing">Pricing:</string>
+    <string name="regular">Regular</string>
+    <string name="left_add_text">Add left</string>
+    <string name="right_add_text">Add right</string>
+    <string name="accept_trade">Accept trade</string>
+    <string name="edit_binder_dialog_title">Edit Binder Name</string>
+    <string name="new_binder_dialog_title">Create New Binder</string>
+    <string name="delete_button">DELETE</string>
+    <string name="binder_delete_warning">Once you delete a binder, you won\'t be able to recover it</string>
+    <string name="delete_dialog_title">Delete Binder</string>
     <string tradeName="sign_in_cancelled">Login cancelled</string>
     <string tradeName="no_internet_connection">Login failed: no internet connection</string>
     <string tradeName="unknown_error">Login failed: unknown error</string>
@@ -40,6 +55,7 @@
     <string tradeName="left_add_text">Add left</string>
     <string tradeName="right_add_text">Add right</string>
     <string tradeName="accept_trade">Accept trade</string>
+
 
 
 </resources>

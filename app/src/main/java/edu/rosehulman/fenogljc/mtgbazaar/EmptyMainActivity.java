@@ -86,6 +86,6 @@ public class EmptyMainActivity extends AppCompatActivity {
     }
 
     private void showSnackbar(int msg) {
-        Snackbar.make(findViewById(R.id.content), getText(msg), Snackbar.LENGTH_INDEFINITE).show();
+        Snackbar.make(findViewById(R.id.add_deck_name), getText(msg), Snackbar.LENGTH_INDEFINITE).show();
     }
 }
