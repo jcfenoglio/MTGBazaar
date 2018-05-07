@@ -1,15 +1,23 @@
 package edu.rosehulman.fenogljc.mtgbazaar.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+
 import edu.rosehulman.fenogljc.mtgbazaar.Deck;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckListFragment.OnDeckSelectedListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,10 +29,16 @@ public class DeckListAdapter extends RecyclerView.Adapter<DeckListAdapter.ViewHo
 
     private final List<Deck> mValues;
     private final OnDeckSelectedListener mListener;
+    private final Context mContext;
+    private DatabaseReference mDecksRef;
 
-    public DeckListAdapter(List<Deck> decks, OnDeckSelectedListener listener) {
-        mValues = decks;
+
+    public DeckListAdapter(Context context, OnDeckSelectedListener listener, DatabaseReference databaseReference) {
+        mContext = context;
+        mValues = new ArrayList<>();
         mListener = listener;
+        mDecksRef = databaseReference;
+        mDecksRef.addChildEventListener(new DeckChildEventListener());
     }
 
     @Override
@@ -71,6 +85,51 @@ public class DeckListAdapter extends RecyclerView.Adapter<DeckListAdapter.ViewHo
         @Override
         public String toString() {
             return super.toString() + " '" + mContentView.getText() + "'";
+        }
+    }
+
+    private class DeckChildEventListener implements ChildEventListener {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            Deck deck = dataSnapshot.getValue(Deck.class);
+            deck.setKey(dataSnapshot.getKey());
+            mValues.add(0, deck);
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            String key = dataSnapshot.getKey();
+            Deck updatedDeck = dataSnapshot.getValue(Deck.class);
+            for (Deck d : mValues) {
+                if (d.getKey().equals(key)) {
+                    d.setValues(updatedDeck);
+                    break;
+                }
+            }
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+            String key = dataSnapshot.getKey();
+            for (Deck d : mValues) {
+                if (d.getKey().equals(key)) {
+                    mValues.remove(d);
+                    break;
+                }
+            }
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            Log.e("mtgBazaar", databaseError.getMessage());
         }
     }
 }
