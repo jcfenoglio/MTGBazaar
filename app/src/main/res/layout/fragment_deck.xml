@@ -17,7 +17,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/deck_card_list"
-        android:tradeName="edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckFragment"
+        android:name="edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"

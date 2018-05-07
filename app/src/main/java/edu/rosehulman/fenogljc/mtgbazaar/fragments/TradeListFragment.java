@@ -13,8 +13,6 @@ import android.view.ViewGroup;
 import edu.rosehulman.fenogljc.mtgbazaar.Trade;
 import edu.rosehulman.fenogljc.mtgbazaar.adapters.TradeListAdapter;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
-import edu.rosehulman.fenogljc.mtgbazaar.dummy.DummyContent;
-import edu.rosehulman.fenogljc.mtgbazaar.dummy.DummyContent.DummyItem;
 
 /**
  * A fragment representing a list of Items.

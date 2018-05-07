@@ -1,27 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-
-    <EditText
-        android:id="@+id/binder_card_search"
+    <LinearLayout
+        android:id="@+id/search_add_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/card_search_hint"
-        android:inputType="text"
-        android:singleLine="false" />
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/binder_card_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".85"
+            android:hint="@string/card_search_hint"
+            android:inputType="text"
+            android:singleLine="false" />
+
+        <Button
+            android:id="@+id/add_card_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".15"
+            android:text="@string/add_card_button" />
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/binder_card_list"
-        android:tradeName="edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderFragment"
+        android:name="edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/search_add_layout"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         tools:context=".fragments.BinderFragment"
         tools:listitem="@layout/fragment_binder_item" />
 
-</LinearLayout>
+</RelativeLayout>

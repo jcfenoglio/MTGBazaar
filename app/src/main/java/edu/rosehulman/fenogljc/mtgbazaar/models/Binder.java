@@ -24,6 +24,7 @@ public class Binder implements Parcelable {
 
     protected Binder(Parcel in) {
         name = in.readString();
+        key = in.readString();
     }
 
     public static final Creator<Binder> CREATOR = new Creator<Binder>() {
@@ -69,9 +70,11 @@ public class Binder implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
+        dest.writeString(key);
     }
 
     public void setValues(Binder updatedBinder) {
         setName(updatedBinder.getName());
+        setKey(updatedBinder.getKey());
     }
 }

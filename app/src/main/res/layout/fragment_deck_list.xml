@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/deck_list"
-    android:tradeName="edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment"
+    android:name="edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="16dp"

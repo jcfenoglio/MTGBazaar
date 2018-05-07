@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckListFragment.OnDeckSelectedListener;
+import edu.rosehulman.fenogljc.mtgbazaar.models.Deck;
 
 import java.util.ArrayList;
 import java.util.List;

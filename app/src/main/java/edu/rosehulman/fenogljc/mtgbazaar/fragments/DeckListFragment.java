@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
+import com.google.firebase.database.FirebaseDatabase;
 
+import edu.rosehulman.fenogljc.mtgbazaar.Callback;
+import edu.rosehulman.fenogljc.mtgbazaar.MainActivity;
 import edu.rosehulman.fenogljc.mtgbazaar.models.Deck;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 import edu.rosehulman.fenogljc.mtgbazaar.adapters.DeckListAdapter;
@@ -22,7 +24,7 @@ import edu.rosehulman.fenogljc.mtgbazaar.adapters.DeckListAdapter;
  * Activities containing this fragment MUST implement the {@link OnDeckSelectedListener}
  * interface.
  */
-public class DeckListFragment extends Fragment {
+public class DeckListFragment extends Fragment implements Callback {
 
     private int mColumnCount = 1;
 
@@ -55,7 +57,7 @@ public class DeckListFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new DeckListAdapter(new ArrayList<Deck>(), mListener));
+            recyclerView.setAdapter(new DeckListAdapter(context, (MainActivity) context, FirebaseDatabase.getInstance().getReference()));
         }
         return view;
     }
@@ -76,6 +78,11 @@ public class DeckListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onEdit() {
+        //TODO stuff on edit
     }
 
     /**

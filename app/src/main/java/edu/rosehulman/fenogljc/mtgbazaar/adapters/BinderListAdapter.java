@@ -1,6 +1,5 @@
 package edu.rosehulman.fenogljc.mtgbazaar.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +35,7 @@ public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.Vi
         mListener = listener;
         mBinders = new ArrayList<>();
         mRefBinders = ref.child(Constants.DB_BINDERS_REF);
-        mRefBinders.addChildEventListener(new BinderChildEventListener());
+        mRefBinders.addChildEventListener(new BinderListChildEventListener());
         mCallback = callback;
     }
 
@@ -99,7 +97,7 @@ public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.Vi
         void onEdit(Binder binder);
     }
 
-    private class BinderChildEventListener implements ChildEventListener {
+    private class BinderListChildEventListener implements ChildEventListener {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
             Binder binder = dataSnapshot.getValue(Binder.class);
