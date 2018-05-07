@@ -1,16 +1,12 @@
 package edu.rosehulman.fenogljc.mtgbazaar;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -32,26 +28,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import edu.rosehulman.fenogljc.mtgbazaar.adapters.BinderListAdapter;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckListFragment;
+import edu.rosehulman.fenogljc.mtgbazaar.models.Binder;
+import edu.rosehulman.fenogljc.mtgbazaar.models.Deck;
+import edu.rosehulman.fenogljc.mtgbazaar.models.User;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, BinderListFragment.OnBinderSelectedListener, DeckListFragment.OnDeckSelectedListener {
 
-    private Adapter mAdapter;
     private DatabaseReference mFirebase;
     private DatabaseReference mUserData;
     private FirebaseUser mUser;
-    private FloatingActionButton mFAB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,7 +157,7 @@ public class MainActivity extends AppCompatActivity
             ft.commit();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -175,17 +165,17 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBinderSelected(Binder binder) {
         Log.d(Constants.TAG, "Binder selected: " + binder.getName());
-//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//        ft.replace(R.id.fragment_container, BinderFragment.newInstance(binder));
-//        ft.addToBackStack("binder_list_fragment");
-//        ft.commit();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_container, BinderFragment.newInstance(binder));
+        ft.addToBackStack("binder_list_fragment");
+        ft.commit();
     }
 
     @Override
     public void onDeckSelected(Deck item) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container, DeckFragment.newInstance(item));
-        ft.addToBackStack("binder_list_fragment");
+        ft.addToBackStack("deck_list_fragment");
         ft.commit();
     }
 }

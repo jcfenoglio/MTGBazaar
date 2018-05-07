@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import edu.rosehulman.fenogljc.mtgbazaar.Card;
+import edu.rosehulman.fenogljc.mtgbazaar.models.Card;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderFragment.OnCardSelectedListener;

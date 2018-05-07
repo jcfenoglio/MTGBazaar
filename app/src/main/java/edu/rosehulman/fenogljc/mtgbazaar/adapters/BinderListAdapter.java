@@ -2,6 +2,7 @@ package edu.rosehulman.fenogljc.mtgbazaar.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +12,13 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import edu.rosehulman.fenogljc.mtgbazaar.Binder;
+import edu.rosehulman.fenogljc.mtgbazaar.Constants;
+import edu.rosehulman.fenogljc.mtgbazaar.models.Binder;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment.OnBinderSelectedListener;
 
@@ -28,47 +28,30 @@ import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment.OnBinderSe
  */
 public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.ViewHolder> {
 
-    private final Context mContext;
-    private final OnBinderSelectedListener mListener;
-    private final List<Binder> mBinders;
+    private OnBinderSelectedListener mListener;
+    private List<Binder> mBinders;
     private DatabaseReference mRefBinders;
+    private Callback mCallback;
 
-    public BinderListAdapter(Context context, OnBinderSelectedListener listener, DatabaseReference ref) {
-        mContext = context;
+    public BinderListAdapter(OnBinderSelectedListener listener, Callback callback, DatabaseReference ref) {
         mListener = listener;
         mBinders = new ArrayList<>();
-        mRefBinders = ref;
-        mRefBinders.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                mBinders.add(new Binder(dataSnapshot.getKey()));
-                notifyDataSetChanged();
-            }
+        mRefBinders = ref.child(Constants.DB_BINDERS_REF);
+        mRefBinders.addChildEventListener(new BinderChildEventListener());
+        mCallback = callback;
+    }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-            }
+    public void remove(Binder binder) {
+        mRefBinders.child(binder.getKey()).removeValue();
+    }
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                for (Binder b : mBinders) {
-                    if (b.getName() == dataSnapshot.getKey()) {
-                        mBinders.remove(b);
-                        break;
-                    }
-                }
-                notifyDataSetChanged();
-            }
+    public void add(Binder binder) {
+        mRefBinders.push().setValue(binder);
+    }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+    public void update(Binder binder, String newName) {
+        binder.setName(newName);
+        mRefBinders.child(binder.getKey()).setValue(binder);
     }
 
     @Override
@@ -79,8 +62,8 @@ public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mBinder = mBinders.get(position);
-        holder.mContentView.setText(mBinders.get(position).getName());
+        Binder binder = mBinders.get(position);
+        holder.mContentView.setText(binder.getName());
     }
 
     @Override
@@ -88,30 +71,74 @@ public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.Vi
         return mBinders.size();
     }
 
-    public void addItemButtonClicked() {
-        // make the dialog
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
         public TextView mContentView;
-        public Binder mBinder;
 
         public ViewHolder(View view) {
             super(view);
+            mContentView = view.findViewById(R.id.binder_item_name);
             view.setOnClickListener(this);
-            mContentView = (TextView) view.findViewById(R.id.binder_item_name);
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            view.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            if (null != mListener) {
-                mListener.onBinderSelected(this.mBinder);
+            Binder binder = mBinders.get(getAdapterPosition());
+            mListener.onBinderSelected(binder);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            Binder binder = mBinders.get(getAdapterPosition());
+            mCallback.onEdit(binder);
+            return true;
+        }
+    }
+
+    public interface Callback {
+        void onEdit(Binder binder);
+    }
+
+    private class BinderChildEventListener implements ChildEventListener {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            Binder binder = dataSnapshot.getValue(Binder.class);
+            binder.setKey(dataSnapshot.getKey());
+            mBinders.add(0, binder);
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            String key = dataSnapshot.getKey();
+            Binder updatedBinder = dataSnapshot.getValue(Binder.class);
+            for (Binder b : mBinders) {
+                if (b.getKey().equals(key)) {
+                    b.setValues(updatedBinder);
+                    break;
+                }
             }
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+            for (Binder b : mBinders) {
+                if (b.getName().equals(dataSnapshot.getKey())) {
+                    mBinders.remove(b);
+                    break;
+                }
+            }
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            Log.e("pic", databaseError.getMessage());
         }
     }
 }

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import edu.rosehulman.fenogljc.mtgbazaar.R;
-import edu.rosehulman.fenogljc.mtgbazaar.Card;
+import edu.rosehulman.fenogljc.mtgbazaar.models.Card;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckFragment.OnListFragmentInteractionListener;
 
 import java.util.List;
@@ -65,8 +65,8 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mIdView = view.findViewById(R.id.deck_item_number);
+            mContentView = view.findViewById(R.id.deck_content);
         }
 
         @Override

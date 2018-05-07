@@ -1,18 +1,17 @@
-package edu.rosehulman.fenogljc.mtgbazaar;
+package edu.rosehulman.fenogljc.mtgbazaar.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-@IgnoreExtraProperties
 public class Binder implements Parcelable {
 
     private String name;
+    private String key;
     private HashMap<String, Card> cards;
 
     @SuppressWarnings("unused")
@@ -47,6 +46,15 @@ public class Binder implements Parcelable {
         this.name = name;
     }
 
+    @Exclude
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     public HashMap<String, Card> getCards() {
         return this.cards;
     }
@@ -61,5 +69,9 @@ public class Binder implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
+    }
+
+    public void setValues(Binder updatedBinder) {
+        setName(updatedBinder.getName());
     }
 }
