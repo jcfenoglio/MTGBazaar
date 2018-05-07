@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity
                 switchTo = new DeckListFragment();
                 break;
             case R.id.nav_trade:
-//                switchTo = new TradeFragment();
+//                switchTo = new TradeListFragment();
                 break;
             case R.id.nav_search:
 //                switchTo = new SearchFragment();

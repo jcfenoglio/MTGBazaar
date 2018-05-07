@@ -1,36 +1,37 @@
 <resources>
-    <string name="app_name">MTG Bazaar</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-    <string name="binder_add_hint">Binder Name</string>
-    <string name="card_search_hint">Card Name</string>
-    <string name="ok_button_text">OK</string>
-    <string name="cancel_button_text">Cancel</string>
-    <string name="deck_add_hint">Deck Name</string>
-    <string name="quantity_text">Quantity:</string>
-    <string name="foil_text">Foil</string>
-    <string name="nav_item_binders">Binders</string>
-    <string name="nav_item_decks">Decks</string>
-    <string name="nav_item_trade">Trade</string>
-    <string name="nav_item_search">Card Search</string>
-    <string name="title_activity_login">Sign in</string>
+    <string tradeName="app_name">MTG Bazaar</string>
+    <string tradeName="navigation_drawer_open">Open navigation drawer</string>
+    <string tradeName="navigation_drawer_close">Close navigation drawer</string>
+    <string tradeName="nav_header_title">Android Studio</string>
+    <string tradeName="nav_header_subtitle">android.studio@android.com</string>
+    <string tradeName="nav_header_desc">Navigation header</string>
+    <string tradeName="action_settings">Settings</string>
+    <string tradeName="binder_add_hint">Binder Name</string>
+    <string tradeName="card_search_hint">Card Name</string>
+    <string tradeName="ok_button_text">OK</string>
+    <string tradeName="cancel_button_text">Cancel</string>
+    <string tradeName="deck_add_hint">Deck Name</string>
+    <string tradeName="quantity_text">Quantity:</string>
+    <string tradeName="foil_text">Foil</string>
+    <string tradeName="nav_item_binders">Binders</string>
+    <string tradeName="nav_item_decks">Decks</string>
+    <string tradeName="nav_item_trade">Trade</string>
+    <string tradeName="nav_item_search">Card Search</string>
+    <string tradeName="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
+    <string tradeName="prompt_email">Email</string>
+    <string tradeName="prompt_password">Password (optional)</string>
+    <string tradeName="action_sign_in">Sign in or register</string>
+    <string tradeName="action_sign_in_short">Sign in</string>
+    <string tradeName="error_invalid_email">This email address is invalid</string>
+    <string tradeName="error_invalid_password">This password is too short</string>
+    <string tradeName="error_incorrect_password">This password is incorrect</string>
+    <string tradeName="error_field_required">This field is required</string>
+    <string tradeName="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
     <string name="sign_in_cancelled">Login cancelled</string>
     <string name="no_internet_connection">Login failed: no internet connection</string>
     <string name="unknown_error">Login failed: unknown error</string>
@@ -45,6 +46,16 @@
     <string name="delete_button">DELETE</string>
     <string name="binder_delete_warning">Once you delete a binder, you won\'t be able to recover it</string>
     <string name="delete_dialog_title">Delete Binder</string>
+    <string tradeName="sign_in_cancelled">Login cancelled</string>
+    <string tradeName="no_internet_connection">Login failed: no internet connection</string>
+    <string tradeName="unknown_error">Login failed: unknown error</string>
+    <string tradeName="action_sign_out">Sign Out</string>
+    <string tradeName="pricing">Pricing:</string>
+    <string tradeName="regular">Regular</string>
+    <string tradeName="left_add_text">Add left</string>
+    <string tradeName="right_add_text">Add right</string>
+    <string tradeName="accept_trade">Accept trade</string>
+
 
 
 </resources>

@@ -10,41 +10,56 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
-import edu.rosehulman.fenogljc.mtgbazaar.models.Deck;
+import edu.rosehulman.fenogljc.mtgbazaar.Trade;
+import edu.rosehulman.fenogljc.mtgbazaar.adapters.TradeListAdapter;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
-import edu.rosehulman.fenogljc.mtgbazaar.adapters.DeckListAdapter;
+import edu.rosehulman.fenogljc.mtgbazaar.dummy.DummyContent;
+import edu.rosehulman.fenogljc.mtgbazaar.dummy.DummyContent.DummyItem;
 
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnDeckSelectedListener}
+ * Activities containing this fragment MUST implement the {@link OnTradeSelectedListener}
  * interface.
  */
-public class DeckListFragment extends Fragment {
+public class TradeListFragment extends Fragment {
 
+    // TODO: Customize parameter argument names
+    private static final String ARG_COLUMN_COUNT = "column-count";
+    // TODO: Customize parameters
     private int mColumnCount = 1;
-
-    private OnDeckSelectedListener mListener;
+    private OnTradeSelectedListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public DeckListFragment() {
+    public TradeListFragment() {
+    }
+
+    // TODO: Customize parameter initialization
+    @SuppressWarnings("unused")
+    public static TradeListFragment newInstance(int columnCount) {
+        TradeListFragment fragment = new TradeListFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_COLUMN_COUNT, columnCount);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (getArguments() != null) {
+            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_deck_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_trade_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -55,7 +70,8 @@ public class DeckListFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new DeckListAdapter(new ArrayList<Deck>(), mListener));
+            //TODO: add code to make this constructor work
+            //recyclerView.setAdapter(new TradeListAdapter(mListener));
         }
         return view;
     }
@@ -64,8 +80,8 @@ public class DeckListFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnDeckSelectedListener) {
-            mListener = (OnDeckSelectedListener) context;
+        if (context instanceof OnTradeSelectedListener) {
+            mListener = (OnTradeSelectedListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnTradeSelectedListener");
@@ -88,8 +104,8 @@ public class DeckListFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnDeckSelectedListener {
+    public interface OnTradeSelectedListener {
         // TODO: Update argument type and name
-        void onDeckSelected(Deck item);
+        void onTradeFragmentInteraction(Trade item);
     }
 }

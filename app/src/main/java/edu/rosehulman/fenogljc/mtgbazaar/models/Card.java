@@ -1,11 +1,14 @@
 package edu.rosehulman.fenogljc.mtgbazaar.models;
 
+import com.google.firebase.database.Exclude;
+
 public class Card {
 
     private String name;
     private String set;
     private int qty;
     private float price;
+    private String key;
 
     public String getName() {
         return name;
@@ -33,5 +36,21 @@ public class Card {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    @Exclude
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public void setValues(Card newCard) {
+        this.name = newCard.getName();
+        this.set = newCard.getSet();
+        this.qty = newCard.getQty();
+        this.price = newCard.getPrice();
     }
 }

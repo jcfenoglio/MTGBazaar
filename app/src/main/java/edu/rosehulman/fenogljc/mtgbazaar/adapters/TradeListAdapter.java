@@ -13,45 +13,47 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
-import edu.rosehulman.fenogljc.mtgbazaar.Deck;
+import edu.rosehulman.fenogljc.mtgbazaar.Trade;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
-import edu.rosehulman.fenogljc.mtgbazaar.models.Card;
-import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckFragment.OnListFragmentInteractionListener;
+import edu.rosehulman.fenogljc.mtgbazaar.Trade;
+import edu.rosehulman.fenogljc.mtgbazaar.fragments.TradeListFragment;
+import edu.rosehulman.fenogljc.mtgbazaar.fragments.TradeListFragment.OnTradeSelectedListener;
+import edu.rosehulman.fenogljc.mtgbazaar.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link Card} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
+ * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * specified {@link OnTradeSelectedListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
+public class TradeListAdapter extends RecyclerView.Adapter<TradeListAdapter.ViewHolder> {
 
-    private final List<Card> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final List<Trade> mValues;
+    private final TradeListFragment.OnTradeSelectedListener mListener;
     private final Context mContext;
-    private DatabaseReference mDeckRef;
+    private DatabaseReference mTradesRef;
 
-    public DeckAdapter(Context context, OnListFragmentInteractionListener listener, DatabaseReference databaseReference) {
-        mContext = context;
+    public TradeListAdapter(Context context, OnTradeSelectedListener listener, DatabaseReference databaseReference) {
         mValues = new ArrayList<>();
         mListener = listener;
-        mDeckRef = databaseReference;
-        mDeckRef.addChildEventListener(new CardChildEventListener());
+        mContext = context;
+        mTradesRef = databaseReference;
+        mTradesRef.addChildEventListener(new TradeChildEventListener());
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_deck_item, parent, false);
+                .inflate(R.layout.fragment_trade_list_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getName() );
+        holder.mNameView.setText(mValues.get(position).getTradeName());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +61,7 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onTradeFragmentInteraction(holder.mItem);
                 }
             }
         });
@@ -72,39 +74,37 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public Card mItem;
+        public final TextView mNameView;
+        public Trade mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = view.findViewById(R.id.deck_item_number);
-            mContentView = view.findViewById(R.id.deck_content);
+            mNameView = (TextView) view.findViewById(R.id.name);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mNameView.getText() + "'";
         }
     }
 
-    private class CardChildEventListener implements ChildEventListener {
+    private class TradeChildEventListener implements ChildEventListener {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-            Card card = dataSnapshot.getValue(Card.class);
-            card.setKey(dataSnapshot.getKey());
-            mValues.add(0, card);
+            Trade trade = dataSnapshot.getValue(Trade.class);
+            trade.setKey(dataSnapshot.getKey());
+            mValues.add(0, trade);
             notifyDataSetChanged();
         }
 
         @Override
         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
             String key = dataSnapshot.getKey();
-            Card updatedCard = dataSnapshot.getValue(Card.class);
-            for (Card c : mValues) {
-                if (c.getKey().equals(key)) {
-                    c.setValues(updatedCard);
+            Trade updatedTrade = dataSnapshot.getValue(Trade.class);
+            for (Trade t : mValues) {
+                if (t.getKey().equals(key)) {
+                    t.setValues(updatedTrade);
                     break;
                 }
             }
@@ -114,9 +114,9 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
             String key = dataSnapshot.getKey();
-            for (Card c : mValues) {
-                if (c.getKey().equals(key)) {
-                    mValues.remove(c);
+            for (Trade t : mValues) {
+                if (t.getKey().equals(key)) {
+                    mValues.remove(t);
                     break;
                 }
             }
