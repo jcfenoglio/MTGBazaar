@@ -4,13 +4,15 @@ import com.google.firebase.database.Exclude;
 
 import java.util.List;
 
+import edu.rosehulman.fenogljc.mtgbazaar.models.UserCard;
+
 /**
  * Created by hamiltjc on 5/7/18.
  */
 
 public class Trade {
-    private List<Card> ownCards;
-    private List<Card> theirCards;
+    private List<UserCard> ownUserCards;
+    private List<UserCard> theirUserCards;
     private String tradeName;
     private String key;
 
@@ -18,26 +20,26 @@ public class Trade {
         // Empty constructor for Firebase
     }
 
-    public Trade(String tradeName, List<Card> offering, List<Card> offered) {
+    public Trade(String tradeName, List<UserCard> offering, List<UserCard> offered) {
         this.tradeName = tradeName;
-        ownCards = offering;
-        theirCards = offered;
+        ownUserCards = offering;
+        theirUserCards = offered;
     }
 
-    public List<Card> getOwnCards() {
-        return ownCards;
+    public List<UserCard> getOwnUserCards() {
+        return ownUserCards;
     }
 
-    public void setOwnCards(List<Card> ownCards) {
-        this.ownCards = ownCards;
+    public void setOwnUserCards(List<UserCard> ownUserCards) {
+        this.ownUserCards = ownUserCards;
     }
 
-    public List<Card> getTheirCards() {
-        return theirCards;
+    public List<UserCard> getTheirUserCards() {
+        return theirUserCards;
     }
 
-    public void setTheirCards(List<Card> theirCards) {
-        this.theirCards = theirCards;
+    public void setTheirUserCards(List<UserCard> theirUserCards) {
+        this.theirUserCards = theirUserCards;
     }
 
     public String getTradeName() {
@@ -58,8 +60,8 @@ public class Trade {
     }
 
     public void setValues(Trade updatedTrade) {
-        ownCards = updatedTrade.getOwnCards();
-        theirCards = updatedTrade.getTheirCards();
+        ownUserCards = updatedTrade.getOwnUserCards();
+        theirUserCards = updatedTrade.getTheirUserCards();
         tradeName = updatedTrade.getTradeName();
     }
 }

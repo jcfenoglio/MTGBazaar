@@ -1,21 +1,41 @@
 package edu.rosehulman.fenogljc.mtgbazaar.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.NumberPicker;
+import android.widget.Spinner;
+import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import edu.rosehulman.fenogljc.mtgbazaar.Constants;
 import edu.rosehulman.fenogljc.mtgbazaar.MainActivity;
 import edu.rosehulman.fenogljc.mtgbazaar.adapters.BinderAdapter;
 import edu.rosehulman.fenogljc.mtgbazaar.models.Binder;
 import edu.rosehulman.fenogljc.mtgbazaar.models.Card;
+import edu.rosehulman.fenogljc.mtgbazaar.models.UserCard;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 
 /**
@@ -86,6 +106,9 @@ public class BinderFragment extends Fragment implements BinderAdapter.Callback{
         mAdapter = new BinderAdapter(mListener, this, mUserData);
         recyclerView.setAdapter(mAdapter);
 
+        FloatingActionButton fab = context.findViewById(R.id.fab);
+        fab.hide();
+
         return view;
     }
 
@@ -96,12 +119,70 @@ public class BinderFragment extends Fragment implements BinderAdapter.Callback{
     }
 
     @Override
-    public void onEdit(Card card) {
-        // TODO: make this work
+    public void onEdit(UserCard userCard) {
+        showEditCardDialog(userCard);
+    }
 
+    private void showEditCardDialog(final UserCard userCard) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setTitle(userCard.getName());
+
+        View view = getLayoutInflater().inflate(R.layout.card_edit_popup, null, false);
+        builder.setView(view);
+
+        Button deleteCardButton = view.findViewById(R.id.delete_card_button);
+        deleteCardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDeleteConfirmationDialog(userCard);
+            }
+        });
+
+        EditText cardPriceText = view.findViewById(R.id.edit_card_price);
+        cardPriceText.setText(String.format(Locale.getDefault(), "%.2f", userCard.getPrice()));
+
+        NumberPicker cardQtyPicker = view.findViewById(R.id.edit_card_quantity);
+        cardQtyPicker.setValue(userCard.getQty());
+        cardQtyPicker.setMinValue(1);
+
+        CheckBox foilCheckBox = view.findViewById(R.id.edit_card_foil);
+        foilCheckBox.setChecked(userCard.isFoil());
+
+        //TODO finish these spinners
+//        Spinner setSpinner = view.findViewById(R.id.edit_card_set);
+//        setSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                parent.setSelection(position);
+//            }
+//        });
+//        ArrayAdapter<String> setAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, userCard.getSets());
+//        setSpinner.setAdapter(setAdapter);
+//
+//        Spinner langSpinner = view.findViewById(R.id.edit_card_language);
+    }
+
+    private void showDeleteConfirmationDialog(final UserCard userCard) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setTitle(R.string.delete_dialog_title);
+
+        View view = getLayoutInflater().inflate(R.layout.delete_confirmation_popup, null, false);
+        builder.setView(view);
+
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mAdapter.remove(userCard);
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, null);
+
+        builder.create().show();
     }
 
     public interface OnCardSelectedListener {
-        void onCardSelected(Card card);
+        void onCardSelected(UserCard userCard);
     }
 }

@@ -1,6 +1,7 @@
 package edu.rosehulman.fenogljc.mtgbazaar.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,46 +12,47 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
-import edu.rosehulman.fenogljc.mtgbazaar.models.Card;
+import edu.rosehulman.fenogljc.mtgbazaar.Constants;
+import edu.rosehulman.fenogljc.mtgbazaar.models.UserCard;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
-import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderFragment.OnCardSelectedListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link Card} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link UserCard} and makes a call to the
  * specified {@link OnCardSelectedListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder> {
 
-    private List<Card> mCards;
+    private List<UserCard> mUserCards;
     private OnCardSelectedListener mListener;
     private DatabaseReference mRefBinder;
     private Callback mCallback;
 
     public BinderAdapter(OnCardSelectedListener listener, Callback callback, DatabaseReference ref) {
         mListener = listener;
-        mCards = new ArrayList<>();
+        mUserCards = new ArrayList<>();
         mRefBinder = ref;
-        mRefBinder.addChildEventListener(new BinderChildEventListener());
+        mRefBinder.child(Constants.DB_CARDS_REF).addChildEventListener(new BinderChildEventListener());
         mCallback = callback;
     }
 
-    public void remove(Card card) {
-        mRefBinder.child(card.getKey()).removeValue();
+    public void remove(UserCard userCard) {
+        mRefBinder.child(userCard.getKey()).removeValue();
     }
 
-    public void add(Card card) {
-        mRefBinder.push().setValue(card);
+    public void add(UserCard userCard) {
+        mRefBinder.push().setValue(userCard);
     }
 
-    public void update(Card card, String newName) {
-        //TODO: edit card dialog needs a lot more
-        card.setName(newName);
-        mRefBinder.child(card.getKey()).setValue(card);
+    public void update(UserCard userCard, String newName) {
+        //TODO: edit userCard dialog needs a lot more
+        userCard.setName(newName);
+        mRefBinder.child(userCard.getKey()).setValue(userCard);
     }
 
     @Override
@@ -61,19 +63,19 @@ public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Card card = mCards.get(position);
-        holder.mCardNameView.setText(card.getName());
-        holder.mCardAmountView.setText(card.getQty());
-        holder.mCardSetView.setText(card.getSet());
-        holder.mCardPriceView.setText(String.format("%.2f", card.getPrice()));
+        UserCard userCard = mUserCards.get(position);
+        holder.mCardNameView.setText(userCard.getName());
+        holder.mCardAmountView.setText(userCard.getQty());
+        holder.mCardSetView.setText(userCard.getSet());
+        holder.mCardPriceView.setText(String.format(Locale.getDefault(), "%.2f", userCard.getPrice()));
     }
 
     @Override
     public int getItemCount() {
-        return mCards.size();
+        return mUserCards.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public View mView;
         public TextView mCardNameView;
         public TextView mCardAmountView;
@@ -88,44 +90,51 @@ public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder
             mCardPriceView = view.findViewById(R.id.binder_card_price);
             mCardSetView = view.findViewById(R.id.binder_card_set);
             view.setOnClickListener(this);
-            view.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            Card card = mCards.get(getAdapterPosition());
-            mListener.onCardSelected(card);
-        }
-
-        @Override
-        public boolean onLongClick(View v) {
-            Card card = mCards.get(getAdapterPosition());
-            mCallback.onEdit(card);
-            return true;
+            UserCard userCard = mUserCards.get(getAdapterPosition());
+            mCallback.onEdit(userCard);
         }
     }
 
     public interface Callback {
-        void onEdit(Card card);
+        void onEdit(UserCard userCard);
     }
 
     private class BinderChildEventListener implements ChildEventListener {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-            Card card = dataSnapshot.getValue(Card.class);
-            card.setKey(dataSnapshot.getKey());
-            mCards.add(0, card);
+            UserCard userCard = dataSnapshot.getValue(UserCard.class);
+            userCard.setKey(dataSnapshot.getKey());
+            mUserCards.add(0, userCard);
             notifyDataSetChanged();
         }
 
         @Override
         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+            String key = dataSnapshot.getKey();
+            UserCard updatedBinder = dataSnapshot.getValue(UserCard.class);
+            for (UserCard c : mUserCards) {
+                if (c.getKey().equals(key)) {
+                    c.setValues(updatedBinder);
+                    break;
+                }
+            }
+            notifyDataSetChanged();
         }
 
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+            String key = dataSnapshot.getKey();
+            for (UserCard c : mUserCards) {
+                if (c.getKey().equals(key)) {
+                    mUserCards.remove(c);
+                    break;
+                }
+            }
+            notifyDataSetChanged();
         }
 
         @Override
@@ -135,7 +144,7 @@ public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder
 
         @Override
         public void onCancelled(DatabaseError databaseError) {
-
+            Log.e(Constants.TAG, databaseError.getMessage());
         }
     }
 }

@@ -9,11 +9,11 @@ import java.util.ArrayList;
 
 public class Deck implements Parcelable {
     private String name;
-    private ArrayList<Card> cards;
+    private ArrayList<UserCard> userCards;
     private String key;
 
-    public Deck(String name) {
-        this.name = name;
+    public Deck() {
+
     }
 
     protected Deck(Parcel in) {
@@ -40,12 +40,12 @@ public class Deck implements Parcelable {
         this.name = name;
     }
 
-    public ArrayList<Card> getCards() {
-        return this.cards;
+    public ArrayList<UserCard> getUserCards() {
+        return this.userCards;
     }
 
-    public void addCards(ArrayList<Card> cards) {
-        this.cards.addAll(cards);
+    public void addCards(ArrayList<UserCard> userCards) {
+        this.userCards.addAll(userCards);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class Deck implements Parcelable {
     }
 
     public void setValues(Deck newDeck) {
-        this.cards = newDeck.getCards();
+        this.userCards = newDeck.getUserCards();
         this.name = newDeck.getName();
     }
 }

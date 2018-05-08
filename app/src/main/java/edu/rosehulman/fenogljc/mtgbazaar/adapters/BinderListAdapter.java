@@ -121,8 +121,9 @@ public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.Vi
 
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
+            String key = dataSnapshot.getKey();
             for (Binder b : mBinders) {
-                if (b.getName().equals(dataSnapshot.getKey())) {
+                if (b.getKey().equals(key)) {
                     mBinders.remove(b);
                     break;
                 }
@@ -136,7 +137,7 @@ public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.Vi
 
         @Override
         public void onCancelled(DatabaseError databaseError) {
-            Log.e("pic", databaseError.getMessage());
+            Log.e(Constants.TAG, databaseError.getMessage());
         }
     }
 }

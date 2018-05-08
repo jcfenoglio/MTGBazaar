@@ -1,14 +1,11 @@
 package edu.rosehulman.fenogljc.mtgbazaar.models;
 
-import com.google.firebase.database.Exclude;
+import java.util.List;
 
 public class Card {
-
     private String name;
-    private String set;
-    private int qty;
-    private float price;
-    private String key;
+    private List<String> sets;
+    private List<String> languages;
 
     public String getName() {
         return name;
@@ -18,39 +15,19 @@ public class Card {
         this.name = name;
     }
 
-    public String getSet() {
-        return set;
+    public List<String> getSets() {
+        return sets;
     }
 
-    public void setSet(String set) {
-        this.set = set;
+    public void setSets(List<String> sets) {
+        this.sets = sets;
     }
 
-    public int getQty() { return qty; }
-
-    public void setQty(int qty) { this.qty = qty; }
-
-    public float getPrice() {
-        return price;
+    public List<String> getLanguages() {
+        return languages;
     }
 
-    public void setPrice(float price) {
-        this.price = price;
-    }
-
-    @Exclude
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public void setValues(Card newCard) {
-        this.name = newCard.getName();
-        this.set = newCard.getSet();
-        this.qty = newCard.getQty();
-        this.price = newCard.getPrice();
+    public void setLanguages(List<String> languages) {
+        this.languages = languages;
     }
 }
