@@ -2,11 +2,15 @@ package edu.rosehulman.fenogljc.mtgbazaar.models;
 
 import com.google.firebase.database.Exclude;
 
+import edu.rosehulman.fenogljc.mtgbazaar.Constants;
+
 public class UserCard extends Card {
 
     private String set;
-    private int qty;
-    private float price;
+    private int qty = 1;
+    private float price = 0.0f;
+    private String language = Constants.LANG_EN;
+    private boolean foil = false;
     private String key;
 
     public String getSet() {
@@ -29,6 +33,22 @@ public class UserCard extends Card {
         this.price = price;
     }
 
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public boolean isFoil() {
+        return foil;
+    }
+
+    public void setFoil(boolean foil) {
+        this.foil = foil;
+    }
+
     @Exclude
     public String getKey() {
         return key;
@@ -39,8 +59,10 @@ public class UserCard extends Card {
     }
 
     public void setValues(UserCard newUserCard) {
-        this.set = newUserCard.getSet();
-        this.qty = newUserCard.getQty();
-        this.price = newUserCard.getPrice();
+        setSet(newUserCard.getSet());
+        setQty(newUserCard.getQty());
+        setPrice(newUserCard.getPrice());
+        setLanguage(newUserCard.getLanguage());
+        setFoil(newUserCard.isFoil());
     }
 }

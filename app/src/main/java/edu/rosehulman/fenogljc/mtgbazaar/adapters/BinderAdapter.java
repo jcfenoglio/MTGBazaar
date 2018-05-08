@@ -19,6 +19,7 @@ import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderFragment.OnCardSelected
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link UserCard} and makes a call to the
@@ -66,7 +67,7 @@ public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder
         holder.mCardNameView.setText(userCard.getName());
         holder.mCardAmountView.setText(userCard.getQty());
         holder.mCardSetView.setText(userCard.getSet());
-        holder.mCardPriceView.setText(String.format("%.2f", userCard.getPrice()));
+        holder.mCardPriceView.setText(String.format(Locale.getDefault(), "%.2f", userCard.getPrice()));
     }
 
     @Override
