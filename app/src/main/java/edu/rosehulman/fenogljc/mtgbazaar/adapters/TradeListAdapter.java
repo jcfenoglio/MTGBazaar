@@ -13,9 +13,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
-import edu.rosehulman.fenogljc.mtgbazaar.Trade;
+import edu.rosehulman.fenogljc.mtgbazaar.models.Trade;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
-import edu.rosehulman.fenogljc.mtgbazaar.Trade;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.TradeListFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.TradeListFragment.OnTradeSelectedListener;
 
