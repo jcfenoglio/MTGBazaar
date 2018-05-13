@@ -131,7 +131,7 @@ public class BinderFragment extends Fragment implements BinderAdapter.Callback{
         View view = getLayoutInflater().inflate(R.layout.card_edit_popup, null, false);
         builder.setView(view);
 
-        Button deleteCardButton = view.findViewById(R.id.delete_card_button);
+        Button deleteCardButton = view.findViewById(R.id.edit_delete_card_button);
         deleteCardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,16 +150,16 @@ public class BinderFragment extends Fragment implements BinderAdapter.Callback{
         foilCheckBox.setChecked(userCard.isFoil());
 
         //TODO finish these spinners
-//        Spinner setSpinner = view.findViewById(R.id.edit_card_set);
-//        setSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                parent.setSelection(position);
-//            }
-//        });
-//        ArrayAdapter<String> setAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, userCard.getSets());
-//        setSpinner.setAdapter(setAdapter);
-//
+        Spinner setSpinner = view.findViewById(R.id.edit_card_set);
+        setSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                parent.setSelection(position);
+            }
+        });
+        ArrayAdapter<String> setAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, userCard.getSets());
+        setSpinner.setAdapter(setAdapter);
+
 //        Spinner langSpinner = view.findViewById(R.id.edit_card_language);
     }
 

@@ -5,9 +5,9 @@ import numpy as np
 
 # pull in all the cards and parse it into a CSV, since CSVs are easier to import into pandas
 try:
-    x = open('./input/AllCards.json')
+    x = open('input/AllCards.json', encoding='utf-8')
     parsed = json.load(x)
-    myFile = open('./temp/AllCards.csv','w')
+    myFile = open('temp/AllCards.csv','w', encoding='utf-8')
     writer = csv.writer(myFile)
     data = ["name", "manaCost", "cmc", "color", "type", "supertype", "subtype", "text", "power", "toughness"]
     writer.writerow(data)
@@ -16,6 +16,7 @@ try:
         keys = parsed[x].keys()
         
         name = parsed[x]['name']
+        name = name.replace(".", "%2E")
         
         if "manaCost" not in keys:
             manacost = ""
@@ -72,10 +73,10 @@ try:
     myFile.close()
 
     # Pull in and parse all the se
-    allc = open('./input/AllSets.json')
+    allc = open('input/AllSets.json', encoding='utf-8')
     allparsed = json.load(allc)
 
-    myFile = open('./temp/AllSets.csv','w')
+    myFile = open('temp/AllSets.csv','w', encoding='utf-8')
     writer = csv.writer(myFile)
     data = ["name", "manaCost", "cmc", "color", "type", "supertype", "subtype", "text", "power", "toughness","rarity", "set"]
     writer.writerow(data)
@@ -86,6 +87,7 @@ try:
         for y in cards:
             keys = y.keys()
             name = y['name']
+            name = name.replace(".", "%2E")
         
             if "manaCost" not in keys:
                 manacost = ""
@@ -147,9 +149,10 @@ try:
     myFile.close()
 except:
     print("this script requires AllSets.json and AllCards.json to be in a subfolder called './input'.\nThese files can be found at mtgjson.com")
+    raise()
 
-df = pd.read_csv('./temp/AllCards.csv')
-df1 = pd.read_csv('./temp/AllSets.csv')
+df = pd.read_csv('temp/AllCards.csv', encoding='utf-8')
+df1 = pd.read_csv('temp/AllSets.csv', encoding='utf-8')
 
 df['sets'] = ""
 df['rarity'] = ""

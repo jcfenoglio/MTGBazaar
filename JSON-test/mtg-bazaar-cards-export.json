@@ -1,0 +1,23 @@
+{
+  "-LCQImiYbYhDfBVYyc1m" : {
+    "foil" : false,
+    "language" : "English",
+    "name" : "This",
+    "price" : 3.200000047683716,
+    "qty" : 2
+  },
+  "-LCQKAIIFW81sVXxtyGy" : {
+    "foil" : false,
+    "language" : "English",
+    "name" : "is",
+    "price" : 3.200000047683716,
+    "qty" : 2
+  },
+  "-LCQP8FuUn1K6oAtPJD5" : {
+    "foil" : false,
+    "language" : "English",
+    "name" : "Arcane Lighthouse",
+    "price" : 3.200000047683716,
+    "qty" : 2
+  }
+}
