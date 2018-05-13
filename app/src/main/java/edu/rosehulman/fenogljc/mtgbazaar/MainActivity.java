@@ -101,26 +101,25 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Log.d("MTG", "onChildChanged: ");
+                Log.d(Constants.TAG, "onChildChanged: ");
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Log.d("MTG", "onChildChanged: ");
+                Log.d(Constants.TAG, "onChildChanged: ");
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                Log.d("MTG", "onChildChanged: ");
+                Log.d(Constants.TAG, "onChildChanged: ");
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.e("MTG", "onChildChanged: " + databaseError.getMessage());
+                Log.e(Constants.TAG, "onChildChanged: " + databaseError.getMessage());
             }
         };
         mFirebase.child(Constants.DB_CARDS_REF).addChildEventListener(mChildEventListener);
-        mFirebase.child(Constants.DB_CARDS_REF).removeEventListener(mChildEventListener);
         Constants.setCardNames(mCardNames);
     }
 
