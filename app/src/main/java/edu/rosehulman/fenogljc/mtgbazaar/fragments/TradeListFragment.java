@@ -10,8 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import edu.rosehulman.fenogljc.mtgbazaar.Trade;
-import edu.rosehulman.fenogljc.mtgbazaar.adapters.TradeListAdapter;
+import edu.rosehulman.fenogljc.mtgbazaar.models.Trade;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 
 /**

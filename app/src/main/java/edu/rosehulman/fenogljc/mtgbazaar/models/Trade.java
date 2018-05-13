@@ -1,10 +1,8 @@
-package edu.rosehulman.fenogljc.mtgbazaar;
+package edu.rosehulman.fenogljc.mtgbazaar.models;
 
 import com.google.firebase.database.Exclude;
 
 import java.util.List;
-
-import edu.rosehulman.fenogljc.mtgbazaar.models.UserCard;
 
 /**
  * Created by hamiltjc on 5/7/18.

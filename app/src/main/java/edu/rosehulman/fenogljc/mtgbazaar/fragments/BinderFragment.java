@@ -13,9 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -50,6 +52,7 @@ public class BinderFragment extends Fragment implements BinderAdapter.Callback{
     private Binder mBinder;
     private OnCardSelectedListener mListener;
     private BinderAdapter mAdapter;
+    private List<String> mCardNameArray;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -74,6 +77,12 @@ public class BinderFragment extends Fragment implements BinderAdapter.Callback{
         if (getArguments() != null) {
             mBinder = getArguments().getParcelable(ARG_BINDER);
         }
+
+        mCardNameArray = new ArrayList<>();
+        mCardNameArray.add("This");
+        mCardNameArray.add("is");
+        mCardNameArray.add("a");
+        mCardNameArray.add("test");
     }
 
     @Override
@@ -98,7 +107,19 @@ public class BinderFragment extends Fragment implements BinderAdapter.Callback{
 
         // TODO: add functionality to search and add buttons
 
-        RecyclerView recyclerView = view.findViewById(R.id.binder_card_list);
+        final AutoCompleteTextView autoComplete = view.findViewById(R.id.binder_card_search);
+        ArrayAdapter myAdapter = new ArrayAdapter<>(context,
+                android.R.layout.simple_dropdown_item_1line, mCardNameArray);
+        autoComplete.setAdapter(myAdapter);
+
+//        autoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//            }
+//        });
+
+        final RecyclerView recyclerView = view.findViewById(R.id.binder_card_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
         DatabaseReference mUserData = context.getmUserData().child(Constants.DB_BINDERS_REF).child(mBinder.getKey());
@@ -106,10 +127,32 @@ public class BinderFragment extends Fragment implements BinderAdapter.Callback{
         mAdapter = new BinderAdapter(mListener, this, mUserData);
         recyclerView.setAdapter(mAdapter);
 
+        Button addButton = view.findViewById(R.id.add_card_button);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String cardName = autoComplete.getText().toString();
+                UserCard newCard = findCardFromName(cardName);
+                if(newCard != null) {
+                    mAdapter.add(newCard);
+                }
+            }
+        });
+
         FloatingActionButton fab = context.findViewById(R.id.fab);
         fab.hide();
 
         return view;
+    }
+
+    private UserCard findCardFromName(String cardName) {
+        //TODO: find card from name
+        UserCard card = new UserCard();
+        card.setName(cardName);
+        card.setQty(2);
+        card.setPrice(3.2f);
+        card.setKey("boop");
+        return card;
     }
 
     @Override
@@ -131,7 +174,7 @@ public class BinderFragment extends Fragment implements BinderAdapter.Callback{
         View view = getLayoutInflater().inflate(R.layout.card_edit_popup, null, false);
         builder.setView(view);
 
-        Button deleteCardButton = view.findViewById(R.id.delete_card_button);
+        ImageButton deleteCardButton = view.findViewById(R.id.edit_delete_card_button);
         deleteCardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
