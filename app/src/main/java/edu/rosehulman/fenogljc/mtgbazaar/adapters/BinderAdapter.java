@@ -36,8 +36,8 @@ public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder
     public BinderAdapter(OnCardSelectedListener listener, Callback callback, DatabaseReference ref) {
         mListener = listener;
         mUserCards = new ArrayList<>();
-        mRefBinder = ref;
-        mRefBinder.child(Constants.DB_CARDS_REF).addChildEventListener(new BinderChildEventListener());
+        mRefBinder = ref.child(Constants.DB_CARDS_REF);
+        mRefBinder.addChildEventListener(new BinderChildEventListener());
         mCallback = callback;
     }
 
