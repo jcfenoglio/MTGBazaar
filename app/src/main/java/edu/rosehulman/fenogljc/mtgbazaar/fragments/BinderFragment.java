@@ -78,11 +78,7 @@ public class BinderFragment extends Fragment implements BinderAdapter.Callback{
             mBinder = getArguments().getParcelable(ARG_BINDER);
         }
 
-        mCardNameArray = new ArrayList<>();
-        mCardNameArray.add("This");
-        mCardNameArray.add("is");
-        mCardNameArray.add("a");
-        mCardNameArray.add("test");
+        mCardNameArray = Constants.getCardNames();
     }
 
     @Override
@@ -118,6 +114,7 @@ public class BinderFragment extends Fragment implements BinderAdapter.Callback{
 //
 //            }
 //        });
+
 
         final RecyclerView recyclerView = view.findViewById(R.id.binder_card_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));

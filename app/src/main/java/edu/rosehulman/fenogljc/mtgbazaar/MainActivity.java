@@ -20,11 +20,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment;
@@ -82,6 +86,42 @@ public class MainActivity extends AppCompatActivity
             ft.add(R.id.fragment_container, new BinderListFragment());
             ft.commit();
         }
+
+        loadCardNamesFromDatabase();
+    }
+
+    private void loadCardNamesFromDatabase() {
+        final List<String> mCardNames = new ArrayList<>();
+        ChildEventListener mChildEventListener = new ChildEventListener() {
+
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                mCardNames.add(dataSnapshot.getKey());
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Log.d("MTG", "onChildChanged: ");
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Log.d("MTG", "onChildChanged: ");
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                Log.d("MTG", "onChildChanged: ");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("MTG", "onChildChanged: " + databaseError.getMessage());
+            }
+        };
+        mFirebase.child(Constants.DB_CARDS_REF).addChildEventListener(mChildEventListener);
+        mFirebase.child(Constants.DB_CARDS_REF).removeEventListener(mChildEventListener);
+        Constants.setCardNames(mCardNames);
     }
 
     @Override

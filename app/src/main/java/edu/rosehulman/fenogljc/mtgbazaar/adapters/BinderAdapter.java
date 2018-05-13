@@ -65,7 +65,7 @@ public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
         UserCard userCard = mUserCards.get(position);
         holder.mCardNameView.setText(userCard.getName());
-        holder.mCardAmountView.setText(userCard.getQty());
+        holder.mCardAmountView.setText(String.valueOf(userCard.getQty()));
         holder.mCardSetView.setText(userCard.getSet());
         holder.mCardPriceView.setText(String.format(Locale.getDefault(), "%.2f", userCard.getPrice()));
     }
