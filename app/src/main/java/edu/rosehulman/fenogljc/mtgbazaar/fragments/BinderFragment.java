@@ -190,16 +190,16 @@ public class BinderFragment extends Fragment implements BinderAdapter.Callback{
         foilCheckBox.setChecked(userCard.isFoil());
 
         //TODO finish these spinners
-//        Spinner setSpinner = view.findViewById(R.id.edit_card_set);
+        Spinner setSpinner = view.findViewById(R.id.edit_card_set);
 //        setSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
 //            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                parent.setSelection(position);
 //            }
 //        });
-//        ArrayAdapter<String> setAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, userCard.getSets());
-//        setSpinner.setAdapter(setAdapter);
-//
+        ArrayAdapter<String> setAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, userCard.getSets());
+        setSpinner.setAdapter(setAdapter);
+
 //        Spinner langSpinner = view.findViewById(R.id.edit_card_language);
     }
 
