@@ -3,6 +3,16 @@ import json
 import pandas as pd
 import numpy as np
 
+def parseList(mList):
+    if mList == "[]" :
+        return [""]
+    returnList = []
+    splitList = mList.split("\'")
+    for item in splitList:
+        if item != '[' and item != ']' and item != ', ':
+            returnList.append(item.split("\'")[0])
+    return returnList
+
 # pull in all the cards and parse it into a CSV, since CSVs are easier to import into pandas
 try:
     x = open('input/AllCards.json', encoding='utf-8')
@@ -169,7 +179,6 @@ for index, row in df1.iterrows():
    
     sets = df.iloc[df.index[df['name'] == row['name']]]['sets']
 
-
     rarity = df.iloc[df.index[df['name'] == row['name']]]['rarity']
     if(rarity.any() == ""):
         rarity = row["rarity"]
@@ -183,6 +192,19 @@ for index, row in df1.iterrows():
     df.set_value(df.index[df['name'] == row["name"]],"sets",sets)
     df.set_value(df.index[df['name'] == row["name"]],"rarity",rarity)
 
-print('DONE')
+print('PANDAS DONE')
 df = df.set_index('name')
-df.to_json(path_or_buf='./output/ToUpload.json', orient='index')
+df.to_json(path_or_buf='./output/ToEdit.json', orient='index')
+
+x = open('output/ToEdit.json', encoding='utf-8')
+finished = json.load(x)
+for x in finished.keys():
+    finished[x]['type'] = parseList(finished[x]['type'])
+    finished[x]['supertype'] = parseList(finished[x]['supertype'])
+    finished[x]['subtype'] = parseList(finished[x]['subtype'])
+    finished[x]['color'] = parseList(finished[x]['color'])
+    finished[x]['sets'] = finished[x]['sets'].split(',')
+    finished[x]['rarity'] = finished[x]['rarity'].split(',')
+
+with open('output/ToUpload.json', 'w', encoding = 'utf-8') as out:
+    json.dump(finished, out)

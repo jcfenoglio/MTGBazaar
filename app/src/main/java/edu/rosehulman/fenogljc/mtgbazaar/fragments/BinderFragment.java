@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -164,6 +165,7 @@ public class BinderFragment extends Fragment implements BinderAdapter.Callback{
     }
 
     private void showEditCardDialog(final UserCard userCard) {
+        Log.d(Constants.TAG, "showEditCardDialog: called");
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         builder.setTitle(userCard.getName());
@@ -191,16 +193,13 @@ public class BinderFragment extends Fragment implements BinderAdapter.Callback{
 
         //TODO finish these spinners
         Spinner setSpinner = view.findViewById(R.id.edit_card_set);
-//        setSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                parent.setSelection(position);
-//            }
-//        });
         ArrayAdapter<String> setAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, userCard.getSets());
         setSpinner.setAdapter(setAdapter);
 
-//        Spinner langSpinner = view.findViewById(R.id.edit_card_language);
+        Spinner langSpinner = view.findViewById(R.id.edit_card_language);
+        ArrayAdapter<String> langAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, userCard.getLanguages());
+
+        builder.create().show();
     }
 
     private void showDeleteConfirmationDialog(final UserCard userCard) {
@@ -215,6 +214,7 @@ public class BinderFragment extends Fragment implements BinderAdapter.Callback{
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mAdapter.remove(userCard);
+
             }
         });
         builder.setNegativeButton(android.R.string.cancel, null);

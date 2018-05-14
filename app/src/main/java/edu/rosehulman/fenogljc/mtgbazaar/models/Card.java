@@ -1,11 +1,12 @@
 package edu.rosehulman.fenogljc.mtgbazaar.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Card {
     private String name;
-    private List<String> sets;
-    private List<String> languages;
+    private List<String> sets = new ArrayList<>();
+    private List<String> languages = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -16,6 +17,8 @@ public class Card {
     }
 
     public List<String> getSets() {
+        sets.add("set name");
+        sets.add("second set name");
         return sets;
     }
 
@@ -24,6 +27,7 @@ public class Card {
     }
 
     public List<String> getLanguages() {
+        languages.add("english")
         return languages;
     }
 
