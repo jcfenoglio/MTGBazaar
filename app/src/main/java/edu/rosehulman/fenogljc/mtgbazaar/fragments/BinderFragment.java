@@ -50,6 +50,7 @@ import edu.rosehulman.fenogljc.mtgbazaar.R;
  */
 public class BinderFragment extends Fragment implements Callback, BinderAdapter.Callback{
 
+    private AlertDialog editCardDialog;
     private static final String ARG_BINDER = "binder";
     private Binder mBinder;
     private OnCardSelectedListener mListener;
@@ -171,25 +172,37 @@ public class BinderFragment extends Fragment implements Callback, BinderAdapter.
             }
         });
 
-        EditText cardPriceText = view.findViewById(R.id.edit_card_price);
+        final EditText cardPriceText = view.findViewById(R.id.edit_card_price);
         cardPriceText.setText(String.format(Locale.getDefault(), "%.2f", userCard.getPrice()));
 
-        NumberPicker cardQtyPicker = view.findViewById(R.id.edit_card_quantity);
-        cardQtyPicker.setValue(userCard.getQty());
-        cardQtyPicker.setMinValue(1);
+        final EditText cardQtyText = view.findViewById(R.id.edit_card_quantity);
+        cardQtyText.setText(userCard.getQty());
 
-        CheckBox foilCheckBox = view.findViewById(R.id.edit_card_foil);
+        final CheckBox foilCheckBox = view.findViewById(R.id.edit_card_foil);
         foilCheckBox.setChecked(userCard.isFoil());
 
-        //TODO finish these spinners
-        Spinner setSpinner = view.findViewById(R.id.edit_card_set);
+        final Spinner setSpinner = view.findViewById(R.id.edit_card_set);
         ArrayAdapter<String> setAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, userCard.getSets());
         setSpinner.setAdapter(setAdapter);
 
-        Spinner langSpinner = view.findViewById(R.id.edit_card_language);
+        final Spinner langSpinner = view.findViewById(R.id.edit_card_language);
         ArrayAdapter<String> langAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, userCard.getLanguages());
+        langSpinner.setAdapter(langAdapter);
 
-        builder.create().show();
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                userCard.setFoil(foilCheckBox.isSelected());
+                userCard.setPrice(Float.parseFloat(cardPriceText.getText().toString()));
+                userCard.setQty(Integer.parseInt(cardQtyText.getText().toString()));
+                userCard.setSet(setSpinner.getSelectedItem().toString());
+                userCard.setLanguage(langSpinner.getSelectedItem().toString());
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, null);
+
+        editCardDialog = builder.create();
+        editCardDialog.show();
     }
 
     private void showDeleteConfirmationDialog(final UserCard userCard) {
@@ -204,7 +217,7 @@ public class BinderFragment extends Fragment implements Callback, BinderAdapter.
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mAdapter.remove(userCard);
-
+                editCardDialog.cancel();
             }
         });
         builder.setNegativeButton(android.R.string.cancel, null);
