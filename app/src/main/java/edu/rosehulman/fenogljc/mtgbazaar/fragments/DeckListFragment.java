@@ -82,7 +82,7 @@ public class DeckListFragment extends Fragment implements Callback {
     }
 
     @Override
-    public void onEdit() {
+    public void onEdit(UserCard card) {
         //TODO stuff on edit
     }
 

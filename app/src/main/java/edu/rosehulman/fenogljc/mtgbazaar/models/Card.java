@@ -67,8 +67,6 @@ public class Card {
     }
 
     public List<String> getSets() {
-        sets.add("set name");
-        sets.add("second set name");
         return sets;
     }
 

@@ -48,7 +48,7 @@ import edu.rosehulman.fenogljc.mtgbazaar.R;
  * Activities containing this fragment MUST implement the {@link OnCardSelectedListener}
  * interface.
  */
-public class BinderFragment extends Fragment implements Callback, BinderAdapter.Callback{
+public class BinderFragment extends Fragment implements Callback {
 
     private AlertDialog editCardDialog;
     private static final String ARG_BINDER = "binder";
@@ -104,8 +104,6 @@ public class BinderFragment extends Fragment implements Callback, BinderAdapter.
 
         View view = inflater.inflate(R.layout.fragment_binder, container, false);
 
-        // TODO: add functionality to search and add buttons
-
         final AutoCompleteTextView autoComplete = view.findViewById(R.id.binder_card_search);
         ArrayAdapter myAdapter = new ArrayAdapter<>(context,
                 android.R.layout.simple_dropdown_item_1line, mCardNameArray);
@@ -133,7 +131,8 @@ public class BinderFragment extends Fragment implements Callback, BinderAdapter.
             @Override
             public void onClick(View v) {
                 String cardName = autoComplete.getText().toString();
-                UserCard.findCardFromName(cardName, callback);
+                UserCard uCard = new UserCard(cardName);
+                uCard.setCardFromName(callback);
 
             }
         });
@@ -176,17 +175,17 @@ public class BinderFragment extends Fragment implements Callback, BinderAdapter.
         cardPriceText.setText(String.format(Locale.getDefault(), "%.2f", userCard.getPrice()));
 
         final EditText cardQtyText = view.findViewById(R.id.edit_card_quantity);
-        cardQtyText.setText(userCard.getQty());
+        cardQtyText.setText(String.valueOf(userCard.getQty()));
 
         final CheckBox foilCheckBox = view.findViewById(R.id.edit_card_foil);
         foilCheckBox.setChecked(userCard.isFoil());
 
         final Spinner setSpinner = view.findViewById(R.id.edit_card_set);
-        ArrayAdapter<String> setAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, userCard.getSets());
+        ArrayAdapter<String> setAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, userCard.getCard().getSets());
         setSpinner.setAdapter(setAdapter);
 
         final Spinner langSpinner = view.findViewById(R.id.edit_card_language);
-        ArrayAdapter<String> langAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, userCard.getLanguages());
+        ArrayAdapter<String> langAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, userCard.getCard().getLanguages());
         langSpinner.setAdapter(langAdapter);
 
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -223,11 +222,6 @@ public class BinderFragment extends Fragment implements Callback, BinderAdapter.
         builder.setNegativeButton(android.R.string.cancel, null);
 
         builder.create().show();
-    }
-
-    @Override
-    public void onEdit() {
-
     }
 
     @Override

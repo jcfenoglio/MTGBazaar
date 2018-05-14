@@ -12,6 +12,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
+import edu.rosehulman.fenogljc.mtgbazaar.Callback;
 import edu.rosehulman.fenogljc.mtgbazaar.Constants;
 import edu.rosehulman.fenogljc.mtgbazaar.models.UserCard;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
@@ -99,17 +100,23 @@ public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder
         }
     }
 
-    public interface Callback {
-        void onEdit(UserCard userCard);
-    }
-
     private class BinderChildEventListener implements ChildEventListener {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
             UserCard userCard = dataSnapshot.getValue(UserCard.class);
             userCard.setKey(dataSnapshot.getKey());
-            mUserCards.add(0, userCard);
-            notifyDataSetChanged();
+            userCard.setCardFromName(new Callback() {
+                @Override
+                public void onEdit(UserCard card) {
+
+                }
+
+                @Override
+                public void onCardFound(UserCard card) {
+                    mUserCards.add(0, card);
+                    notifyDataSetChanged();
+                }
+            });
         }
 
         @Override
