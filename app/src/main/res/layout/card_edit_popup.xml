@@ -22,6 +22,7 @@
             android:layout_weight=".75"
             android:textSize="20dp"
             android:gravity="center_vertical"
+            android:inputType="numberDecimal"
             />
 
         <ImageButton
@@ -52,13 +53,14 @@
                 android:gravity="center_vertical"
                 android:text="@string/quantity_text"/>
 
-            <NumberPicker
+            <EditText
                 android:id="@+id/edit_card_quantity"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_marginLeft="4dp"
+                android:inputType="numberDecimal"
                 >
-            </NumberPicker>
+            </EditText>
         </LinearLayout>
 
         <CheckBox

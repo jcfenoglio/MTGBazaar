@@ -32,6 +32,7 @@ import java.util.List;
 
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment;
+import edu.rosehulman.fenogljc.mtgbazaar.fragments.CardFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckListFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.models.Binder;
@@ -181,7 +182,7 @@ public class MainActivity extends AppCompatActivity
 //                switchTo = new TradeListFragment();
                 break;
             case R.id.nav_search:
-//                switchTo = new SearchFragment();
+                switchTo = new CardFragment();
                 break;
         }
 
