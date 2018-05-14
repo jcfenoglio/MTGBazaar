@@ -74,7 +74,9 @@ public class UserCard extends Card {
         setFoil(newUserCard.isFoil());
     }
 
+    @Override
     public void setValues(Card newCard) {
+        super.setValues(newCard);
         setSet(newCard.getSets().get(0));
         setQty(1);
         setPrice(0.0f);

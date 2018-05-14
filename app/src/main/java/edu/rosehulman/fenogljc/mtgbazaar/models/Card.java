@@ -131,4 +131,23 @@ public class Card {
     public void setKey(String key) {
         this.key = key;
     }
+
+    @Exclude
+    public String getMultiverseId() {
+        return String.valueOf(409574);
+    }
+
+    public void setValues(Card newCard) {
+        setCmc(newCard.getCmc());
+        setColor(newCard.getColor());
+        setManaCost(newCard.getManaCost());
+        setPower(newCard.getPower());
+        setRarity(newCard.getRarity());
+        setSets(newCard.getSets());
+        setSubtype(newCard.getSubtype());
+        setSupertype(newCard.getSupertype());
+        setText(newCard.getText());
+        setToughness(newCard.getToughness());
+        setType(newCard.getType());
+    }
 }
