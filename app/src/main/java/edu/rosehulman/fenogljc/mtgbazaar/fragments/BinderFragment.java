@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import edu.rosehulman.fenogljc.mtgbazaar.Callback;
 import edu.rosehulman.fenogljc.mtgbazaar.Constants;
 import edu.rosehulman.fenogljc.mtgbazaar.MainActivity;
 import edu.rosehulman.fenogljc.mtgbazaar.adapters.BinderAdapter;
@@ -47,7 +48,7 @@ import edu.rosehulman.fenogljc.mtgbazaar.R;
  * Activities containing this fragment MUST implement the {@link OnCardSelectedListener}
  * interface.
  */
-public class BinderFragment extends Fragment implements BinderAdapter.Callback{
+public class BinderFragment extends Fragment implements Callback, BinderAdapter.Callback{
 
     private static final String ARG_BINDER = "binder";
     private Binder mBinder;
@@ -126,14 +127,13 @@ public class BinderFragment extends Fragment implements BinderAdapter.Callback{
         recyclerView.setAdapter(mAdapter);
 
         Button addButton = view.findViewById(R.id.add_card_button);
+        final Callback callback = this;
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String cardName = autoComplete.getText().toString();
-                UserCard newCard = findCardFromName(cardName);
-                if(newCard != null) {
-                    mAdapter.add(newCard);
-                }
+                UserCard.findCardFromName(cardName, callback);
+
             }
         });
 
@@ -141,16 +141,6 @@ public class BinderFragment extends Fragment implements BinderAdapter.Callback{
         fab.hide();
 
         return view;
-    }
-
-    private UserCard findCardFromName(String cardName) {
-        //TODO: find card from name
-        UserCard card = new UserCard();
-        card.setName(cardName);
-        card.setQty(2);
-        card.setPrice(3.2f);
-        card.setKey("boop");
-        return card;
     }
 
     @Override
@@ -220,6 +210,19 @@ public class BinderFragment extends Fragment implements BinderAdapter.Callback{
         builder.setNegativeButton(android.R.string.cancel, null);
 
         builder.create().show();
+    }
+
+    @Override
+    public void onEdit() {
+
+    }
+
+    @Override
+    public void onCardFound(UserCard card) {
+        Log.d(Constants.TAG, "onClick: " + card.getName());
+        if(card.getName() != null) {
+            mAdapter.add(card);
+        }
     }
 
     public interface OnCardSelectedListener {

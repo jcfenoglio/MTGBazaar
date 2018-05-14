@@ -17,6 +17,7 @@ import edu.rosehulman.fenogljc.mtgbazaar.MainActivity;
 import edu.rosehulman.fenogljc.mtgbazaar.models.Deck;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 import edu.rosehulman.fenogljc.mtgbazaar.adapters.DeckListAdapter;
+import edu.rosehulman.fenogljc.mtgbazaar.models.UserCard;
 
 /**
  * A fragment representing a list of Items.
@@ -83,6 +84,11 @@ public class DeckListFragment extends Fragment implements Callback {
     @Override
     public void onEdit() {
         //TODO stuff on edit
+    }
+
+    @Override
+    public void onCardFound(UserCard card) {
+
     }
 
     /**
