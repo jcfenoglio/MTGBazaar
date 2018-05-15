@@ -1,5 +1,7 @@
 package edu.rosehulman.fenogljc.mtgbazaar;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Constants {
@@ -12,7 +14,8 @@ public class Constants {
     public static final String LANG_EN = "English";
 
     public static final String[] COND_ARRAY = {"Near Mint", "Lightly Played", "Moderately Played", "Played", "Damaged"};
-    public static final String[] FORMAT_ARRAY = {"Standard", "Modern", "Legacy", "Vintage", "Pauper", "Commander"};
+    private static String[] format_array = {"Standard", "Modern", "Legacy", "Vintage", "Pauper", "Commander"};
+    public static final ArrayList<String> FORMAT_ARRAY = new ArrayList<>(Arrays.asList(format_array));
 
     private static List<String> CARD_NAMES;
 

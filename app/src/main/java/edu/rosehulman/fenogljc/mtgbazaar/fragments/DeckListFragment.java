@@ -80,14 +80,14 @@ public class DeckListFragment extends Fragment implements DeckListAdapter.Callba
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         mAdapter.addDBListener();
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
         mAdapter.removeDBListener();
     }
 
@@ -112,6 +112,7 @@ public class DeckListFragment extends Fragment implements DeckListAdapter.Callba
 
         if (deck != null) {
             editTitleText.setText(deck.getName());
+            formatSpinner.setSelection(Constants.FORMAT_ARRAY.indexOf(deck.getFormat()));
 
             builder.setNeutralButton(R.string.delete_button, new DialogInterface.OnClickListener() {
                 @Override
