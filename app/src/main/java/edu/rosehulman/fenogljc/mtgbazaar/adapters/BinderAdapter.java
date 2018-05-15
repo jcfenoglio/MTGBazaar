@@ -12,48 +12,43 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
-import edu.rosehulman.fenogljc.mtgbazaar.Callback;
-import edu.rosehulman.fenogljc.mtgbazaar.Constants;
-import edu.rosehulman.fenogljc.mtgbazaar.models.UserCard;
-import edu.rosehulman.fenogljc.mtgbazaar.R;
-import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderFragment.OnCardSelectedListener;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import edu.rosehulman.fenogljc.mtgbazaar.Callback;
+import edu.rosehulman.fenogljc.mtgbazaar.Constants;
+import edu.rosehulman.fenogljc.mtgbazaar.R;
+import edu.rosehulman.fenogljc.mtgbazaar.models.UserCard;
+
 /**
- * {@link RecyclerView.Adapter} that can display a {@link UserCard} and makes a call to the
- * specified {@link OnCardSelectedListener}.
+ * {@link RecyclerView.Adapter} that can display a {@link UserCard}
  * TODO: Replace the implementation with code for your data type.
  */
 public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder> {
 
     private List<UserCard> mUserCards;
-    private OnCardSelectedListener mListener;
-    private DatabaseReference mRefBinder;
+    private DatabaseReference mRef;
     private Callback mCallback;
 
-    public BinderAdapter(OnCardSelectedListener listener, Callback callback, DatabaseReference ref) {
-        mListener = listener;
+    public BinderAdapter(Callback callback, DatabaseReference ref) {
         mUserCards = new ArrayList<>();
-        mRefBinder = ref.child(Constants.DB_CARDS_REF);
-        mRefBinder.addChildEventListener(new BinderChildEventListener());
+        mRef = ref.child(Constants.DB_CARDS_REF);
+        mRef.addChildEventListener(new BinderChildEventListener());
         mCallback = callback;
     }
 
     public void remove(UserCard userCard) {
-        mRefBinder.child(userCard.getKey()).removeValue();
+        mRef.child(userCard.getKey()).removeValue();
     }
 
     public void add(UserCard userCard) {
-        mRefBinder.push().setValue(userCard);
+        mRef.push().setValue(userCard);
     }
 
-    public void update(UserCard userCard, String newName) {
-        //TODO: edit userCard dialog needs a lot more
-        userCard.setName(newName);
-        mRefBinder.child(userCard.getKey()).setValue(userCard);
+    public void update(UserCard userCard, UserCard newCard) {
+        userCard.setValues(newCard);
+        mRef.child(userCard.getKey()).setValue(userCard);
     }
 
     @Override

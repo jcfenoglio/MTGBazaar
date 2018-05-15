@@ -29,13 +29,14 @@ public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.Vi
     private OnBinderSelectedListener mListener;
     private List<Binder> mBinders;
     private DatabaseReference mRefBinders;
+    private BinderListChildEventListener mDBListener;
     private Callback mCallback;
 
     public BinderListAdapter(OnBinderSelectedListener listener, Callback callback, DatabaseReference ref) {
         mListener = listener;
         mBinders = new ArrayList<>();
         mRefBinders = ref.child(Constants.DB_BINDERS_REF);
-        mRefBinders.addChildEventListener(new BinderListChildEventListener());
+        mDBListener = new BinderListChildEventListener();
         mCallback = callback;
     }
 
@@ -50,6 +51,14 @@ public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.Vi
     public void update(Binder binder, String newName) {
         binder.setName(newName);
         mRefBinders.child(binder.getKey()).setValue(binder);
+    }
+
+    public void addDBListener() {
+        mRefBinders.addChildEventListener(mDBListener);
+    }
+
+    public void removeDBListener() {
+        mRefBinders.removeEventListener(mDBListener);
     }
 
     @Override

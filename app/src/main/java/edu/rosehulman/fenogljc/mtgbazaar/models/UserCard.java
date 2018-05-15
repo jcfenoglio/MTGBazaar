@@ -22,6 +22,7 @@ public class UserCard {
     private float price = 0.0f;
     private String language = Constants.LANG_EN;
     private boolean foil = false;
+    private String condition = Constants.COND_ARRAY[0];
     private String key;
     private String name;
 

@@ -19,6 +19,7 @@ import edu.rosehulman.fenogljc.mtgbazaar.MainActivity;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 import edu.rosehulman.fenogljc.mtgbazaar.adapters.BinderListAdapter;
 import edu.rosehulman.fenogljc.mtgbazaar.models.Binder;
+import edu.rosehulman.fenogljc.mtgbazaar.models.Deck;
 
 /**
  * A fragment representing a list of Items.
@@ -78,7 +79,25 @@ public class BinderListFragment extends Fragment implements BinderListAdapter.Ca
         return view;
     }
 
-    private void showAddEditBinderDialog(final Binder binder) {
+    @Override
+    public void onResume() {
+        super.onResume();
+        mAdapter.addDBListener();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mAdapter.removeDBListener();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public void showAddEditBinderDialog(final Binder binder) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         builder.setTitle(binder == null ? R.string.new_binder_dialog_title : R.string.edit_binder_dialog_title);
@@ -135,12 +154,6 @@ public class BinderListFragment extends Fragment implements BinderListAdapter.Ca
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    @Override
     public void onEdit(Binder binder) {
         showAddEditBinderDialog(binder);
     }
@@ -157,5 +170,7 @@ public class BinderListFragment extends Fragment implements BinderListAdapter.Ca
      */
     public interface OnBinderSelectedListener {
         void onBinderSelected(Binder binder);
+
+        void onBinderSelected(Deck deck);
     }
 }

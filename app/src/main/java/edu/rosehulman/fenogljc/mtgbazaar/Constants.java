@@ -11,6 +11,7 @@ public class Constants {
     public static final String DB_CARDS_REF = "cards";
 
     public static final String LANG_EN = "English";
+    public static final String[] COND_ARRAY = {"Near Mint", "Lightly Played", "Moderately Played", "Played", "Damaged"};
 
     private static List<String> CARD_NAMES;
 

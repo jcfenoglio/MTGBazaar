@@ -45,7 +45,7 @@ import edu.rosehulman.fenogljc.mtgbazaar.R;
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnCardSelectedListener}
+ * Activities containing this fragment MUST implement the
  * interface.
  */
 public class BinderFragment extends Fragment implements Callback {
@@ -53,7 +53,6 @@ public class BinderFragment extends Fragment implements Callback {
     private AlertDialog editCardDialog;
     private static final String ARG_BINDER = "binder";
     private Binder mBinder;
-    private OnCardSelectedListener mListener;
     private BinderAdapter mAdapter;
     private List<String> mCardNameArray;
 
@@ -87,12 +86,6 @@ public class BinderFragment extends Fragment implements Callback {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnCardSelectedListener) {
-            mListener = (OnCardSelectedListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnCardSelectedListener");
-        }
     }
 
     @Override
@@ -122,7 +115,7 @@ public class BinderFragment extends Fragment implements Callback {
 
         DatabaseReference mUserData = context.getmUserData().child(Constants.DB_BINDERS_REF).child(mBinder.getKey());
 
-        mAdapter = new BinderAdapter(mListener, this, mUserData);
+        mAdapter = new BinderAdapter(this, mUserData);
         recyclerView.setAdapter(mAdapter);
 
         Button addButton = view.findViewById(R.id.add_card_button);
@@ -141,12 +134,6 @@ public class BinderFragment extends Fragment implements Callback {
         fab.hide();
 
         return view;
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -191,11 +178,18 @@ public class BinderFragment extends Fragment implements Callback {
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                userCard.setFoil(foilCheckBox.isSelected());
-                userCard.setPrice(Float.parseFloat(cardPriceText.getText().toString()));
-                userCard.setQty(Integer.parseInt(cardQtyText.getText().toString()));
-                userCard.setSet(setSpinner.getSelectedItem().toString());
-                userCard.setLanguage(langSpinner.getSelectedItem().toString());
+                // make a new card
+                UserCard newCard = new UserCard();
+
+                // set all the info for that card
+                newCard.setFoil(foilCheckBox.isSelected());
+                newCard.setPrice(Float.parseFloat(cardPriceText.getText().toString()));
+                newCard.setQty(Integer.parseInt(cardQtyText.getText().toString()));
+                newCard.setSet(setSpinner.getSelectedItem().toString());
+                newCard.setLanguage(langSpinner.getSelectedItem().toString());
+
+                // update original card using that card
+                mAdapter.update(userCard, newCard);
             }
         });
         builder.setNegativeButton(android.R.string.cancel, null);
@@ -230,9 +224,5 @@ public class BinderFragment extends Fragment implements Callback {
         if(card.getName() != null) {
             mAdapter.add(card);
         }
-    }
-
-    public interface OnCardSelectedListener {
-        void onCardSelected(UserCard userCard);
     }
 }

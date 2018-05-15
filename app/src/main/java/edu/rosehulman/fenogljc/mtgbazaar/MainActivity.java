@@ -3,15 +3,15 @@ package edu.rosehulman.fenogljc.mtgbazaar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -36,12 +36,11 @@ import edu.rosehulman.fenogljc.mtgbazaar.fragments.CardFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckListFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.models.Binder;
-import edu.rosehulman.fenogljc.mtgbazaar.models.UserCard;
 import edu.rosehulman.fenogljc.mtgbazaar.models.Deck;
 import edu.rosehulman.fenogljc.mtgbazaar.models.User;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, BinderListFragment.OnBinderSelectedListener, DeckListFragment.OnDeckSelectedListener, BinderFragment.OnCardSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, BinderListFragment.OnBinderSelectedListener {
 
     private DatabaseReference mFirebase;
     private DatabaseReference mUserData;
@@ -211,15 +210,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onDeckSelected(Deck item) {
+    public void onBinderSelected(Deck deck) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_container, DeckFragment.newInstance(item));
+        ft.replace(R.id.fragment_container, DeckFragment.newInstance(deck));
         ft.addToBackStack("deck_list_fragment");
         ft.commit();
-    }
-
-    @Override
-    public void onCardSelected(UserCard userCard) {
-
     }
 }

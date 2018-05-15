@@ -11,14 +11,12 @@ public class Binder implements Parcelable {
 
     private String name;
     private String key;
-    private HashMap<String, UserCard> cards;
 
     @SuppressWarnings("unused")
     public Binder() {}
 
     public Binder(String name){
         this.name = name;
-        this.cards = new HashMap<>();
     }
 
     protected Binder(Parcel in) {
@@ -54,12 +52,6 @@ public class Binder implements Parcelable {
     public void setKey(String key) {
         this.key = key;
     }
-
-    public HashMap<String, UserCard> getCards() {
-        return this.cards;
-    }
-
-    public void addCards(HashMap<String, UserCard> cards) { this.cards.putAll(cards); }
 
     @Override
     public int describeContents() {
