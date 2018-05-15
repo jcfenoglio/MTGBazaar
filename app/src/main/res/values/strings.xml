@@ -15,7 +15,7 @@
     <string name="foil_text">Foil</string>
     <string name="nav_item_binders">Binders</string>
     <string name="nav_item_decks">Decks</string>
-    <string name="nav_item_trade">Trade</string>
+    <string name="nav_item_trades">Trade</string>
     <string name="nav_item_search">Card Search</string>
     <string name="title_activity_login">Sign in</string>
 
@@ -45,6 +45,8 @@
     <string name="new_binder_dialog_title">Create New Binder</string>
     <string name="edit_deck_dialog_title">Edit Deck Name</string>
     <string name="new_deck_dialog_title">Create New Deck</string>
+    <string name="edit_trade_dialog_title">Edit Trade Name</string>
+    <string name="new_trade_dialog_title">Create New Trade</string>
     <string name="delete_button">DELETE</string>
     <string name="delete_warning">Once you delete something, you won\'t be able to recover it. Are you sure you want to delete?</string>
     <string name="delete_dialog_title">Delete Binder</string>

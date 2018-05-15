@@ -35,12 +35,14 @@ import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.CardFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckListFragment;
+import edu.rosehulman.fenogljc.mtgbazaar.fragments.TradeListFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.models.Binder;
 import edu.rosehulman.fenogljc.mtgbazaar.models.Deck;
+import edu.rosehulman.fenogljc.mtgbazaar.models.Trade;
 import edu.rosehulman.fenogljc.mtgbazaar.models.User;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, BinderListFragment.OnBinderSelectedListener, DeckListFragment.OnDeckSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, BinderListFragment.OnBinderSelectedListener, DeckListFragment.OnDeckSelectedListener, TradeListFragment.OnTradeSelectedListener {
 
     private DatabaseReference mFirebase;
     private DatabaseReference mUserData;
@@ -178,7 +180,7 @@ public class MainActivity extends AppCompatActivity
                 switchTo = new DeckListFragment();
                 break;
             case R.id.nav_trade:
-//                switchTo = new TradeListFragment();
+                switchTo = new TradeListFragment();
                 break;
             case R.id.nav_search:
                 switchTo = new CardFragment();
@@ -213,6 +215,14 @@ public class MainActivity extends AppCompatActivity
     public void onDeckSelected(Deck deck) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container, DeckFragment.newInstance(deck));
+        ft.addToBackStack("deck_list_fragment");
+        ft.commit();
+    }
+
+    @Override
+    public void onTradeSelected(Trade item) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+       // ft.replace(R.id.fragment_container, TradeFragment.newInstance(trade));
         ft.addToBackStack("deck_list_fragment");
         ft.commit();
     }

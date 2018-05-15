@@ -19,6 +19,7 @@ import java.util.Locale;
 import edu.rosehulman.fenogljc.mtgbazaar.Callback;
 import edu.rosehulman.fenogljc.mtgbazaar.Constants;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
+import edu.rosehulman.fenogljc.mtgbazaar.models.Binder;
 import edu.rosehulman.fenogljc.mtgbazaar.models.UserCard;
 
 /**
@@ -27,12 +28,14 @@ import edu.rosehulman.fenogljc.mtgbazaar.models.UserCard;
  */
 public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder> {
 
-    private List<UserCard> mUserCards;
+    private Binder mBinder;
+    private List<UserCard> mCards;
     private DatabaseReference mRef;
     private Callback mCallback;
 
-    public BinderAdapter(Callback callback, DatabaseReference ref) {
-        mUserCards = new ArrayList<>();
+    public BinderAdapter(Callback callback, DatabaseReference ref, Binder binder) {
+        mBinder = binder;
+        mCards = new ArrayList<>();
         mRef = ref.child(Constants.DB_CARDS_REF);
         mRef.addChildEventListener(new BinderChildEventListener());
         mCallback = callback;
@@ -59,7 +62,7 @@ public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        UserCard userCard = mUserCards.get(position);
+        UserCard userCard = mCards.get(position);
         holder.mCardNameView.setText(userCard.getName());
         holder.mCardAmountView.setText(String.valueOf(userCard.getQty()));
         holder.mCardSetView.setText(userCard.getSet());
@@ -68,7 +71,7 @@ public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return mUserCards.size();
+        return mCards.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -90,7 +93,7 @@ public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder
 
         @Override
         public void onClick(View v) {
-            UserCard userCard = mUserCards.get(getAdapterPosition());
+            UserCard userCard = mCards.get(getAdapterPosition());
             mCallback.onEdit(userCard);
         }
     }
@@ -108,17 +111,20 @@ public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder
 
                 @Override
                 public void onCardFound(UserCard card) {
-                    mUserCards.add(0, card);
+                    mBinder.getCards().put(card.getKey(), card);
+                    mCards.add(card);
                     notifyDataSetChanged();
                 }
             });
         }
 
+
+
         @Override
         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
             String key = dataSnapshot.getKey();
             UserCard updatedBinder = dataSnapshot.getValue(UserCard.class);
-            for (UserCard c : mUserCards) {
+            for (UserCard c : mCards) {
                 if (c.getKey().equals(key)) {
                     c.setValues(updatedBinder);
                     break;
@@ -130,9 +136,10 @@ public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
             String key = dataSnapshot.getKey();
-            for (UserCard c : mUserCards) {
+            for (UserCard c : mBinder.getCards().values()) {
                 if (c.getKey().equals(key)) {
-                    mUserCards.remove(c);
+                    mBinder.getCards().remove(c);
+                    mCards.remove(c);
                     break;
                 }
             }

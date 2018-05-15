@@ -106,7 +106,7 @@ public class BinderFragment extends Fragment implements Callback {
 
         DatabaseReference mUserData = context.getmUserData().child(Constants.DB_BINDERS_REF).child(mBinder.getKey());
 
-        mAdapter = new BinderAdapter(this, mUserData);
+        mAdapter = new BinderAdapter(this, mUserData, mBinder);
         recyclerView.setAdapter(mAdapter);
 
         Button addButton = view.findViewById(R.id.add_card_button);

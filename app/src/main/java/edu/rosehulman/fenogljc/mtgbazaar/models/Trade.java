@@ -2,6 +2,7 @@ package edu.rosehulman.fenogljc.mtgbazaar.models;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,43 +10,43 @@ import java.util.List;
  */
 
 public class Trade {
-    private List<UserCard> ownUserCards;
-    private List<UserCard> theirUserCards;
-    private String tradeName;
+    private List<String> ownUserCards;
+    private List<String> theirUserCards;
+    private String name;
     private String key;
 
     public Trade() {
         // Empty constructor for Firebase
     }
 
-    public Trade(String tradeName, List<UserCard> offering, List<UserCard> offered) {
-        this.tradeName = tradeName;
-        ownUserCards = offering;
-        theirUserCards = offered;
+    public Trade(String name) {
+        this.name = name;
+        ownUserCards = new ArrayList<>();
+        theirUserCards = new ArrayList<>();
     }
 
-    public List<UserCard> getOwnUserCards() {
+    public List<String> getOwnUserCards() {
         return ownUserCards;
     }
 
-    public void setOwnUserCards(List<UserCard> ownUserCards) {
+    public void setOwnUserCards(List<String> ownUserCards) {
         this.ownUserCards = ownUserCards;
     }
 
-    public List<UserCard> getTheirUserCards() {
+    public List<String> getTheirUserCards() {
         return theirUserCards;
     }
 
-    public void setTheirUserCards(List<UserCard> theirUserCards) {
+    public void setTheirUserCards(List<String> theirUserCards) {
         this.theirUserCards = theirUserCards;
     }
 
-    public String getTradeName() {
-        return tradeName;
+    public String getName() {
+        return name;
     }
 
-    public void setTradeName(String name) {
-        this.tradeName = name;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Exclude
@@ -60,6 +61,6 @@ public class Trade {
     public void setValues(Trade updatedTrade) {
         ownUserCards = updatedTrade.getOwnUserCards();
         theirUserCards = updatedTrade.getTheirUserCards();
-        tradeName = updatedTrade.getTradeName();
+        name = updatedTrade.getName();
     }
 }

@@ -10,6 +10,7 @@ public class Constants {
     public static final String DB_DECKS_REF = "decks";
     public static final String DB_USERS_REF = "users";
     public static final String DB_CARDS_REF = "cards";
+    public static final String DB_TRADES_REF = "trades";
 
     public static final String LANG_EN = "English";
 
