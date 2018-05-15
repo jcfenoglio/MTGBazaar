@@ -8,18 +8,21 @@ import com.google.firebase.database.Exclude;
 public class Deck implements Parcelable {
 
     private String name;
+    private String format;
     private String key;
 
     @SuppressWarnings("unused")
     public Deck() {
     }
 
-    public Deck(String name) {
+    public Deck(String name, String format) {
         this.name = name;
+        this.format = format;
     }
 
     protected Deck(Parcel in) {
         name = in.readString();
+        format = in.readString();
         key = in.readString();
     }
 
@@ -43,6 +46,14 @@ public class Deck implements Parcelable {
         this.name = name;
     }
 
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
     @Exclude
     public String getKey() {
         return key;
@@ -60,11 +71,13 @@ public class Deck implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
+        dest.writeString(format);
         dest.writeString(key);
     }
 
     public void setValues(Deck updatedDeck) {
         setName(updatedDeck.getName());
+        setFormat(updatedDeck.getFormat());
         setKey(updatedDeck.getKey());
     }
 
