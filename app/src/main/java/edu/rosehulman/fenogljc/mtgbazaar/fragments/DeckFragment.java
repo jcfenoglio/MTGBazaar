@@ -173,7 +173,7 @@ public class DeckFragment extends Fragment implements Callback {
                 UserCard newCard = new UserCard();
 
                 // set all the info for that card
-                newCard.setFoil(foilCheckBox.isSelected());
+                newCard.setFoil(foilCheckBox.isChecked());
                 newCard.setPrice(Float.parseFloat(cardPriceText.getText().toString()));
                 newCard.setQty(Integer.parseInt(cardQtyText.getText().toString()));
                 newCard.setSet(setSpinner.getSelectedItem().toString());
