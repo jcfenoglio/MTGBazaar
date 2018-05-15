@@ -11,10 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.google.firebase.database.DatabaseReference;
 
+import edu.rosehulman.fenogljc.mtgbazaar.Constants;
 import edu.rosehulman.fenogljc.mtgbazaar.MainActivity;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 import edu.rosehulman.fenogljc.mtgbazaar.adapters.DeckListAdapter;
@@ -103,6 +106,10 @@ public class DeckListFragment extends Fragment implements DeckListAdapter.Callba
         builder.setView(view);
         final EditText editTitleText = view.findViewById(R.id.add_deck_name);
 
+        final Spinner formatSpinner = view.findViewById(R.id.edit_card_set);
+        ArrayAdapter<String> formatAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, Constants.FORMAT_ARRAY);
+        formatSpinner.setAdapter(formatAdapter);
+
         if (deck != null) {
             editTitleText.setText(deck.getName());
 
@@ -118,10 +125,11 @@ public class DeckListFragment extends Fragment implements DeckListAdapter.Callba
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String title = editTitleText.getText().toString();
+                String format = formatSpinner.getSelectedItem().toString();
                 if (deck != null) {
-                    mAdapter.update(deck, title);
+                    mAdapter.update(deck, title, format);
                 } else {
-                    mAdapter.add(new Deck(title));
+                    mAdapter.add(new Deck(title, format));
                 }
             }
         });

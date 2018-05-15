@@ -47,8 +47,9 @@ public class DeckListAdapter extends RecyclerView.Adapter<DeckListAdapter.ViewHo
         mRefDecks.push().setValue(Deck);
     }
 
-    public void update(Deck Deck, String newName) {
+    public void update(Deck Deck, String newName, String newFormat) {
         Deck.setName(newName);
+        Deck.setFormat(newFormat);
         mRefDecks.child(Deck.getKey()).setValue(Deck);
     }
 
