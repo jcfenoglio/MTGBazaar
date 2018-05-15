@@ -88,41 +88,6 @@ public class MainActivity extends AppCompatActivity
             ft.add(R.id.fragment_container, new BinderListFragment());
             ft.commit();
         }
-
-        loadCardNamesFromDatabase();
-    }
-
-    private void loadCardNamesFromDatabase() {
-        final List<String> mCardNames = new ArrayList<>();
-        ChildEventListener mChildEventListener = new ChildEventListener() {
-
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                mCardNames.add(dataSnapshot.getKey());
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Log.d(Constants.TAG, "onChildChanged: ");
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Log.d(Constants.TAG, "onChildChanged: ");
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                Log.d(Constants.TAG, "onChildChanged: ");
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e(Constants.TAG, "onChildChanged: " + databaseError.getMessage());
-            }
-        };
-        mFirebase.child(Constants.DB_CARDS_REF).addChildEventListener(mChildEventListener);
-        Constants.setCardNames(mCardNames);
     }
 
     @Override
