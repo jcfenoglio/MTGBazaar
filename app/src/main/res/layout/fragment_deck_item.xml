@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
         android:text="cardname"
-        android:textSize="22dp"
+        android:textSize="22sp"
         android:textAppearance="?android:attr/textAppearanceListItem" />
 
     <TextView
@@ -20,7 +20,7 @@
         android:layout_marginTop="@dimen/text_margin"
         android:text="X"
         android:layout_toRightOf="@id/deck_card_name"
-        android:textSize="22dp"
+        android:textSize="22sp"
         android:textAppearance="?android:attr/textAppearanceListItem" />
 
     <TextView
@@ -30,7 +30,7 @@
         android:layout_margin="@dimen/text_margin"
         android:text="0"
         android:layout_toRightOf="@id/deck_X"
-        android:textSize="22dp"
+        android:textSize="22sp"
         android:textAppearance="?android:attr/textAppearanceListItem" />
 
     <TextView
@@ -42,7 +42,7 @@
         android:layout_toRightOf="@id/deck_card_amount"
         android:layout_alignParentRight="true"
         android:gravity="right"
-        android:textSize="22dp"
+        android:textSize="22sp"
         android:textAppearance="?android:attr/textAppearanceListItem" />
 
     <TextView
@@ -52,6 +52,5 @@
         android:layout_marginLeft="@dimen/text_margin"
         android:text="setname"
         android:layout_below="@id/deck_X"
-
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:textAppearance="?android:attr/textAppearanceListItem" />
 </RelativeLayout>

@@ -19,7 +19,6 @@ import edu.rosehulman.fenogljc.mtgbazaar.MainActivity;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 import edu.rosehulman.fenogljc.mtgbazaar.adapters.BinderListAdapter;
 import edu.rosehulman.fenogljc.mtgbazaar.models.Binder;
-import edu.rosehulman.fenogljc.mtgbazaar.models.Deck;
 
 /**
  * A fragment representing a list of Items.
@@ -170,7 +169,5 @@ public class BinderListFragment extends Fragment implements BinderListAdapter.Ca
      */
     public interface OnBinderSelectedListener {
         void onBinderSelected(Binder binder);
-
-        void onBinderSelected(Deck deck);
     }
 }

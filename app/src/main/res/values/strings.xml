@@ -43,6 +43,8 @@
     <string name="accept_trade">Accept trade</string>
     <string name="edit_binder_dialog_title">Edit Binder Name</string>
     <string name="new_binder_dialog_title">Create New Binder</string>
+    <string name="edit_deck_dialog_title">Edit Deck Name</string>
+    <string name="new_deck_dialog_title">Create New Deck</string>
     <string name="delete_button">DELETE</string>
     <string name="delete_warning">Once you delete something, you won\'t be able to recover it. Are you sure you want to delete?</string>
     <string name="delete_dialog_title">Delete Binder</string>

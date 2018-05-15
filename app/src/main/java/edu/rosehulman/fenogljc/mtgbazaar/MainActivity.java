@@ -40,7 +40,7 @@ import edu.rosehulman.fenogljc.mtgbazaar.models.Deck;
 import edu.rosehulman.fenogljc.mtgbazaar.models.User;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, BinderListFragment.OnBinderSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, BinderListFragment.OnBinderSelectedListener, DeckListFragment.OnDeckSelectedListener {
 
     private DatabaseReference mFirebase;
     private DatabaseReference mUserData;
@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onBinderSelected(Deck deck) {
+    public void onDeckSelected(Deck deck) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container, DeckFragment.newInstance(deck));
         ft.addToBackStack("deck_list_fragment");

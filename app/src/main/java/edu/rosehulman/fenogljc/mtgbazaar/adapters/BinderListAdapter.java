@@ -106,7 +106,7 @@ public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.Vi
         void onEdit(Binder binder);
     }
 
-    private class BinderListChildEventListener implements ChildEventListener {
+    protected class BinderListChildEventListener implements ChildEventListener {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
             Binder binder = dataSnapshot.getValue(Binder.class);
