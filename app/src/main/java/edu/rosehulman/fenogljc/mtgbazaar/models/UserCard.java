@@ -39,11 +39,16 @@ public class UserCard {
     private String condition = Constants.COND_ARRAY[0];
     private String key;
     private String name;
+    private Callback mPriceCallback;
 
     public UserCard () {}
 
     public UserCard(String cardName) {
         setName(cardName);
+    }
+
+    public UserCard(Card card) {
+        setCard(card);
     }
 
     public String getSet() {
@@ -139,15 +144,10 @@ public class UserCard {
         this.name = name;
     }
 
-    public void setPriceFromInfo() {
+    public void setPriceFromInfo(Callback callback) {
         int position = card.getSets().indexOf(set);
-        String multiverseId = "";
-        if ((multiverseId = card.getMultiverseid().get(position)).equals("-1")) {
-            (new GetPriceClass()).execute("https://api.scryfall.com/cards/" + card.getSets().get(position)
-                    + "/" + card.getCollectornumber().get(position));
-        } else {
-            (new GetPriceClass()).execute("https://api.scryfall.com/cards/multiverse/" + multiverseId);
-        }
+        mPriceCallback = callback;
+        (new GetPriceClass()).execute("http://api.tcgplayer.com/pricing/product/" + card.getTcgplayerid().get(position));
     }
 
     private class GetPriceClass extends AsyncTask<String, Void, JSONObject> {
@@ -190,6 +190,7 @@ public class UserCard {
 
         @Override
         protected void onPostExecute(JSONObject j) {
+            Log.d(Constants.TAG, "onPostExecute: " + j.toString());
             try {
                 for( int x = 0; x < j.getJSONArray("results").length(); x++) {
                     JSONObject jsonObject = j.getJSONArray("results").getJSONObject(x);
@@ -222,6 +223,7 @@ public class UserCard {
                 price = 0;
             }
 
+            mPriceCallback.onCardFound(null);
         }
     }
 }
