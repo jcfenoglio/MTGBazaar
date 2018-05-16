@@ -11,6 +11,9 @@ public class Constants {
     public static final String DB_USERS_REF = "users";
     public static final String DB_CARDS_REF = "cards";
     public static final String DB_TRADES_REF = "trades";
+    public static final String DB_TRADE_LEFT = "ownUserCards";
+    public static final String DB_TRADE_RIGHT = "theirUserCards";
+
 
     public static final String LANG_EN = "English";
 

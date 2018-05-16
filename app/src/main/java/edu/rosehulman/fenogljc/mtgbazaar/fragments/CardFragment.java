@@ -34,16 +34,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.util.Locale;
 
-import edu.rosehulman.fenogljc.mtgbazaar.Callback;
 import edu.rosehulman.fenogljc.mtgbazaar.Constants;
 import edu.rosehulman.fenogljc.mtgbazaar.MainActivity;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 import edu.rosehulman.fenogljc.mtgbazaar.models.Card;
-import edu.rosehulman.fenogljc.mtgbazaar.models.UserCard;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -124,8 +121,7 @@ public class CardFragment extends Fragment {
         cardType.setText(incomingCard.getType().toString() + " - " + incomingCard.getSubtype().toString());
         cardManaCost.setText(incomingCard.getManaCost());
         cardText.setText(incomingCard.getText());
-        
-        //TODO: get image from multiverse ID
+
         (new GetImageClass()).execute("https://api.scryfall.com/cards/multiverse/" + incomingCard.getMultiverseId());
 
         //TODO: FILL SELECTOR AND PRICES

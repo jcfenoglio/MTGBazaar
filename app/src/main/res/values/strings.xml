@@ -38,8 +38,8 @@
     <string name="action_sign_out">Sign Out</string>
     <string name="pricing">Pricing:</string>
     <string name="regular">Regular</string>
-    <string name="left_add_text">Add left</string>
-    <string name="right_add_text">Add right</string>
+    <string name="left_add_text">From You</string>
+    <string name="right_add_text">From Them</string>
     <string name="accept_trade">Accept trade</string>
     <string name="edit_binder_dialog_title">Edit Binder Name</string>
     <string name="new_binder_dialog_title">Create New Binder</string>
@@ -49,9 +49,10 @@
     <string name="new_trade_dialog_title">Create New Trade</string>
     <string name="delete_button">DELETE</string>
     <string name="delete_warning">Once you delete something, you won\'t be able to recover it. Are you sure you want to delete?</string>
-    <string name="delete_dialog_title">Delete Binder</string>
+    <string name="delete_dialog_title">Delete</string>
     <string name="add_card_button">Add</string>
     <string name="edit_card_dialog_title">Edit Card Details</string>
+    <string name="delete_card_dialog_title">Delete Card</string>
 
 
 </resources>

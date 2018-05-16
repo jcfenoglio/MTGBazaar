@@ -29,9 +29,8 @@ public class EmptyMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadCardNamesFromDatabase();
         setContentView(R.layout.activity_empty_main);
-
+        loadCardNamesFromDatabase();
     }
 
     @Override

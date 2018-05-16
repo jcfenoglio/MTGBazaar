@@ -24,7 +24,6 @@ import edu.rosehulman.fenogljc.mtgbazaar.models.UserCard;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link UserCard}
- * TODO: Replace the implementation with code for your data type.
  */
 public class BinderAdapter extends RecyclerView.Adapter<BinderAdapter.ViewHolder> {
 

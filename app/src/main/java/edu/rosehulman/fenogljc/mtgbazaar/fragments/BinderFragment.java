@@ -1,7 +1,6 @@
 package edu.rosehulman.fenogljc.mtgbazaar.fragments;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -75,11 +74,6 @@ public class BinderFragment extends Fragment implements Callback {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         MainActivity context = (MainActivity) getContext();
@@ -117,7 +111,7 @@ public class BinderFragment extends Fragment implements Callback {
                 String cardName = autoComplete.getText().toString();
                 UserCard uCard = new UserCard(cardName);
                 uCard.setCardFromName(callback);
-
+                autoComplete.setText("");
             }
         });
 
@@ -194,7 +188,7 @@ public class BinderFragment extends Fragment implements Callback {
     private void showDeleteConfirmationDialog(final UserCard userCard) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        builder.setTitle(R.string.delete_dialog_title);
+        builder.setTitle(R.string.delete_card_dialog_title);
 
         View view = getLayoutInflater().inflate(R.layout.delete_confirmation_popup, null, false);
         builder.setView(view);

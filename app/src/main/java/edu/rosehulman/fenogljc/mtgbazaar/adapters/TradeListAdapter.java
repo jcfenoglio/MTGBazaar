@@ -23,7 +23,6 @@ import edu.rosehulman.fenogljc.mtgbazaar.models.Trade;
 /**
  * {@link RecyclerView.Adapter} that can display a {@link } and makes a call to the
  * specified {@link OnTradeSelectedListener}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class TradeListAdapter extends RecyclerView.Adapter<TradeListAdapter.ViewHolder> {
 

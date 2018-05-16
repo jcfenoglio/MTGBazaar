@@ -20,15 +20,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment;
@@ -136,6 +132,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        //TODO: handle fragment memory when switching between options
         Fragment switchTo = null;
         switch (item.getItemId()) {
             case R.id.nav_binders:
@@ -155,10 +152,7 @@ public class MainActivity extends AppCompatActivity
         if (switchTo != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.fragment_container, switchTo);
-            for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
-                getSupportFragmentManager().popBackStackImmediate();
-            }
-
+            ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             ft.commit();
         }
 

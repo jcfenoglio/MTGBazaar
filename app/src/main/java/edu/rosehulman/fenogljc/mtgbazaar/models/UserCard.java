@@ -6,16 +6,16 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.List;
+import java.io.Serializable;
 
 import edu.rosehulman.fenogljc.mtgbazaar.Callback;
 import edu.rosehulman.fenogljc.mtgbazaar.Constants;
 
-public class UserCard {
+public class UserCard implements Serializable {
 
+    //TODO: add condition functionality
     private Card card;
     private String set;
     private int qty = 1;
@@ -95,7 +95,6 @@ public class UserCard {
     }
 
     public void setCardFromName(final Callback callback) {
-        //TODO: find card from name
         final UserCard userCard = this;
         FirebaseDatabase.getInstance().getReference().child(Constants.DB_CARDS_REF).child(userCard.getName()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

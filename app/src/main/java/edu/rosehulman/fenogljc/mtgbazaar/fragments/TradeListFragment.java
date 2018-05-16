@@ -15,6 +15,10 @@ import android.widget.EditText;
 
 import com.google.firebase.database.DatabaseReference;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 import edu.rosehulman.fenogljc.mtgbazaar.MainActivity;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 import edu.rosehulman.fenogljc.mtgbazaar.adapters.TradeListAdapter;
@@ -114,6 +118,9 @@ public class TradeListFragment extends Fragment implements TradeListAdapter.Call
                     showDeleteConfirmationDialog(trade);
                 }
             });
+        } else {
+            SimpleDateFormat df = new SimpleDateFormat("MM.dd.yy hh:mm", Locale.getDefault());
+            editTitleText.setText(df.format(Calendar.getInstance().getTime()));
         }
 
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
