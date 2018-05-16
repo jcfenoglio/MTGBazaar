@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 import com.google.firebase.database.Exclude;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -24,8 +23,6 @@ public class Trade implements Parcelable {
 
     public Trade(String name) {
         this.name = name;
-        ownUserCards = new HashMap<>();
-        theirUserCards = new HashMap<>();
     }
 
     protected Trade(Parcel in) {
