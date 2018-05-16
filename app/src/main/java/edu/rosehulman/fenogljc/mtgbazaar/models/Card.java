@@ -21,6 +21,33 @@ public class Card implements Serializable {
     private String toughness;
     private List<String> type;
     private String key;
+    private List<String> multiverseid;
+    private List<String> tcgplayerid;
+    private List<String> collectornumber;
+
+    public List<String> getTcgplayerid() {
+        return tcgplayerid;
+    }
+
+    public void setTcgplayerid(List<String> tcgplayerid) {
+        this.tcgplayerid = tcgplayerid;
+    }
+
+    public List<String> getMultiverseid() {
+        return multiverseid;
+    }
+
+    public void setMultiverseid(List<String> multiverseid) {
+        this.multiverseid = multiverseid;
+    }
+
+    public List<String> getCollectornumber() {
+        return  collectornumber;
+    }
+
+    public void setCollectornumber(List<String> collectornumber) {
+        this.collectornumber = collectornumber;
+    }
 
     public float getCmc() {
         return cmc;
@@ -124,11 +151,6 @@ public class Card implements Serializable {
 
     public void setKey(String key) {
         this.key = key;
-    }
-
-    @Exclude
-    public String getMultiverseId() {
-        return String.valueOf(409574);
     }
 
     public void setValues(Card newCard) {

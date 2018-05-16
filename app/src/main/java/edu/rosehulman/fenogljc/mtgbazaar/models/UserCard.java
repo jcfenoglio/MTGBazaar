@@ -1,5 +1,6 @@
 package edu.rosehulman.fenogljc.mtgbazaar.models;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -8,10 +9,25 @@ import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
 import java.io.Serializable;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.List;
+import java.util.Locale;
 
 import edu.rosehulman.fenogljc.mtgbazaar.Callback;
 import edu.rosehulman.fenogljc.mtgbazaar.Constants;
+import edu.rosehulman.fenogljc.mtgbazaar.fragments.CardFragment;
 
 public class UserCard implements Serializable {
 
@@ -25,11 +41,16 @@ public class UserCard implements Serializable {
     private String condition = Constants.COND_ARRAY[0];
     private String key;
     private String name;
+    private Callback mPriceCallback;
 
     public UserCard () {}
 
     public UserCard(String cardName) {
         setName(cardName);
+    }
+
+    public UserCard(Card card) {
+        setCard(card);
     }
 
     public String getSet() {
@@ -122,5 +143,88 @@ public class UserCard implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setPriceFromInfo(Callback callback) {
+        int position = card.getSets().indexOf(set);
+        mPriceCallback = callback;
+        (new GetPriceClass()).execute("http://api.tcgplayer.com/pricing/product/" + card.getTcgplayerid().get(position));
+    }
+
+    private class GetPriceClass extends AsyncTask<String, Void, JSONObject> {
+
+        @Override
+        protected JSONObject doInBackground(String... urlStrings) {
+            // http://api.tcgplayer.com/pricing/product/
+            String urlString = urlStrings[0];
+            Log.d("PICS", "doInBackground: " + urlString);
+            URL url;
+            JSONObject json = null;
+            try {
+                // Fetch the card info from scryfall
+                url = new URL(urlString);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestProperty("Authorization", "bearer " + Constants.TCGPLAYER_BEARER_TOKEN);
+                InputStream is = urlConnection.getInputStream();
+                BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+                String jsonText = readAll(rd);
+                json = new JSONObject(jsonText);
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return json;
+        }
+
+        private String readAll(BufferedReader rd) throws IOException {
+            StringBuilder sb = new StringBuilder();
+            int cp;
+            while ((cp = rd.read()) != -1) {
+                sb.append((char) cp);
+            }
+            return sb.toString();
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject j) {
+            Log.d(Constants.TAG, "onPostExecute: " + j.toString());
+            try {
+                for( int x = 0; x < j.getJSONArray("results").length(); x++) {
+                    JSONObject jsonObject = j.getJSONArray("results").getJSONObject(x);
+                    if (jsonObject.getString("subTypeName").equals("Foil") && foil) {
+                        try {
+                            double foilPrice = jsonObject.getDouble("marketPrice");
+                            Log.d(Constants.TAG, "onPostExecute: " + foilPrice);
+                            price = (float) foilPrice;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            price = 0;
+                        } finally {
+                            break;
+                        }
+                    } else if (jsonObject.getString("subTypeName").equals("Normal") && !foil) {
+                        try {
+                            double regularPrice = jsonObject.getDouble("marketPrice");
+                            Log.d(Constants.TAG, "onPostExecute: " + regularPrice);
+                            price = (float) regularPrice;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            price = 0;
+                        } finally {
+                            break;
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                price = 0;
+            }
+
+            mPriceCallback.onCardFound(null);
+        }
     }
 }

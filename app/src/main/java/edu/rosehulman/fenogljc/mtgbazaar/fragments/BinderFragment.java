@@ -166,17 +166,29 @@ public class BinderFragment extends Fragment implements Callback {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // make a new card
-                UserCard newCard = new UserCard();
+                final UserCard newCard = new UserCard(userCard.getCard());
 
                 // set all the info for that card
                 newCard.setFoil(foilCheckBox.isChecked());
-                newCard.setPrice(Float.parseFloat(cardPriceText.getText().toString()));
+                //newCard.setPrice(Float.parseFloat(cardPriceText.getText().toString()));
                 newCard.setQty(Integer.parseInt(cardQtyText.getText().toString()));
                 newCard.setSet(setSpinner.getSelectedItem().toString());
                 newCard.setLanguage(langSpinner.getSelectedItem().toString());
 
-                // update original card using that card
-                mAdapter.update(userCard, newCard);
+                newCard.setPriceFromInfo(new Callback() {
+                    @Override
+                    public void onEdit(UserCard card) {
+
+                    }
+
+                    @Override
+                    public void onCardFound(UserCard card) {
+                        // update original card using that card
+                        mAdapter.update(userCard, newCard);
+                    }
+                });
+
+
             }
         });
         builder.setNegativeButton(android.R.string.cancel, null);
@@ -206,10 +218,20 @@ public class BinderFragment extends Fragment implements Callback {
     }
 
     @Override
-    public void onCardFound(UserCard card) {
+    public void onCardFound(final UserCard card) {
         Log.d(Constants.TAG, "onClick: " + card.getName());
         if(card.getName() != null) {
-            mAdapter.add(card);
+            card.setPriceFromInfo(new Callback() {
+                @Override
+                public void onEdit(UserCard card) {
+
+                }
+
+                @Override
+                public void onCardFound(UserCard not) {
+                    mAdapter.add(card);
+                }
+            });
         }
     }
 }
