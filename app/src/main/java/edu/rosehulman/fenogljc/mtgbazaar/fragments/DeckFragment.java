@@ -170,7 +170,7 @@ public class DeckFragment extends Fragment implements Callback {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // make a new card
-                final UserCard newCard = new UserCard();
+                final UserCard newCard = new UserCard(userCard.getCard());
 
                 // set all the info for that card
                 newCard.setFoil(foilCheckBox.isChecked());
