@@ -106,7 +106,7 @@ public class DeckListFragment extends Fragment implements DeckListAdapter.Callba
         builder.setView(view);
         final EditText editTitleText = view.findViewById(R.id.add_deck_name);
 
-        final Spinner formatSpinner = view.findViewById(R.id.edit_card_set);
+        final Spinner formatSpinner = view.findViewById(R.id.deck_format);
         ArrayAdapter<String> formatAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, Constants.FORMAT_ARRAY);
         formatSpinner.setAdapter(formatAdapter);
 
