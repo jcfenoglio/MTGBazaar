@@ -190,7 +190,6 @@ public class UserCard {
 
         @Override
         protected void onPostExecute(JSONObject j) {
-            Log.d(Constants.TAG, "onPostExecute: " + j.toString());
             try {
                 for( int x = 0; x < j.getJSONArray("results").length(); x++) {
                     JSONObject jsonObject = j.getJSONArray("results").getJSONObject(x);
