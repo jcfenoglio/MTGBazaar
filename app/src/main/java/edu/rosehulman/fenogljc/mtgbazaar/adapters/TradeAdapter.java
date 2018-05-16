@@ -34,7 +34,7 @@ public class TradeAdapter extends RecyclerView.Adapter<TradeAdapter.ViewHolder> 
             mTrade = trade;
             mSide = side;
             mCards = new ArrayList<>();
-            mRef = ref.child(Constants.DB_CARDS_REF).child(side);
+            mRef = ref;
             mRef.addChildEventListener(new TradeChildEventListener());
             mCallback = callback;
         }

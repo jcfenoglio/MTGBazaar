@@ -9,7 +9,7 @@
         android:id="@+id/card_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/card_search_hint"
+        android:hint="@string/card_search_hint"
         android:layout_weight=".1"/>
 
     <LinearLayout
