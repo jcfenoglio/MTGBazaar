@@ -1,5 +1,6 @@
 package edu.rosehulman.fenogljc.mtgbazaar.models;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -9,7 +10,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.List;
+import java.util.Locale;
 
 import edu.rosehulman.fenogljc.mtgbazaar.Callback;
 import edu.rosehulman.fenogljc.mtgbazaar.Constants;
@@ -123,5 +136,71 @@ public class UserCard {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void getPrices() {
+
+    }
+
+    private class GetPriceClass extends AsyncTask<String, Void, JSONObject> {
+
+        @Override
+        protected JSONObject doInBackground(String... urlStrings) {
+            // http://api.tcgplayer.com/pricing/product/
+            String urlString = urlStrings[0];
+            Log.d("PICS", "doInBackground: " + urlString);
+            URL url;
+            JSONObject json = null;
+            try {
+                // Fetch the card info from scryfall
+                url = new URL(urlString);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestProperty("Authorization", "bearer H_mieexY5sEtZh70XUm-VwQNLqwNe2RShoAQvInduyKPx4zhAopEdlpCObd2wFZCe7OSsGxN0Wzllo1DSNJR1JPEVegi0h94u_5wXIFCt6-xEQT4tR-QwVAhl0GrFrHN09AHmp3b93gIwvSTYQ2bx_j3a-WSHNzT5JvWjhSBUCPQ1lqUOARmq9d_Dr3pjtmLE6hfa6wBTPV_e3tpcZxGN4JK9iAsu1HBLHX_0zHC8XLKQI9GYUmaE0GZVEWU4_H4mutxgp4563Ktp16_7jPlk45HVmtfxxYn6uwC2Rt9EAajNo-k7TTwhrGyrdrS_akbGVbZtXY0ouZw-KbQ3nlE3VWY814");
+                InputStream is = urlConnection.getInputStream();
+                BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+                String jsonText = readAll(rd);
+                json = new JSONObject(jsonText);
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return json;
+        }
+
+        private String readAll(BufferedReader rd) throws IOException {
+            StringBuilder sb = new StringBuilder();
+            int cp;
+            while ((cp = rd.read()) != -1) {
+                sb.append((char) cp);
+            }
+            return sb.toString();
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject j) {
+            Log.d(Constants.TAG, "onPostExecute: " + j.toString());
+            try {
+                //TODO: Determine which is foil and which is not
+                double foilPrice = j.getJSONArray("results").getJSONObject(0).getDouble("marketPrice");
+                Log.d(Constants.TAG, "onPostExecute: " + foilPrice);
+                //mFoilPrice.setText(String.format(Locale.getDefault(), "$%.2f", foilPrice));
+            } catch (Exception e) {
+                e.printStackTrace();
+                //mFoilPrice.setText("N/A");
+            }
+            try {
+                double regPrice = j.getJSONArray("results").getJSONObject(1).getDouble("marketPrice");
+                Log.d(Constants.TAG, "onPostExecute: " + regPrice);
+                //mRegPrice.setText(String.format(Locale.getDefault(), "$%.2f", regPrice));
+            } catch (Exception e) {
+                e.printStackTrace();
+                //mRegPrice.setText("N/A");
+            }
+
+        }
     }
 }
