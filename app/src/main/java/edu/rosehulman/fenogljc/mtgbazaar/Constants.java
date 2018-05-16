@@ -15,6 +15,9 @@ public class Constants {
     public static final String[] FORMAT_ARRAY = {"Standard", "Modern", "Legacy", "Vintage", "Pauper", "Commander"};
     public static final String TCGPLAYER_BEARER_TOKEN = "H_mieexY5sEtZh70XUm-VwQNLqwNe2RShoAQvInduyKPx4zhAopEdlpCObd2wFZCe7OSsGxN0Wzllo1DSNJR1JPEVegi0h94u_5wXIFCt6-xEQT4tR-QwVAhl0GrFrHN09AHmp3b93gIwvSTYQ2bx_j3a-WSHNzT5JvWjhSBUCPQ1lqUOARmq9d_Dr3pjtmLE6hfa6wBTPV_e3tpcZxGN4JK9iAsu1HBLHX_0zHC8XLKQI9GYUmaE0GZVEWU4_H4mutxgp4563Ktp16_7jPlk45HVmtfxxYn6uwC2Rt9EAajNo-k7TTwhrGyrdrS_akbGVbZtXY0ouZw-KbQ3nlE3VWY814";
 
+    public static final String PREFS = "PREFS";
+    public static final String TRADE_BINDER_STORAGE_ID = "TRADE_BINDER_STORAGE";
+
     private static List<String> CARD_NAMES;
 
     public static List<String> getCardNames() {
