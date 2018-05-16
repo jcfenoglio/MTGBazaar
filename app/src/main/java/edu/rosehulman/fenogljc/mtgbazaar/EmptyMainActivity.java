@@ -29,6 +29,7 @@ public class EmptyMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         loadCardNamesFromDatabase();
         setContentView(R.layout.activity_empty_main);
         //TODO: CHECK IF TCGPLAYER BEARER TOKEN IS EXPIRED, IF IT IS, GENERATE A NEW ONE
