@@ -126,6 +126,8 @@ public class BinderFragment extends Fragment implements Callback {
         showEditCardDialog(userCard);
     }
 
+    // TODO: moving cards between binders
+
     private void showEditCardDialog(final UserCard userCard) {
         Log.d(Constants.TAG, "showEditCardDialog: called");
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());

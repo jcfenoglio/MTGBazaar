@@ -31,6 +31,7 @@ import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.CardFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckListFragment;
+import edu.rosehulman.fenogljc.mtgbazaar.fragments.TradeFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.TradeListFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.models.Binder;
 import edu.rosehulman.fenogljc.mtgbazaar.models.Deck;
@@ -179,9 +180,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onTradeSelected(Trade item) {
+    public void onTradeSelected(Trade trade) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-       // ft.replace(R.id.fragment_container, TradeFragment.newInstance(trade));
+        ft.replace(R.id.fragment_container, TradeFragment.newInstance(trade));
         ft.addToBackStack("deck_list_fragment");
         ft.commit();
     }

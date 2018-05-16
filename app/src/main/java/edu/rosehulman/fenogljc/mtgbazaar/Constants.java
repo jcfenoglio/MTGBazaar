@@ -13,6 +13,7 @@ public class Constants {
     public static final String DB_TRADES_REF = "trades";
     public static final String DB_TRADE_LEFT = "ownUserCards";
     public static final String DB_TRADE_RIGHT = "theirUserCards";
+    public static final String DB_NAME_REF = "name";
 
 
     public static final String LANG_EN = "English";

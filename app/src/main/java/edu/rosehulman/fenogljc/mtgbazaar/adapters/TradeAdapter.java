@@ -28,9 +28,9 @@ public class TradeAdapter extends RecyclerView.Adapter<TradeAdapter.ViewHolder> 
         private String mSide;
         private List<UserCard> mCards;
         private DatabaseReference mRef;
-        private Callback mCallback;
+        private TradeCallback mCallback;
 
-        public TradeAdapter(Callback callback, DatabaseReference ref, Trade trade, String side) {
+        public TradeAdapter(TradeCallback callback, DatabaseReference ref, Trade trade, String side) {
             mTrade = trade;
             mSide = side;
             mCards = new ArrayList<>();
@@ -92,8 +92,13 @@ public class TradeAdapter extends RecyclerView.Adapter<TradeAdapter.ViewHolder> 
         @Override
         public void onClick(View v) {
             UserCard userCard = mCards.get(getAdapterPosition());
-            mCallback.onEdit(userCard);
+            mCallback.onEdit(userCard, mSide);
         }
+    }
+
+    public interface TradeCallback extends Callback{
+        void onEdit(UserCard card, String side);
+        void onCardFound(UserCard card, String side);
     }
 
     private class TradeChildEventListener implements ChildEventListener {
@@ -119,7 +124,6 @@ public class TradeAdapter extends RecyclerView.Adapter<TradeAdapter.ViewHolder> 
                 }
             });
         }
-
 
 
         @Override

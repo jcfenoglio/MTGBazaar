@@ -1,6 +1,8 @@
 package edu.rosehulman.fenogljc.mtgbazaar.models;
 
 import android.os.AsyncTask;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -9,8 +11,6 @@ import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-
-import java.io.Serializable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,18 +18,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.List;
-import java.util.Locale;
 
 import edu.rosehulman.fenogljc.mtgbazaar.Callback;
 import edu.rosehulman.fenogljc.mtgbazaar.Constants;
-import edu.rosehulman.fenogljc.mtgbazaar.fragments.CardFragment;
+import edu.rosehulman.fenogljc.mtgbazaar.adapters.TradeAdapter.TradeCallback;
 
-public class UserCard implements Serializable {
+public class UserCard implements Serializable, Parcelable {
 
     //TODO: add condition functionality
     private Card card;
@@ -52,6 +51,29 @@ public class UserCard implements Serializable {
     public UserCard(Card card) {
         setCard(card);
     }
+
+    protected UserCard(Parcel in) {
+        set = in.readString();
+        qty = in.readInt();
+        price = in.readFloat();
+        language = in.readString();
+        foil = in.readByte() != 0;
+        condition = in.readString();
+        key = in.readString();
+        name = in.readString();
+    }
+
+    public static final Creator<UserCard> CREATOR = new Creator<UserCard>() {
+        @Override
+        public UserCard createFromParcel(Parcel in) {
+            return new UserCard(in);
+        }
+
+        @Override
+        public UserCard[] newArray(int size) {
+            return new UserCard[size];
+        }
+    };
 
     public String getSet() {
         return set;
@@ -89,6 +111,14 @@ public class UserCard implements Serializable {
         this.foil = foil;
     }
 
+    public String getCondition() {
+        return this.condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
+
     @Exclude
     public String getKey() {
         return key;
@@ -113,6 +143,7 @@ public class UserCard implements Serializable {
         setPrice(newUserCard.getPrice());
         setLanguage(newUserCard.getLanguage());
         setFoil(newUserCard.isFoil());
+        setCondition(newUserCard.getCondition());
     }
 
     public void setCardFromName(final Callback callback) {
@@ -137,6 +168,28 @@ public class UserCard implements Serializable {
         });
     }
 
+    public void setCardFromName(final TradeCallback callback, final String side) {
+        final UserCard userCard = this;
+        FirebaseDatabase.getInstance().getReference().child(Constants.DB_CARDS_REF).child(userCard.getName()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Card incomingCard = dataSnapshot.getValue(Card.class);
+                incomingCard.setKey(dataSnapshot.getKey());
+                userCard.setCard(incomingCard);
+                if (userCard.getSet() == null) {
+                    userCard.setSet(userCard.getCard().getSets().get(0));
+                }
+                Log.d(Constants.TAG, "onDataChange: " + getName());
+                callback.onCardFound(userCard, side);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public String getName() {
         return name;
     }
@@ -149,6 +202,23 @@ public class UserCard implements Serializable {
         int position = card.getSets().indexOf(set);
         mPriceCallback = callback;
         (new GetPriceClass()).execute("http://api.tcgplayer.com/pricing/product/" + card.getTcgplayerid().get(position));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(set);
+        dest.writeInt(qty);
+        dest.writeFloat(price);
+        dest.writeString(language);
+        dest.writeByte((byte) (foil ? 1 : 0));
+        dest.writeString(condition);
+        dest.writeString(key);
+        dest.writeString(name);
     }
 
     private class GetPriceClass extends AsyncTask<String, Void, JSONObject> {
