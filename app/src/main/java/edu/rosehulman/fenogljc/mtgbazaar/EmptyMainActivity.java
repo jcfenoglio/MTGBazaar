@@ -31,7 +31,7 @@ public class EmptyMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         loadCardNamesFromDatabase();
         setContentView(R.layout.activity_empty_main);
-
+        //TODO: CHECK IF TCGPLAYER BEARER TOKEN IS EXPIRED, IF IT IS, GENERATE A NEW ONE
     }
 
     @Override
