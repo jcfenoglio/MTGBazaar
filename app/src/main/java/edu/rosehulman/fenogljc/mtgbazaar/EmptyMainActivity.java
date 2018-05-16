@@ -24,12 +24,16 @@ public class EmptyMainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private static final int RC_SIGN_IN = 349;
+    private boolean persistanceEnabled = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        if (!Constants.getPersistanceEnabled()) {
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+            Constants.setPersistanceEnabled(true);
+        }
         loadCardNamesFromDatabase();
         setContentView(R.layout.activity_empty_main);
         //TODO: CHECK IF TCGPLAYER BEARER TOKEN IS EXPIRED, IF IT IS, GENERATE A NEW ONE

@@ -41,6 +41,7 @@ public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.Vi
     }
 
     public void remove(Binder binder) {
+        Log.d(Constants.TAG, "remove: " + binder.getKey());
         mRefBinders.child(binder.getKey()).removeValue();
     }
 

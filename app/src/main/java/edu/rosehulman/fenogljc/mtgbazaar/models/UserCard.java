@@ -147,47 +147,51 @@ public class UserCard implements Serializable, Parcelable {
     }
 
     public void setCardFromName(final Callback callback) {
-        final UserCard userCard = this;
-        FirebaseDatabase.getInstance().getReference().child(Constants.DB_CARDS_REF).child(userCard.getName()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Card incomingCard = dataSnapshot.getValue(Card.class);
-                incomingCard.setKey(dataSnapshot.getKey());
-                userCard.setCard(incomingCard);
-                if (userCard.getSet() == null) {
-                    userCard.setSet(userCard.getCard().getSets().get(0));
+        if(!name.equals("")) {
+            final UserCard userCard = this;
+            FirebaseDatabase.getInstance().getReference().child(Constants.DB_CARDS_REF).child(userCard.getName()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Card incomingCard = dataSnapshot.getValue(Card.class);
+                    incomingCard.setKey(dataSnapshot.getKey());
+                    userCard.setCard(incomingCard);
+                    if (userCard.getSet() == null) {
+                        userCard.setSet(userCard.getCard().getSets().get(0));
+                    }
+                    Log.d(Constants.TAG, "onDataChange: " + getName());
+                    callback.onCardFound(userCard);
                 }
-                Log.d(Constants.TAG, "onDataChange: " + getName());
-                callback.onCardFound(userCard);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     public void setCardFromName(final TradeCallback callback, final String side) {
-        final UserCard userCard = this;
-        FirebaseDatabase.getInstance().getReference().child(Constants.DB_CARDS_REF).child(userCard.getName()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Card incomingCard = dataSnapshot.getValue(Card.class);
-                incomingCard.setKey(dataSnapshot.getKey());
-                userCard.setCard(incomingCard);
-                if (userCard.getSet() == null) {
-                    userCard.setSet(userCard.getCard().getSets().get(0));
+        if(!name.equals("")) {
+            final UserCard userCard = this;
+            FirebaseDatabase.getInstance().getReference().child(Constants.DB_CARDS_REF).child(userCard.getName()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Card incomingCard = dataSnapshot.getValue(Card.class);
+                    incomingCard.setKey(dataSnapshot.getKey());
+                    userCard.setCard(incomingCard);
+                    if (userCard.getSet() == null) {
+                        userCard.setSet(userCard.getCard().getSets().get(0));
+                    }
+                    Log.d(Constants.TAG, "onDataChange: " + getName());
+                    callback.onCardFound(userCard, side);
                 }
-                Log.d(Constants.TAG, "onDataChange: " + getName());
-                callback.onCardFound(userCard, side);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     public String getName() {

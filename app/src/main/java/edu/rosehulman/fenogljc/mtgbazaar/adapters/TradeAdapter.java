@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -114,6 +115,12 @@ public class TradeAdapter extends RecyclerView.Adapter<TradeAdapter.ViewHolder> 
 
                 @Override
                 public void onCardFound(UserCard card) {
+                    if(mTrade.getOwnUserCards() == null) {
+                        mTrade.setOwnUserCards(new HashMap<String, UserCard>());
+                    }
+                    if(mTrade.getTheirUserCards() == null) {
+                        mTrade.setTheirUserCards(new HashMap<String, UserCard>());
+                    }
                     if (mSide == Constants.DB_TRADE_LEFT) {
                         mTrade.getOwnUserCards().put(card.getKey(), card);
                     }else if (mSide == Constants.DB_TRADE_RIGHT) {

@@ -14,6 +14,8 @@ public class Constants {
     public static final String DB_TRADE_LEFT = "ownUserCards";
     public static final String DB_TRADE_RIGHT = "theirUserCards";
     public static final String DB_NAME_REF = "name";
+    
+    private static boolean persistanceEnabled = false;
 
 
     public static final String LANG_EN = "English";
@@ -36,5 +38,13 @@ public class Constants {
 
     public static void setCardNames(List<String> cardNames) {
         CARD_NAMES = cardNames;
+    }
+
+    public static boolean getPersistanceEnabled() {
+        return persistanceEnabled;
+    }
+
+    public static void setPersistanceEnabled(boolean persistanceEnabled) {
+        Constants.persistanceEnabled = persistanceEnabled;
     }
 }

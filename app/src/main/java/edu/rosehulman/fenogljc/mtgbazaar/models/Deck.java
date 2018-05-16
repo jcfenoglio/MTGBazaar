@@ -78,7 +78,6 @@ public class Deck implements Parcelable {
     public void setValues(Deck updatedDeck) {
         setName(updatedDeck.getName());
         setFormat(updatedDeck.getFormat());
-        setKey(updatedDeck.getKey());
     }
 
 }

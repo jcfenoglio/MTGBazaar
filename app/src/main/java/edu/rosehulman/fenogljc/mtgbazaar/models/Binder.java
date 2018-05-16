@@ -77,6 +77,6 @@ public class Binder implements Parcelable {
 
     public void setValues(Binder updatedBinder) {
         setName(updatedBinder.getName());
-        setKey(updatedBinder.getKey());
+        setCards(updatedBinder.getCards());
     }
 }
