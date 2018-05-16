@@ -80,9 +80,9 @@ public class TradeFragment extends Fragment implements TradeAdapter.TradeCallbac
 
         final String binderKey = SharedPreferencesUtils.getTradeBinder(context);
 
-        View view = inflater.inflate(R.layout.fragment_binder, container, false);
+        View view = inflater.inflate(R.layout.fragment_trade, container, false);
 
-        final AutoCompleteTextView autoComplete = view.findViewById(R.id.binder_card_search);
+        final AutoCompleteTextView autoComplete = view.findViewById(R.id.card_search);
         final ArrayAdapter myAdapter = new ArrayAdapter<>(context,
                 android.R.layout.simple_dropdown_item_1line, mCardNameArray);
         autoComplete.setAdapter(myAdapter);
@@ -94,15 +94,18 @@ public class TradeFragment extends Fragment implements TradeAdapter.TradeCallbac
 //            }
 //        });
 
-        final RecyclerView recyclerView = view.findViewById(R.id.binder_card_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        final RecyclerView leftRecyclerView = view.findViewById(R.id.left_card_list);
+        leftRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+        final RecyclerView rightRecyclerView = view.findViewById(R.id.right_card_list);
+        rightRecyclerView.setLayoutManager(new LinearLayoutManager(context));
 
         DatabaseReference mTradeData = context.getmUserData().child(Constants.DB_TRADES_REF).child(mTrade.getKey());
 
         mLeftAdapter = new TradeAdapter(this, mTradeData.child(Constants.DB_TRADE_LEFT), mTrade, Constants.DB_TRADE_LEFT);
-        recyclerView.setAdapter(mLeftAdapter);
+        leftRecyclerView.setAdapter(mLeftAdapter);
         mRightAdapter = new TradeAdapter(this, mTradeData.child(Constants.DB_TRADE_RIGHT), mTrade, Constants.DB_TRADE_RIGHT);
-        recyclerView.setAdapter(mRightAdapter);
+        rightRecyclerView.setAdapter(mRightAdapter);
 
         final TradeCallback callback = this;
 
