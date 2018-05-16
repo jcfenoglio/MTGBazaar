@@ -26,6 +26,7 @@ import java.util.Locale;
 
 import edu.rosehulman.fenogljc.mtgbazaar.Callback;
 import edu.rosehulman.fenogljc.mtgbazaar.Constants;
+import edu.rosehulman.fenogljc.mtgbazaar.fragments.CardFragment;
 
 public class UserCard {
 
@@ -138,8 +139,15 @@ public class UserCard {
         this.name = name;
     }
 
-    public void getPrices() {
-
+    public void setPriceFromInfo() {
+        int position = card.getSets().indexOf(set);
+        String multiverseId = "";
+        if ((multiverseId = card.getMultiverseid().get(position)).equals("-1")) {
+            (new GetPriceClass()).execute("https://api.scryfall.com/cards/" + card.getSets().get(position)
+                    + "/" + card.getCollectornumber().get(position));
+        } else {
+            (new GetPriceClass()).execute("https://api.scryfall.com/cards/multiverse/" + multiverseId);
+        }
     }
 
     private class GetPriceClass extends AsyncTask<String, Void, JSONObject> {
@@ -155,7 +163,7 @@ public class UserCard {
                 // Fetch the card info from scryfall
                 url = new URL(urlString);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestProperty("Authorization", "bearer H_mieexY5sEtZh70XUm-VwQNLqwNe2RShoAQvInduyKPx4zhAopEdlpCObd2wFZCe7OSsGxN0Wzllo1DSNJR1JPEVegi0h94u_5wXIFCt6-xEQT4tR-QwVAhl0GrFrHN09AHmp3b93gIwvSTYQ2bx_j3a-WSHNzT5JvWjhSBUCPQ1lqUOARmq9d_Dr3pjtmLE6hfa6wBTPV_e3tpcZxGN4JK9iAsu1HBLHX_0zHC8XLKQI9GYUmaE0GZVEWU4_H4mutxgp4563Ktp16_7jPlk45HVmtfxxYn6uwC2Rt9EAajNo-k7TTwhrGyrdrS_akbGVbZtXY0ouZw-KbQ3nlE3VWY814");
+                urlConnection.setRequestProperty("Authorization", "bearer " + Constants.TCGPLAYER_BEARER_TOKEN);
                 InputStream is = urlConnection.getInputStream();
                 BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
                 String jsonText = readAll(rd);
@@ -182,23 +190,36 @@ public class UserCard {
 
         @Override
         protected void onPostExecute(JSONObject j) {
-            Log.d(Constants.TAG, "onPostExecute: " + j.toString());
             try {
-                //TODO: Determine which is foil and which is not
-                double foilPrice = j.getJSONArray("results").getJSONObject(0).getDouble("marketPrice");
-                Log.d(Constants.TAG, "onPostExecute: " + foilPrice);
-                //mFoilPrice.setText(String.format(Locale.getDefault(), "$%.2f", foilPrice));
+                for( int x = 0; x < j.getJSONArray("results").length(); x++) {
+                    JSONObject jsonObject = j.getJSONArray("results").getJSONObject(x);
+                    if (jsonObject.getString("subTypeName").equals("Foil") && foil) {
+                        try {
+                            double foilPrice = jsonObject.getDouble("marketPrice");
+                            Log.d(Constants.TAG, "onPostExecute: " + foilPrice);
+                            price = (float) foilPrice;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            price = 0;
+                        } finally {
+                            break;
+                        }
+                    } else if (jsonObject.getString("subTypeName").equals("Normal") && !foil) {
+                        try {
+                            double regularPrice = jsonObject.getDouble("marketPrice");
+                            Log.d(Constants.TAG, "onPostExecute: " + regularPrice);
+                            price = (float) regularPrice;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            price = 0;
+                        } finally {
+                            break;
+                        }
+                    }
+                }
             } catch (Exception e) {
                 e.printStackTrace();
-                //mFoilPrice.setText("N/A");
-            }
-            try {
-                double regPrice = j.getJSONArray("results").getJSONObject(1).getDouble("marketPrice");
-                Log.d(Constants.TAG, "onPostExecute: " + regPrice);
-                //mRegPrice.setText(String.format(Locale.getDefault(), "$%.2f", regPrice));
-            } catch (Exception e) {
-                e.printStackTrace();
-                //mRegPrice.setText("N/A");
+                price = 0;
             }
 
         }
