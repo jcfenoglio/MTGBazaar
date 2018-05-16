@@ -11,7 +11,7 @@
         android:layout_margin="@dimen/text_margin"
         android:text="cardname"
         android:textSize="11dp"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:textAppearance="?android:attr/textAppearanceListItem" />
 
     <TextView
         android:id="@+id/trade_X"
@@ -21,7 +21,7 @@
         android:text="X"
         android:layout_toRightOf="@id/trade_card_name"
         android:textSize="11dp"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:textAppearance="?android:attr/textAppearanceListItem" />
 
     <TextView
         android:id="@+id/trade_card_amount"
@@ -31,19 +31,19 @@
         android:text="0"
         android:layout_toRightOf="@id/trade_X"
         android:textSize="11dp"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:textAppearance="?android:attr/textAppearanceListItem" />
 
     <TextView
         android:id="@+id/trade_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
-        android:text="$0.00"
+        android:text="$%.2f"
         android:layout_toRightOf="@id/trade_card_amount"
         android:layout_alignParentRight="true"
         android:gravity="right"
         android:textSize="11dp"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:textAppearance="?android:attr/textAppearanceListItem" />
 
     <TextView
         android:id="@+id/trade_set_name"
@@ -53,5 +53,5 @@
         android:text="setname"
         android:layout_below="@id/trade_X"
         android:textSize="10dp"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:textAppearance="?android:attr/textAppearanceListItem" />
 </RelativeLayout>

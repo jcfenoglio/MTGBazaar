@@ -20,27 +20,25 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.CardFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckListFragment;
+import edu.rosehulman.fenogljc.mtgbazaar.fragments.TradeListFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.models.Binder;
 import edu.rosehulman.fenogljc.mtgbazaar.models.Deck;
+import edu.rosehulman.fenogljc.mtgbazaar.models.Trade;
 import edu.rosehulman.fenogljc.mtgbazaar.models.User;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, BinderListFragment.OnBinderSelectedListener, DeckListFragment.OnDeckSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, BinderListFragment.OnBinderSelectedListener, DeckListFragment.OnDeckSelectedListener, TradeListFragment.OnTradeSelectedListener {
 
     private DatabaseReference mFirebase;
     private DatabaseReference mUserData;
@@ -134,6 +132,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        //TODO: handle fragment memory when switching between options
         Fragment switchTo = null;
         switch (item.getItemId()) {
             case R.id.nav_binders:
@@ -143,7 +142,7 @@ public class MainActivity extends AppCompatActivity
                 switchTo = new DeckListFragment();
                 break;
             case R.id.nav_trade:
-//                switchTo = new TradeListFragment();
+                switchTo = new TradeListFragment();
                 break;
             case R.id.nav_search:
                 switchTo = new CardFragment();
@@ -153,10 +152,7 @@ public class MainActivity extends AppCompatActivity
         if (switchTo != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.fragment_container, switchTo);
-            for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
-                getSupportFragmentManager().popBackStackImmediate();
-            }
-
+            ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             ft.commit();
         }
 
@@ -178,6 +174,14 @@ public class MainActivity extends AppCompatActivity
     public void onDeckSelected(Deck deck) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container, DeckFragment.newInstance(deck));
+        ft.addToBackStack("deck_list_fragment");
+        ft.commit();
+    }
+
+    @Override
+    public void onTradeSelected(Trade item) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+       // ft.replace(R.id.fragment_container, TradeFragment.newInstance(trade));
         ft.addToBackStack("deck_list_fragment");
         ft.commit();
     }

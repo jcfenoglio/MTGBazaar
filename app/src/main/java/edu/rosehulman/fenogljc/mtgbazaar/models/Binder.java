@@ -5,10 +5,11 @@ import android.os.Parcelable;
 
 import com.google.firebase.database.Exclude;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class Binder implements Parcelable {
 
+    private Map<String, UserCard> cards;
     private String name;
     private String key;
 
@@ -20,6 +21,7 @@ public class Binder implements Parcelable {
     }
 
     protected Binder(Parcel in) {
+        in.readMap(cards, UserCard.class.getClassLoader());
         name = in.readString();
         key = in.readString();
     }
@@ -35,6 +37,14 @@ public class Binder implements Parcelable {
             return new Binder[size];
         }
     };
+
+    public Map<String, UserCard> getCards() {
+        return cards;
+    }
+
+    public void setCards(Map<String, UserCard> cards) {
+        this.cards = cards;
+    }
 
     public String getName() {
         return this.name;
@@ -60,6 +70,7 @@ public class Binder implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeMap(cards);
         dest.writeString(name);
         dest.writeString(key);
     }

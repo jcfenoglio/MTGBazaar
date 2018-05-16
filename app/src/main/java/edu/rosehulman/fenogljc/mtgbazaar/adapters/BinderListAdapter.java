@@ -54,6 +54,7 @@ public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.Vi
     }
 
     public void addDBListener() {
+        mBinders.clear();
         mRefBinders.addChildEventListener(mDBListener);
     }
 

@@ -1,7 +1,6 @@
 package edu.rosehulman.fenogljc.mtgbazaar.fragments;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,35 +11,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.NumberPicker;
 import android.widget.Spinner;
-import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import edu.rosehulman.fenogljc.mtgbazaar.Callback;
 import edu.rosehulman.fenogljc.mtgbazaar.Constants;
 import edu.rosehulman.fenogljc.mtgbazaar.MainActivity;
+import edu.rosehulman.fenogljc.mtgbazaar.R;
 import edu.rosehulman.fenogljc.mtgbazaar.adapters.BinderAdapter;
 import edu.rosehulman.fenogljc.mtgbazaar.models.Binder;
-import edu.rosehulman.fenogljc.mtgbazaar.models.Card;
 import edu.rosehulman.fenogljc.mtgbazaar.models.UserCard;
-import edu.rosehulman.fenogljc.mtgbazaar.R;
 
 /**
  * A fragment representing a list of Items.
@@ -84,11 +74,6 @@ public class BinderFragment extends Fragment implements Callback {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         MainActivity context = (MainActivity) getContext();
@@ -115,7 +100,7 @@ public class BinderFragment extends Fragment implements Callback {
 
         DatabaseReference mUserData = context.getmUserData().child(Constants.DB_BINDERS_REF).child(mBinder.getKey());
 
-        mAdapter = new BinderAdapter(this, mUserData);
+        mAdapter = new BinderAdapter(this, mUserData, mBinder);
         recyclerView.setAdapter(mAdapter);
 
         Button addButton = view.findViewById(R.id.add_card_button);
@@ -126,7 +111,7 @@ public class BinderFragment extends Fragment implements Callback {
                 String cardName = autoComplete.getText().toString();
                 UserCard uCard = new UserCard(cardName);
                 uCard.setCardFromName(callback);
-
+                autoComplete.setText("");
             }
         });
 
@@ -170,10 +155,12 @@ public class BinderFragment extends Fragment implements Callback {
         final Spinner setSpinner = view.findViewById(R.id.edit_card_set);
         ArrayAdapter<String> setAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, userCard.getCard().getSets());
         setSpinner.setAdapter(setAdapter);
+        setSpinner.setSelection(userCard.getCard().getSets().indexOf(userCard.getSet()));
 
         final Spinner langSpinner = view.findViewById(R.id.edit_card_language);
         ArrayAdapter<String> langAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, userCard.getCard().getLanguages());
         langSpinner.setAdapter(langAdapter);
+        langSpinner.setSelection(userCard.getCard().getLanguages().indexOf(userCard.getLanguage()));
 
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
@@ -213,7 +200,7 @@ public class BinderFragment extends Fragment implements Callback {
     private void showDeleteConfirmationDialog(final UserCard userCard) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        builder.setTitle(R.string.delete_dialog_title);
+        builder.setTitle(R.string.delete_card_dialog_title);
 
         View view = getLayoutInflater().inflate(R.layout.delete_confirmation_popup, null, false);
         builder.setView(view);

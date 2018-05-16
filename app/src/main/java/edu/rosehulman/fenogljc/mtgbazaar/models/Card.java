@@ -1,17 +1,13 @@
 package edu.rosehulman.fenogljc.mtgbazaar.models;
 
 
-import java.util.ArrayList;
-
-import android.util.Log;
-
 import com.google.firebase.database.Exclude;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-import edu.rosehulman.fenogljc.mtgbazaar.Constants;
-
-public class Card {
+public class Card implements Serializable {
 
     private float cmc;
     private List<String> color;

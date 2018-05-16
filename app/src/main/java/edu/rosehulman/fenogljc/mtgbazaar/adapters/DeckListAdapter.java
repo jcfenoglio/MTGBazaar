@@ -54,6 +54,7 @@ public class DeckListAdapter extends RecyclerView.Adapter<DeckListAdapter.ViewHo
     }
 
     public void addDBListener() {
+        mDecks.clear();
         mRefDecks.addChildEventListener(mDBListener);
     }
 

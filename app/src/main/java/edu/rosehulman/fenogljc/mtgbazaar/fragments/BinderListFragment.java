@@ -79,14 +79,14 @@ public class BinderListFragment extends Fragment implements BinderListAdapter.Ca
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         mAdapter.addDBListener();
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
         mAdapter.removeDBListener();
     }
 

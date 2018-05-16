@@ -1,51 +1,74 @@
 package edu.rosehulman.fenogljc.mtgbazaar.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.database.Exclude;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by hamiltjc on 5/7/18.
  */
 
-public class Trade {
-    private List<UserCard> ownUserCards;
-    private List<UserCard> theirUserCards;
-    private String tradeName;
+public class Trade implements Parcelable {
+    private Map<String, UserCard> ownUserCards;
+    private Map<String, UserCard> theirUserCards;
+    private String name;
     private String key;
 
     public Trade() {
         // Empty constructor for Firebase
     }
 
-    public Trade(String tradeName, List<UserCard> offering, List<UserCard> offered) {
-        this.tradeName = tradeName;
-        ownUserCards = offering;
-        theirUserCards = offered;
+    public Trade(String name) {
+        this.name = name;
+        ownUserCards = new HashMap<>();
+        theirUserCards = new HashMap<>();
     }
 
-    public List<UserCard> getOwnUserCards() {
+    protected Trade(Parcel in) {
+        in.readMap(ownUserCards, UserCard.class.getClassLoader());
+        in.readMap(theirUserCards, UserCard.class.getClassLoader());
+        name = in.readString();
+        key = in.readString();
+    }
+
+    public static final Creator<Trade> CREATOR = new Creator<Trade>() {
+        @Override
+        public Trade createFromParcel(Parcel in) {
+            return new Trade(in);
+        }
+
+        @Override
+        public Trade[] newArray(int size) {
+            return new Trade[size];
+        }
+    };
+
+    public Map<String, UserCard> getOwnUserCards() {
         return ownUserCards;
     }
 
-    public void setOwnUserCards(List<UserCard> ownUserCards) {
+    public void setOwnUserCards(Map<String, UserCard> ownUserCards) {
         this.ownUserCards = ownUserCards;
     }
 
-    public List<UserCard> getTheirUserCards() {
+    public Map<String, UserCard> getTheirUserCards() {
         return theirUserCards;
     }
 
-    public void setTheirUserCards(List<UserCard> theirUserCards) {
+    public void setTheirUserCards(Map<String, UserCard> theirUserCards) {
         this.theirUserCards = theirUserCards;
     }
 
-    public String getTradeName() {
-        return tradeName;
+    public String getName() {
+        return name;
     }
 
-    public void setTradeName(String name) {
-        this.tradeName = name;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Exclude
@@ -60,6 +83,19 @@ public class Trade {
     public void setValues(Trade updatedTrade) {
         ownUserCards = updatedTrade.getOwnUserCards();
         theirUserCards = updatedTrade.getTheirUserCards();
-        tradeName = updatedTrade.getTradeName();
+        name = updatedTrade.getName();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeMap(ownUserCards);
+        dest.writeMap(theirUserCards);
+        dest.writeString(name);
+        dest.writeString(key);
     }
 }

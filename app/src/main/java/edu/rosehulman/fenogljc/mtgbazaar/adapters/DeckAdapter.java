@@ -23,7 +23,6 @@ import edu.rosehulman.fenogljc.mtgbazaar.models.UserCard;
 /**
  * {@link RecyclerView.Adapter} that can display a {@link UserCard} and makes a call to the
  * specified .
- * TODO: Replace the implementation with code for your data type.
  */
 public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.ViewHolder> {
 
