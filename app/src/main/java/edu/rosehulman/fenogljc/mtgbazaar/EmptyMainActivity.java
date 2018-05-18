@@ -1,20 +1,20 @@
 package edu.rosehulman.fenogljc.mtgbazaar;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,26 +53,13 @@ public class EmptyMainActivity extends AppCompatActivity {
     private void loadCardNamesFromDatabase() {
         DatabaseReference mFirebase = FirebaseDatabase.getInstance().getReference();
         final List<String> mCardNames = new ArrayList<>();
-        ChildEventListener mChildEventListener = new ChildEventListener() {
+        ValueEventListener mChildEventListener = new ValueEventListener() {
 
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                mCardNames.add(dataSnapshot.getKey());
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Log.d(Constants.TAG, "onChildChanged: ");
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Log.d(Constants.TAG, "onChildChanged: ");
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                Log.d(Constants.TAG, "onChildChanged: ");
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    mCardNames.add(child.getKey());
+                }
             }
 
             @Override
@@ -80,7 +67,7 @@ public class EmptyMainActivity extends AppCompatActivity {
                 Log.e(Constants.TAG, "onChildChanged: " + databaseError.getMessage());
             }
         };
-        mFirebase.child(Constants.DB_CARDS_REF).addChildEventListener(mChildEventListener);
+        mFirebase.child(Constants.DB_CARDS_REF).addListenerForSingleValueEvent(mChildEventListener);
         Constants.setCardNames(mCardNames);
     }
 

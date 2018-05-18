@@ -19,7 +19,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,38 +117,40 @@ public class TradeFragment extends Fragment implements TradeAdapter.TradeCallbac
         addLeftButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String cardName = autoComplete.getText().toString();
-                // if the card exists in the binder
-//                if (binderKey != null) {
-//                    DatabaseReference binderRef = context.getmUserData().child(Constants.DB_BINDERS_REF).child(binderKey);
-//                    final ArrayList<UserCard> cards = new ArrayList<>();
-//                    Query cardsInBinder = binderRef.child(Constants.DB_CARDS_REF).orderByChild(Constants.DB_NAME_REF).equalTo(cardName);
-//                    if (cardsInBinder != null) {
-//                        cardsInBinder.addListenerForSingleValueEvent(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(DataSnapshot dataSnapshot) {
-//                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                                    cards.add(snapshot.getValue(UserCard.class));
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(DatabaseError databaseError) {
-//                                Log.e(Constants.TAG, databaseError.getMessage());
-//                            }
-//                        });
-//                        binderSelectionDialog(cards);
-//                    } else {
-//                        // if no cards of that name are found
-//                        UserCard uCard = new UserCard(cardName);
-//                        uCard.setCardFromName(callback, Constants.DB_TRADE_LEFT);
-//                    }
-//                } else {
-//                    // if no binder is set
-                    UserCard uCard = new UserCard(cardName);
-                    uCard.setCardFromName(callback, Constants.DB_TRADE_LEFT);
-//                }
-                autoComplete.setText("");
+                if (mTrade.isFinalized()) {
+                    String cardName = autoComplete.getText().toString();
+                    //                 if the card exists in the binder
+                    if (binderKey != null) {
+                        DatabaseReference binderRef = context.getmUserData().child(Constants.DB_BINDERS_REF).child(binderKey);
+                        final ArrayList<UserCard> cards = new ArrayList<>();
+                        Query cardsInBinder = binderRef.child(Constants.DB_CARDS_REF).orderByChild(Constants.DB_NAME_REF).equalTo(cardName);
+                        if (cardsInBinder != null) {
+                            cardsInBinder.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                        cards.add(snapshot.getValue(UserCard.class));
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Log.e(Constants.TAG, databaseError.getMessage());
+                                }
+                            });
+                            binderSelectionDialog(cards);
+                        } else {
+                            // if no cards of that name are found
+                            UserCard uCard = new UserCard(cardName);
+                            uCard.setCardFromName(callback, Constants.DB_TRADE_LEFT);
+                        }
+                    } else {
+                        // if no binder is set
+                        UserCard uCard = new UserCard(cardName);
+                        uCard.setCardFromName(callback, Constants.DB_TRADE_LEFT);
+                    }
+                    autoComplete.setText("");
+                }
             }
         });
 
@@ -152,10 +158,12 @@ public class TradeFragment extends Fragment implements TradeAdapter.TradeCallbac
         addRightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String cardName = autoComplete.getText().toString();
-                UserCard uCard = new UserCard(cardName);
-                uCard.setCardFromName(callback, Constants.DB_TRADE_RIGHT);
-                autoComplete.setText("");
+                if (!mTrade.isFinalized()) {
+                    String cardName = autoComplete.getText().toString();
+                    UserCard uCard = new UserCard(cardName);
+                    uCard.setCardFromName(callback, Constants.DB_TRADE_RIGHT);
+                    autoComplete.setText("");
+                }
             }
         });
 
@@ -164,8 +172,31 @@ public class TradeFragment extends Fragment implements TradeAdapter.TradeCallbac
             @Override
             public void onClick(View v) {
                 //TODO: make it actually function
+                if(!mTrade.isFinalized()) {
+                    String binderKey = SharedPreferencesUtils.getTradeBinder(context);
+                    DatabaseReference binder = context.getmUserData().child(Constants.DB_BINDERS_REF).child(binderKey);
+                    Query binderQuery = binder.orderByKey();
+                    for (UserCard c : cardsFromBinder) {
+                        binderQuery.equalTo(c.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for(DataSnapshot cardSnapshot: dataSnapshot.getChildren()) {
+                                    cardSnapshot.getRef().removeValue();
+                                }
+                            }
 
-                context.onBackPressed();
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                    for (UserCard card : mRightAdapter.getList()) {
+                        binder.push().setValue(card);
+                    }
+                    mTrade.setFinalized(true);
+                    context.onBackPressed();
+                }
             }
         });
 
