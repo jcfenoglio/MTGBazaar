@@ -11,18 +11,21 @@ public class Binder implements Parcelable {
 
     private Map<String, UserCard> cards;
     private String name;
+    private boolean isTradeBinder = false;
     private String key;
 
     @SuppressWarnings("unused")
     public Binder() {}
 
-    public Binder(String name){
+    public Binder(String name, boolean isTradeBinder){
         this.name = name;
+        this.isTradeBinder = isTradeBinder;
     }
 
     protected Binder(Parcel in) {
         in.readMap(cards, UserCard.class.getClassLoader());
         name = in.readString();
+        isTradeBinder = in.readByte() != 0;
         key = in.readString();
     }
 
@@ -54,6 +57,14 @@ public class Binder implements Parcelable {
         this.name = name;
     }
 
+    public boolean isTradeBinder() {
+        return isTradeBinder;
+    }
+
+    public void setTradeBinder(boolean tradeBinder) {
+        isTradeBinder = tradeBinder;
+    }
+
     @Exclude
     public String getKey() {
         return key;
@@ -72,11 +83,13 @@ public class Binder implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeMap(cards);
         dest.writeString(name);
+        dest.writeByte((byte) (isTradeBinder ? 1 : 0));
         dest.writeString(key);
     }
 
     public void setValues(Binder updatedBinder) {
         setName(updatedBinder.getName());
         setCards(updatedBinder.getCards());
+        setTradeBinder(updatedBinder.isTradeBinder());
     }
 }

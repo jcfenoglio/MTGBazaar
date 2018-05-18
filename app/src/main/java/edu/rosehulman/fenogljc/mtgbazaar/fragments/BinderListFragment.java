@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.google.firebase.database.DatabaseReference;
@@ -63,7 +64,7 @@ public class BinderListFragment extends Fragment implements BinderListAdapter.Ca
 
         DatabaseReference mUserData = context.getmUserData();
 
-        mAdapter = new BinderListAdapter(mListener, this,  mUserData);
+        mAdapter = new BinderListAdapter(getContext(), mListener, this,  mUserData);
         view.setAdapter(mAdapter);
 
         FloatingActionButton fab = context.findViewById(R.id.fab);
@@ -104,9 +105,11 @@ public class BinderListFragment extends Fragment implements BinderListAdapter.Ca
         View view = getLayoutInflater().inflate(R.layout.add_binder_popup, null, false);
         builder.setView(view);
         final EditText editTitleText = view.findViewById(R.id.add_binder_name);
+        final CheckBox tradeCheckBox = view.findViewById(R.id.is_trade_binder);
 
         if (binder != null) {
             editTitleText.setText(binder.getName());
+            tradeCheckBox.setChecked(binder.isTradeBinder());
 
             builder.setNeutralButton(R.string.delete_button, new DialogInterface.OnClickListener() {
                 @Override
@@ -120,10 +123,11 @@ public class BinderListFragment extends Fragment implements BinderListAdapter.Ca
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String title = editTitleText.getText().toString();
+                boolean tradeBinder = tradeCheckBox.isChecked();
                 if (binder != null) {
-                    mAdapter.update(binder, title);
+                    mAdapter.update(binder, title, tradeBinder);
                 } else {
-                    mAdapter.add(new Binder(title));
+                    mAdapter.add(new Binder(title, tradeBinder));
                 }
             }
         });

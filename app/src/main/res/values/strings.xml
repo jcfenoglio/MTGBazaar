@@ -54,6 +54,7 @@
     <string name="edit_card_dialog_title">Edit Card Details</string>
     <string name="delete_card_dialog_title">Delete Card</string>
     <string name="binder_selection_dialog_title">Select a version from your binder</string>
+    <string name="is_trade_binder_text">Trade Binder</string>
 
 
 </resources>

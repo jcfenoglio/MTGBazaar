@@ -235,7 +235,7 @@ public class UserCard implements Serializable, Parcelable {
             URL url;
             JSONObject json = null;
             try {
-                // Fetch the card info from scryfall
+                // Fetch the card info from TCGPlayer
                 url = new URL(urlString);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestProperty("Authorization", "bearer " + Constants.TCGPLAYER_BEARER_TOKEN);
