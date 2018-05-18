@@ -117,7 +117,7 @@ public class TradeFragment extends Fragment implements TradeAdapter.TradeCallbac
         addLeftButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mTrade.isFinalized()) {
+                if (!mTrade.isFinalized()) {
                     String cardName = autoComplete.getText().toString();
                     //                 if the card exists in the binder
                     if (binderKey != null) {
@@ -131,6 +131,7 @@ public class TradeFragment extends Fragment implements TradeAdapter.TradeCallbac
                                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                         cards.add(snapshot.getValue(UserCard.class));
                                     }
+                                    binderSelectionDialog(cards);
                                 }
 
                                 @Override
@@ -138,7 +139,6 @@ public class TradeFragment extends Fragment implements TradeAdapter.TradeCallbac
                                     Log.e(Constants.TAG, databaseError.getMessage());
                                 }
                             });
-                            binderSelectionDialog(cards);
                         } else {
                             // if no cards of that name are found
                             UserCard uCard = new UserCard(cardName);
