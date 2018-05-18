@@ -1,5 +1,6 @@
 package edu.rosehulman.fenogljc.mtgbazaar.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.rosehulman.fenogljc.mtgbazaar.Constants;
+import edu.rosehulman.fenogljc.mtgbazaar.SharedPreferencesUtils;
 import edu.rosehulman.fenogljc.mtgbazaar.models.Binder;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment.OnBinderSelectedListener;
@@ -31,13 +33,15 @@ public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.Vi
     private DatabaseReference mRefBinders;
     private BinderListChildEventListener mDBListener;
     private Callback mCallback;
+    private Context mContext;
 
-    public BinderListAdapter(OnBinderSelectedListener listener, Callback callback, DatabaseReference ref) {
+    public BinderListAdapter(Context context, OnBinderSelectedListener listener, Callback callback, DatabaseReference ref) {
         mListener = listener;
         mBinders = new ArrayList<>();
         mRefBinders = ref.child(Constants.DB_BINDERS_REF);
         mDBListener = new BinderListChildEventListener();
         mCallback = callback;
+        mContext = context;
     }
 
     public void remove(Binder binder) {
@@ -49,8 +53,20 @@ public class BinderListAdapter extends RecyclerView.Adapter<BinderListAdapter.Vi
         mRefBinders.push().setValue(binder);
     }
 
-    public void update(Binder binder, String newName) {
+    public void update(Binder binder, String newName, boolean isTradeBinder) {
+        if (isTradeBinder) {
+            for (Binder b : mBinders) {
+                if (b.isTradeBinder()) {
+                    b.setTradeBinder(false);
+                    mRefBinders.child(b.getKey()).setValue(b);
+                }
+            }
+
+            SharedPreferencesUtils.setTradeBinder(mContext, binder.getKey());
+        }
+
         binder.setName(newName);
+        binder.setTradeBinder(isTradeBinder);
         mRefBinders.child(binder.getKey()).setValue(binder);
     }
 

@@ -10,6 +10,13 @@
         android:hint="@string/binder_add_hint"
         android:inputType="text"/>
 
+    <CheckBox
+        android:id="@+id/is_trade_binder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/add_binder_name"
+        android:text="@string/is_trade_binder_text"/>
+
     <!--<LinearLayout-->
         <!--android:layout_below="@id/add_binder_name"-->
         <!--android:layout_width="match_parent"-->
