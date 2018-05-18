@@ -16,6 +16,7 @@ public class Trade implements Parcelable {
     private Map<String, UserCard> theirUserCards;
     private String name;
     private String key;
+    private boolean finalized = false;
 
     public Trade() {
         // Empty constructor for Firebase
@@ -30,6 +31,7 @@ public class Trade implements Parcelable {
         in.readMap(theirUserCards, UserCard.class.getClassLoader());
         name = in.readString();
         key = in.readString();
+        finalized = in.readByte() != 0;
     }
 
     public static final Creator<Trade> CREATOR = new Creator<Trade>() {
@@ -68,6 +70,14 @@ public class Trade implements Parcelable {
         this.name = name;
     }
 
+    public boolean isFinalized() {
+        return finalized;
+    }
+
+    public void setFinalized(boolean finalized) {
+        this.finalized = finalized;
+    }
+
     @Exclude
     public String getKey() {
         return key;
@@ -94,5 +104,6 @@ public class Trade implements Parcelable {
         dest.writeMap(theirUserCards);
         dest.writeString(name);
         dest.writeString(key);
+        dest.writeByte((byte) (finalized ? 1 : 0));
     }
 }

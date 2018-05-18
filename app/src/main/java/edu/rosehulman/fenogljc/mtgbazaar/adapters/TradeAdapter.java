@@ -73,6 +73,10 @@ public class TradeAdapter extends RecyclerView.Adapter<TradeAdapter.ViewHolder> 
             return mCards.size();
         }
 
+    public List<UserCard> getList() {
+        return mCards;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public View mView;
         public TextView mCardNameView;
@@ -92,8 +96,10 @@ public class TradeAdapter extends RecyclerView.Adapter<TradeAdapter.ViewHolder> 
 
         @Override
         public void onClick(View v) {
-            UserCard userCard = mCards.get(getAdapterPosition());
-            mCallback.onEdit(userCard, mSide);
+            if(!mTrade.isFinalized()) {
+                UserCard userCard = mCards.get(getAdapterPosition());
+                mCallback.onEdit(userCard, mSide);
+            }
         }
     }
 
