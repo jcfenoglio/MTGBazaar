@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.google.firebase.database.DatabaseReference;
@@ -108,6 +109,8 @@ public class TradeListFragment extends Fragment implements TradeListAdapter.Call
         View view = getLayoutInflater().inflate(R.layout.add_binder_popup, null, false);
         builder.setView(view);
         final EditText editTitleText = view.findViewById(R.id.add_binder_name);
+        final CheckBox tradeCheckBox = view.findViewById(R.id.is_trade_binder);
+        tradeCheckBox.setVisibility(View.GONE);
 
         if (trade != null) {
             editTitleText.setText(trade.getName());

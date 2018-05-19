@@ -10,8 +10,7 @@ import android.content.SharedPreferences;
 public class SharedPreferencesUtils {
     public static String getTradeBinder(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(Constants.PREFS, Activity.MODE_PRIVATE);
-//        return prefs.getString(Constants.TRADE_BINDER_STORAGE_ID, "");
-        return "-LCVcgBlVNqsAgCg7V52";
+        return prefs.getString(Constants.TRADE_BINDER_STORAGE_ID, "");
     }
 
     public static void setTradeBinder(Context context, String trade_binder_key) {

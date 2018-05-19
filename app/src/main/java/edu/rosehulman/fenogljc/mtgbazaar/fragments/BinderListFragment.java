@@ -106,6 +106,7 @@ public class BinderListFragment extends Fragment implements BinderListAdapter.Ca
         builder.setView(view);
         final EditText editTitleText = view.findViewById(R.id.add_binder_name);
         final CheckBox tradeCheckBox = view.findViewById(R.id.is_trade_binder);
+        tradeCheckBox.setVisibility(View.VISIBLE);
 
         if (binder != null) {
             editTitleText.setText(binder.getName());

@@ -39,6 +39,8 @@ import edu.rosehulman.fenogljc.mtgbazaar.adapters.TradeAdapter.TradeCallback;
 import edu.rosehulman.fenogljc.mtgbazaar.models.Trade;
 import edu.rosehulman.fenogljc.mtgbazaar.models.UserCard;
 
+import static edu.rosehulman.fenogljc.mtgbazaar.Constants.TAG;
+
 public class TradeFragment extends Fragment implements TradeAdapter.TradeCallback {
 
     private AlertDialog editCardDialog;
@@ -117,8 +119,8 @@ public class TradeFragment extends Fragment implements TradeAdapter.TradeCallbac
         addLeftButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mTrade.isFinalized()) {
-                    String cardName = autoComplete.getText().toString();
+                final String cardName = autoComplete.getText().toString();
+                if (!mTrade.isFinalized() && !cardName.equals("")) {
                     //                 if the card exists in the binder
                     if (binderKey != null) {
                         DatabaseReference binderRef = context.getmUserData().child(Constants.DB_BINDERS_REF).child(binderKey);
@@ -129,14 +131,22 @@ public class TradeFragment extends Fragment implements TradeAdapter.TradeCallbac
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                        cards.add(snapshot.getValue(UserCard.class));
+                                        UserCard uc = snapshot.getValue(UserCard.class);
+                                        uc.setKey(snapshot.getKey());
+                                        cards.add(uc);
                                     }
-                                    binderSelectionDialog(cards);
+                                    if(cards.size() == 0) {
+                                        UserCard uCard = new UserCard(cardName);
+                                        uCard.setCardFromName(callback, Constants.DB_TRADE_LEFT);
+                                    } else {
+                                        Log.d(TAG, "onDataChange: LEFT BUTTON: " + cards);
+                                        binderSelectionDialog(cards, cardName);
+                                    }
                                 }
 
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
-                                    Log.e(Constants.TAG, databaseError.getMessage());
+                                    Log.e(TAG, databaseError.getMessage());
                                 }
                             });
                         } else {
@@ -158,8 +168,8 @@ public class TradeFragment extends Fragment implements TradeAdapter.TradeCallbac
         addRightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mTrade.isFinalized()) {
-                    String cardName = autoComplete.getText().toString();
+                String cardName = autoComplete.getText().toString();
+                if (!mTrade.isFinalized() && !cardName.equals("")) {
                     UserCard uCard = new UserCard(cardName);
                     uCard.setCardFromName(callback, Constants.DB_TRADE_RIGHT);
                     autoComplete.setText("");
@@ -171,13 +181,12 @@ public class TradeFragment extends Fragment implements TradeAdapter.TradeCallbac
         finishTradeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: make it actually function
+                //DONE: make it actually function
                 if(!mTrade.isFinalized()) {
                     String binderKey = SharedPreferencesUtils.getTradeBinder(context);
-                    DatabaseReference binder = context.getmUserData().child(Constants.DB_BINDERS_REF).child(binderKey);
-                    Query binderQuery = binder.orderByKey();
+                    DatabaseReference binderCards = context.getmUserData().child(Constants.DB_BINDERS_REF).child(binderKey).child(Constants.DB_CARDS_REF);
                     for (UserCard c : cardsFromBinder) {
-                        binderQuery.equalTo(c.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        binderCards.orderByKey().equalTo(c.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for(DataSnapshot cardSnapshot: dataSnapshot.getChildren()) {
@@ -192,9 +201,10 @@ public class TradeFragment extends Fragment implements TradeAdapter.TradeCallbac
                         });
                     }
                     for (UserCard card : mRightAdapter.getList()) {
-                        binder.push().setValue(card);
+                        binderCards.push().setValue(card);
                     }
                     mTrade.setFinalized(true);
+                    context.getmUserData().child(Constants.DB_TRADES_REF).child(mTrade.getKey()).setValue(mTrade);
                     context.onBackPressed();
                 }
             }
@@ -206,13 +216,13 @@ public class TradeFragment extends Fragment implements TradeAdapter.TradeCallbac
         return view;
     }
 
-    private void binderSelectionDialog(final ArrayList<UserCard> cards) {
+    private void binderSelectionDialog(final ArrayList<UserCard> cards, final String cardName) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         builder.setTitle(R.string.binder_selection_dialog_title);
 
         final TradeCallback callback = this;
-        String[] cardSelections = {};
+        String[] cardSelections = new String[cards.size()];
         for (UserCard card : cards) {
             String temp = card.getSet() + " / " + card.getCondition() + " / " + card.getLanguage();
             cardSelections[cards.indexOf(card)] = temp;
@@ -229,7 +239,7 @@ public class TradeFragment extends Fragment implements TradeAdapter.TradeCallbac
         builder.setNeutralButton("Don't Use Binder", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                UserCard uCard = new UserCard(cards.get(0).getName());
+                UserCard uCard = new UserCard(cardName);
                 uCard.setCardFromName(callback, Constants.DB_TRADE_LEFT);
             }
         });
@@ -237,7 +247,7 @@ public class TradeFragment extends Fragment implements TradeAdapter.TradeCallbac
     }
 
     private void showEditCardDialog(final UserCard userCard, final String side) {
-        Log.d(Constants.TAG, "showEditCardDialog: called");
+        Log.d(TAG, "showEditCardDialog: called");
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         builder.setTitle(userCard.getName());
@@ -253,7 +263,7 @@ public class TradeFragment extends Fragment implements TradeAdapter.TradeCallbac
             }
         });
 
-        //TODO: add number found in binder
+        //DONE: add number found in binder
         final EditText cardPriceText = view.findViewById(R.id.edit_card_price);
         cardPriceText.setText(String.format(Locale.getDefault(), "%.2f", userCard.getPrice()));
 
@@ -342,7 +352,6 @@ public class TradeFragment extends Fragment implements TradeAdapter.TradeCallbac
 
     @Override
     public void onCardFound(final UserCard card, final String side) {
-        Log.d(Constants.TAG, "onClick: " + card.getName());
         if(card.getName() != null) {
             card.setPriceFromInfo(new Callback() {
                 @Override

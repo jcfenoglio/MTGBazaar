@@ -45,7 +45,11 @@ public class TradeAdapter extends RecyclerView.Adapter<TradeAdapter.ViewHolder> 
         }
 
         public void add(UserCard userCard) {
-            mRef.push().setValue(userCard);
+            if(mSide.equals(Constants.DB_TRADE_LEFT) && userCard.getKey() != null) {
+                mRef.child(userCard.getKey()).setValue(userCard);
+            } else {
+                mRef.push().setValue(userCard);
+            }
         }
 
         public void update(UserCard userCard, UserCard newCard) {
