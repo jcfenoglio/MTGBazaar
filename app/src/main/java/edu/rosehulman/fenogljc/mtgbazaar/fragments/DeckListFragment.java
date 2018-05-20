@@ -1,65 +1,45 @@
 package edu.rosehulman.fenogljc.mtgbazaar.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Spinner;
 
-import java.util.ArrayList;
+import com.google.firebase.database.DatabaseReference;
 
-import edu.rosehulman.fenogljc.mtgbazaar.Deck;
+import edu.rosehulman.fenogljc.mtgbazaar.Constants;
+import edu.rosehulman.fenogljc.mtgbazaar.MainActivity;
 import edu.rosehulman.fenogljc.mtgbazaar.R;
 import edu.rosehulman.fenogljc.mtgbazaar.adapters.DeckListAdapter;
+import edu.rosehulman.fenogljc.mtgbazaar.models.Deck;
 
 /**
  * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnDeckSelectedListener}
- * interface.
+ *
  */
-public class DeckListFragment extends Fragment {
-
-    private int mColumnCount = 1;
+public class DeckListFragment extends Fragment implements DeckListAdapter.Callback {
 
     private OnDeckSelectedListener mListener;
+    private DeckListAdapter mAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public DeckListFragment() {
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
     }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_deck_list, container, false);
-
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new DeckListAdapter(new ArrayList<Deck>(), mListener));
-        }
-        return view;
-    }
-
 
     @Override
     public void onAttach(Context context) {
@@ -68,14 +48,121 @@ public class DeckListFragment extends Fragment {
             mListener = (OnDeckSelectedListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement OnDeckSelectedListener");
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        MainActivity context = (MainActivity) getContext();
+
+        context.setTitle(R.string.nav_item_decks);
+
+        RecyclerView view = (RecyclerView) inflater.inflate(R.layout.fragment_deck_list, container, false);
+        view.setLayoutManager(new LinearLayoutManager(context));
+
+        DatabaseReference mUserData = context.getmUserData();
+
+        mAdapter = new DeckListAdapter(mListener, this, mUserData);
+        view.setAdapter(mAdapter);
+
+        FloatingActionButton fab = context.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAddEditDeckDialog(null);
+            }
+        });
+        fab.show();
+
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAdapter.addDBListener();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mAdapter.removeDBListener();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void showAddEditDeckDialog(final Deck deck) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setTitle(deck == null ? R.string.new_deck_dialog_title : R.string.edit_deck_dialog_title);
+
+        View view = getLayoutInflater().inflate(R.layout.add_deck_popup, null, false);
+        builder.setView(view);
+        final EditText editTitleText = view.findViewById(R.id.add_deck_name);
+
+        final Spinner formatSpinner = view.findViewById(R.id.deck_format);
+        ArrayAdapter<String> formatAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, Constants.FORMAT_ARRAY);
+        formatSpinner.setAdapter(formatAdapter);
+
+        if (deck != null) {
+            editTitleText.setText(deck.getName());
+            formatSpinner.setSelection(Constants.FORMAT_ARRAY.indexOf(deck.getFormat()));
+
+            builder.setNeutralButton(R.string.delete_button, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    showDeleteConfirmationDialog(deck);
+                }
+            });
+        }
+
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String title = editTitleText.getText().toString();
+                String format = formatSpinner.getSelectedItem().toString();
+                if (deck != null) {
+                    mAdapter.update(deck, title, format);
+                } else {
+                    mAdapter.add(new Deck(title, format));
+                }
+            }
+        });
+
+        builder.setNegativeButton(android.R.string.cancel, null);
+
+        builder.create().show();
+    }
+
+    private void showDeleteConfirmationDialog(final Deck deck) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setTitle(R.string.delete_dialog_title);
+
+        View view = getLayoutInflater().inflate(R.layout.delete_confirmation_popup, null, false);
+        builder.setView(view);
+
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mAdapter.remove(deck);
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, null);
+
+        builder.create().show();
+    }
+
+    @Override
+    public void onEdit(Deck deck) {
+        showAddEditDeckDialog(deck);
     }
 
     /**
@@ -89,7 +176,6 @@ public class DeckListFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnDeckSelectedListener {
-        // TODO: Update argument type and name
-        void onDeckSelected(Deck item);
+        void onDeckSelected(Deck deck);
     }
 }

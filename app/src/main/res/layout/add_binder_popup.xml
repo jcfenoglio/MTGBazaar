@@ -10,23 +10,30 @@
         android:hint="@string/binder_add_hint"
         android:inputType="text"/>
 
-    <LinearLayout
+    <CheckBox
+        android:id="@+id/is_trade_binder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/add_binder_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/cancel_binder_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight=".5"
-            android:text="@string/cancel_button_text"/>
+        android:text="@string/is_trade_binder_text"/>
 
-        <Button
-            android:id="@+id/accept_binder_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight=".5"
-            android:text="@string/ok_button_text"/>
-    </LinearLayout>
+    <!--<LinearLayout-->
+        <!--android:layout_below="@id/add_binder_name"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+        <!--<Button-->
+            <!--android:id="@+id/cancel_binder_add"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight=".5"-->
+            <!--android:text="@string/cancel_button_text"/>-->
+
+        <!--<Button-->
+            <!--android:id="@+id/accept_binder_add"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight=".5"-->
+            <!--android:text="@string/ok_button_text"/>-->
+    <!--</LinearLayout>-->
 
 </RelativeLayout>

@@ -15,7 +15,7 @@
     <string name="foil_text">Foil</string>
     <string name="nav_item_binders">Binders</string>
     <string name="nav_item_decks">Decks</string>
-    <string name="nav_item_trade">Trade</string>
+    <string name="nav_item_trades">Trade</string>
     <string name="nav_item_search">Card Search</string>
     <string name="title_activity_login">Sign in</string>
 
@@ -31,15 +31,30 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
     <string name="sign_in_cancelled">Login cancelled</string>
     <string name="no_internet_connection">Login failed: no internet connection</string>
     <string name="unknown_error">Login failed: unknown error</string>
     <string name="action_sign_out">Sign Out</string>
     <string name="pricing">Pricing:</string>
     <string name="regular">Regular</string>
-    <string name="left_add_text">Add left</string>
-    <string name="right_add_text">Add right</string>
+    <string name="left_add_text">From You</string>
+    <string name="right_add_text">From Them</string>
     <string name="accept_trade">Accept trade</string>
+    <string name="edit_binder_dialog_title">Edit Binder Name</string>
+    <string name="new_binder_dialog_title">Create New Binder</string>
+    <string name="edit_deck_dialog_title">Edit Deck Name</string>
+    <string name="new_deck_dialog_title">Create New Deck</string>
+    <string name="edit_trade_dialog_title">Edit Trade Name</string>
+    <string name="new_trade_dialog_title">Create New Trade</string>
+    <string name="delete_button">DELETE</string>
+    <string name="delete_warning">Once you delete something, you won\'t be able to recover it. Are you sure you want to delete?</string>
+    <string name="delete_dialog_title">Delete</string>
+    <string name="add_card_button">Add</string>
+    <string name="edit_card_dialog_title">Edit Card Details</string>
+    <string name="delete_card_dialog_title">Delete Card</string>
+    <string name="binder_selection_dialog_title">Select a version from your binder</string>
+    <string name="is_trade_binder_text">Trade Binder</string>
 
 
 </resources>

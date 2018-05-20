@@ -1,77 +1,153 @@
 package edu.rosehulman.fenogljc.mtgbazaar.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import edu.rosehulman.fenogljc.mtgbazaar.Deck;
-import edu.rosehulman.fenogljc.mtgbazaar.R;
-import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckListFragment;
-import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckListFragment.OnDeckSelectedListener;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import edu.rosehulman.fenogljc.mtgbazaar.Constants;
+import edu.rosehulman.fenogljc.mtgbazaar.R;
+import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckListFragment.OnDeckSelectedListener;
+import edu.rosehulman.fenogljc.mtgbazaar.models.Deck;
+
 /**
- * {@link RecyclerView.Adapter} that can display a {@link Deck} and makes a call to the
- * specified {@link OnDeckSelectedListener}.
- * TODO: Replace the implementation with code for your data type.
+ *
  */
 public class DeckListAdapter extends RecyclerView.Adapter<DeckListAdapter.ViewHolder> {
 
-    private final List<Deck> mValues;
-    private final OnDeckSelectedListener mListener;
+    private OnDeckSelectedListener mListener;
+    private List<Deck> mDecks;
+    private DatabaseReference mRefDecks;
+    private DeckListChildEventListener mDBListener;
+    private Callback mCallback;
 
-    public DeckListAdapter(List<Deck> decks, OnDeckSelectedListener listener) {
-        mValues = decks;
+    public DeckListAdapter(OnDeckSelectedListener listener, Callback callback, DatabaseReference ref) {
         mListener = listener;
+        mDecks = new ArrayList<>();
+        mRefDecks = ref.child(Constants.DB_DECKS_REF);
+        mDBListener = new DeckListChildEventListener();
+        mCallback = callback;
+    }
+
+    public void remove(Deck Deck) {
+        mRefDecks.child(Deck.getKey()).removeValue();
+    }
+
+    public void add(Deck Deck) {
+        mRefDecks.push().setValue(Deck);
+    }
+
+    public void update(Deck Deck, String newName, String newFormat) {
+        Deck.setName(newName);
+        Deck.setFormat(newFormat);
+        mRefDecks.child(Deck.getKey()).setValue(Deck);
+    }
+
+    public void addDBListener() {
+        mDecks.clear();
+        mRefDecks.addChildEventListener(mDBListener);
+    }
+
+    public void removeDBListener() {
+        mRefDecks.removeEventListener(mDBListener);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_deck_item, parent, false);
-        return new ViewHolder(view);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_deck_list_item, parent, false);
+        return new ViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getName());
-
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                }
-            }
-        });
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        Deck Deck = mDecks.get(position);
+        holder.mContentView.setText(Deck.getName());
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mDecks.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public Deck mItem;
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
+        public TextView mContentView;
 
         public ViewHolder(View view) {
             super(view);
-            mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mContentView = view.findViewById(R.id. deck_item_name);
+            view.setOnClickListener(this);
+            view.setOnLongClickListener(this);
         }
 
         @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+        public void onClick(View v) {
+            Deck Deck = mDecks.get(getAdapterPosition());
+            mListener.onDeckSelected(Deck);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            Deck Deck = mDecks.get(getAdapterPosition());
+            mCallback.onEdit(Deck);
+            return true;
+        }
+    }
+
+    public interface Callback {
+        void onEdit(Deck Deck);
+    }
+
+    protected class DeckListChildEventListener implements ChildEventListener {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            Deck deck = dataSnapshot.getValue(Deck.class);
+            deck.setKey(dataSnapshot.getKey());
+            mDecks.add(0, deck);
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            String key = dataSnapshot.getKey();
+            Deck updatedDeck = dataSnapshot.getValue(Deck.class);
+            for (Deck b : mDecks) {
+                if (b.getKey().equals(key)) {
+                    b.setValues(updatedDeck);
+                    break;
+                }
+            }
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+            String key = dataSnapshot.getKey();
+            for (Deck b : mDecks) {
+                if (b.getKey().equals(key)) {
+                    mDecks.remove(b);
+                    break;
+                }
+            }
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            Log.e(Constants.TAG, databaseError.getMessage());
         }
     }
 }

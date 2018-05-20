@@ -15,7 +15,7 @@
         <item
             android:id="@+id/nav_trade"
             android:icon="@drawable/clipboard_arrow_left"
-            android:title="@string/nav_item_trade" />
+            android:title="@string/nav_item_trades" />
         <item
             android:id="@+id/nav_search"
             android:icon="@android:drawable/ic_search_category_default"

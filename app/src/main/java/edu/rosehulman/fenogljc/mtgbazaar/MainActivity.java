@@ -1,25 +1,19 @@
 package edu.rosehulman.fenogljc.mtgbazaar;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Adapter;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,19 +26,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.BinderListFragment;
+import edu.rosehulman.fenogljc.mtgbazaar.fragments.CardFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckFragment;
 import edu.rosehulman.fenogljc.mtgbazaar.fragments.DeckListFragment;
+import edu.rosehulman.fenogljc.mtgbazaar.fragments.TradeFragment;
+import edu.rosehulman.fenogljc.mtgbazaar.fragments.TradeListFragment;
+import edu.rosehulman.fenogljc.mtgbazaar.models.Binder;
+import edu.rosehulman.fenogljc.mtgbazaar.models.Deck;
+import edu.rosehulman.fenogljc.mtgbazaar.models.Trade;
+import edu.rosehulman.fenogljc.mtgbazaar.models.User;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, BinderListFragment.OnBinderSelectedListener, DeckListFragment.OnDeckSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, BinderListFragment.OnBinderSelectedListener, DeckListFragment.OnDeckSelectedListener, TradeListFragment.OnTradeSelectedListener {
 
-    private Adapter mAdapter;
     private DatabaseReference mFirebase;
     private DatabaseReference mUserData;
     private FirebaseUser mUser;
@@ -56,17 +52,12 @@ public class MainActivity extends AppCompatActivity
 
         mFirebase = FirebaseDatabase.getInstance().getReference();
         mUser = FirebaseAuth.getInstance().getCurrentUser();
-
-
         mFirebase.child(Constants.DB_USERS_REF).child(mUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(!dataSnapshot.exists()) {
                     Log.d(Constants.TAG, "user does not exist");
-                    mFirebase.child(Constants.DB_USERS_REF).child(mUser.getUid()).setValue(mUser.getDisplayName());
-                } else {
-                    Log.d(Constants.TAG, "user exists");
-                    mUserData = mFirebase.child(Constants.DB_USERS_REF).child(mUser.getUid());
+                    mFirebase.child(Constants.DB_USERS_REF).child(mUser.getUid()).setValue(new User(mUser.getDisplayName()));
                 }
             }
 
@@ -75,26 +66,18 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+        mUserData = mFirebase.child(Constants.DB_USERS_REF).child(mUser.getUid());
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState == null) {
@@ -143,10 +126,14 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
+    public DatabaseReference getmUserData() {
+        return mUserData;
+    }
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        //TODO: handle fragment memory when switching between options
         Fragment switchTo = null;
         switch (item.getItemId()) {
             case R.id.nav_binders:
@@ -156,29 +143,28 @@ public class MainActivity extends AppCompatActivity
                 switchTo = new DeckListFragment();
                 break;
             case R.id.nav_trade:
-//                switchTo = new TradeFragment();
+                switchTo = new TradeListFragment();
                 break;
             case R.id.nav_search:
-//                switchTo = new SearchFragment();
+                switchTo = new CardFragment();
                 break;
         }
 
         if (switchTo != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.fragment_container, switchTo);
-            for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
-                getSupportFragmentManager().popBackStackImmediate();
-            }
+            ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             ft.commit();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     @Override
     public void onBinderSelected(Binder binder) {
+        Log.d(Constants.TAG, "Binder selected: " + binder.getName());
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container, BinderFragment.newInstance(binder));
         ft.addToBackStack("binder_list_fragment");
@@ -186,10 +172,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onDeckSelected(Deck item) {
+    public void onDeckSelected(Deck deck) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_container, DeckFragment.newInstance(item));
-        ft.addToBackStack("binder_list_fragment");
+        ft.replace(R.id.fragment_container, DeckFragment.newInstance(deck));
+        ft.addToBackStack("deck_list_fragment");
+        ft.commit();
+    }
+
+    @Override
+    public void onTradeSelected(Trade trade) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_container, TradeFragment.newInstance(trade));
+        ft.addToBackStack("deck_list_fragment");
         ft.commit();
     }
 }
